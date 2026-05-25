@@ -74,100 +74,51 @@
     <div class="container">
       <div class="products__grid" id="shop-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
 
-        <!-- RTTLC T-Shirt -->
+        <!-- RTTLC Logo Tee — White -->
         <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
           <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-tshirt.png" alt="RTTLC Premium Black T-Shirt" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Best Seller</span>
+            <img src="images/product-tshirt.png" alt="RTTLC Logo Tee — White" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
           </div>
           <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Logo Tee — Black</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Premium cotton tee with the ReThinking The Leaf logo. Soft-washed, pre-shrunk. Unisex fit.</p>
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTLC Logo Tee — White</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Unisex cotton tee with the RTTLC leaf logo. Soft-washed, pre-shrunk. Printed on demand &amp; shipped to your door.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$28</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$15.50</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTLC Logo Tee — White','15.50','images/product-tshirt.png',['S','M','L','XL','2XL'])">Order</button>
             </div>
           </div>
         </div>
 
-        <!-- Full-Color Logo Tee — White -->
+        <!-- Circulate The Dollar Tee — Black -->
         <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
           <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-logo-tee-white.png" alt="RTTLC Full-Color Logo Tee — White" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
+            <img src="images/product-logo-tee-white.png" alt="Circulate The Dollar Tee — Black" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
           </div>
           <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Full-Color Crest Tee — White</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Premium white tee with the full-color leaf &amp; lavender crest. Vibrant screen-print. Unisex fit.</p>
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Circulate The Dollar Tee — Black</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Unisex black tee with gold &ldquo;Circulate The Dollar&rdquo; crest. Support Black business. Printed on demand.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$32</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$15.50</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Circulate The Dollar Tee — Black','15.50','images/product-logo-tee-white.png',['S','M','L','XL','2XL'])">Order</button>
             </div>
           </div>
         </div>
 
-        <!-- Hoodie -->
+        <!-- RTTL Leaf Tee — Black -->
         <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
           <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-hoodie.png" alt="RTTLC Forest Green Hoodie" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-green-bright); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
+            <img src="images/product-hoodie.png" alt="RTTL Leaf Tee — Black" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
           </div>
           <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Heritage Hoodie</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Forest green heavyweight hoodie with gold embroidered RTTL crest. 80/20 cotton-poly blend.</p>
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Leaf Tee — Black</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Unisex black tee with purple &amp; green leaf design. Premium cotton. Printed on demand &amp; shipped direct.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$55</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$15.50</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTL Leaf Tee — Black','15.50','images/product-hoodie.png',['S','M','L','XL','2XL'])">Order</button>
             </div>
           </div>
         </div>
 
-        <!-- Dad Hat -->
-        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-hat.png" alt="RTTLC Olive Dad Hat" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Dad Hat — Olive</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Embroidered gold leaf logo. Adjustable strap, brushed cotton twill. One size fits most.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$24</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Logo Crewneck Sweater -->
-        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-crewneck.png" alt="RTTLC Logo Crewneck Sweater" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Fan Favorite</span>
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Logo Crewneck Sweater</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Black heavyweight fleece with the ReThinking The Leaf crest. Relaxed fit, brushed interior.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$45</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gray Zip Hoodie -->
-        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-hoodie-gray.png" alt="RTTLC Gray Zip Hoodie" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-green-bright); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Zip Hoodie — Gray</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Heather gray full-zip with embroidered gold leaf logo. Matte black hardware. 80/20 blend.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$58</span>
-              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
-            </div>
-          </div>
-        </div>
 
         <!-- Travel Tumbler -->
         <div class="product-card shop-item" data-category="gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
@@ -179,7 +130,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">20oz insulated stainless steel with gold-engraved RTTL logo. Keeps drinks cold 12hrs, hot 6hrs.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTL Travel Tumbler','22','images/product-travel-mug.png',['One Size'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -194,7 +145,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Matte black ceramic with gold leaf logo. 12oz. Microwave & dishwasher safe.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTL Signature Mug','18','images/product-mug.png',['One Size'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -209,7 +160,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Steam-distilled from estate-grown Lavandula angustifolia. 15ml dropper bottle.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$24</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Pure Lavender Essential Oil','24','images/product-oil.png',['15ml'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -224,7 +175,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Rich shea butter infused with our lavender oil. Deeply moisturizing, 4oz jar.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender Body Butter','18','images/product-cream.png',['4oz'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -240,7 +191,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Raw Virginia wildflower honey infused with our lavender blooms. 12oz jar.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$16</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender-Infused Honey','16','images/product-honey.png',['12oz'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -255,7 +206,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Topical CBD balm from estate-grown hemp blended with lavender and arnica. 2oz tin.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$32</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Hemp Relief Balm','32','images/product-balm.png',['2oz'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -270,7 +221,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Hand-poured 100% soy wax with dried lavender buds. 45-hour burn time. 8oz.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender Soy Candle','22','images/product-candle.png',['8oz'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -286,7 +237,7 @@
             <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Soap, sachet, balm, and dried bouquet — beautifully wrapped. The perfect gift from the farm.</p>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$45</span>
-              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('The Lavender Gift Set','45','images/product-bundle.png',['One Set'])">Order</button>
+              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
             </div>
           </div>
         </div>
