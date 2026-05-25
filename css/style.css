@@ -189,39 +189,33 @@ ul { list-style: none; }
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
 }
-/* ── Nav Inner Layout ── */
+/* ── Nav Inner ── */
 .nav__inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  overflow: visible;
 }
-/* ── Logo (in flow, icon overflows) ── */
+/* ── Logo ── */
 .nav__logo {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
-  z-index: 1001;
   flex-shrink: 0;
 }
-/* ── Logo Icon (big, overflows below nav) ── */
 .nav__logo-icon {
-  width: 160px;
-  height: 160px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
-  flex-shrink: 0;
 }
-/* ── Logo Text (aligned to nav bar center) ── */
 .nav__logo-text {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.02em;
   white-space: nowrap;
-  padding-top: 16px;            /* center text within 60px nav */
 }
 .nav__logo-text span {
   color: var(--accent-gold);
@@ -229,7 +223,7 @@ ul { list-style: none; }
 /* ── Nav Links ── */
 .nav__links {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
   align-items: center;
 }
 .nav__link {
