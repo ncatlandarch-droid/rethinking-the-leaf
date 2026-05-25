@@ -200,8 +200,8 @@ ul { list-style: none; }
   gap: 0.1rem;
 }
 .nav__logo-icon {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
 }
 .nav__logo-text {
   font-family: var(--font-display);
@@ -395,12 +395,12 @@ ul { list-style: none; }
 .hero__badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   background: var(--bg-glass);
   border: 1px solid var(--border-accent);
-  padding: 0.4rem 1rem;
+  padding: 0.6rem 1.6rem;
   border-radius: 50px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
