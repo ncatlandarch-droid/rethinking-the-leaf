@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Farm Store — ReThinking The Leaf</title>
+  <meta name="description" content="Shop RTTL apparel, lavender products, honey, candles, and farm goods. Every purchase supports the 66-acre agrotherapy estate.">
+  <meta property="og:title" content="The Farm Store — ReThinking The Leaf">
+  <meta property="og:description" content="Shop RTTL apparel, lavender products, honey, candles, and farm goods.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav scrolled" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+        <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="index.html#estate" class="nav__link">The Estate</a>
+        <a href="index.html#experiences" class="nav__link">Experiences</a>
+        <a href="index.html#events-calendar" class="nav__link">Events</a>
+        <a href="community.html" class="nav__link">Community</a>
+        <a href="#" class="nav__link" style="color: var(--accent-gold);">Shop</a>
+        <a href="#" id="nav-cart" style="position: relative; font-size: 1.4rem; color: var(--text-primary); text-decoration: none; margin-left: 0.5rem;" title="Shopping Cart">
+          🛒<span id="cart-badge" style="position: absolute; top: -6px; right: -10px; background: var(--accent-gold); color: var(--bg-dark); font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center;">0</span>
+        </a>
+        <a href="index.html#contact" class="nav__cta">Visit the Farm</a>
+      </div>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       SHOP HERO
+       ============================================================ -->
+  <section class="hub-hero" style="padding-top: calc(var(--space-3xl) + 100px);">
+    <div class="hub-hero__bg"></div>
+    <div class="hub-hero__content" style="max-width: 800px; text-align: center; margin: 0 auto;">
+      <div class="hub-hero__badge">🌿 From the Farm to Your Life</div>
+      <h1 class="hub-hero__title" style="text-align: center;">The Farm <em>Store</em></h1>
+      <p class="hub-hero__subtitle" style="text-align: center; margin: 0 auto;">
+        Handcrafted lavender products, estate-grown honey, premium apparel, and farmstead goods — every purchase supports the 66-acre mission.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CATEGORY FILTER
+       ============================================================ -->
+  <section style="background: var(--bg-darker); border-bottom: 1px solid var(--border-subtle); padding: var(--space-md) 0; position: sticky; top: 60px; z-index: 100; backdrop-filter: blur(20px);">
+    <div class="container" style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+      <button class="shop-filter active" data-filter="all" style="background: var(--accent-gold-dim); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">All Products</button>
+      <button class="shop-filter" data-filter="apparel" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Apparel</button>
+      <button class="shop-filter" data-filter="lavender" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Lavender</button>
+      <button class="shop-filter" data-filter="food" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Food & Drink</button>
+      <button class="shop-filter" data-filter="gifts" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Gifts</button>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRODUCT GRID
+       ============================================================ -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="products__grid" id="shop-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+
+        <!-- RTTLC T-Shirt -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-tshirt.png" alt="RTTLC Premium Black T-Shirt" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Best Seller</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Logo Tee — Black</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Premium cotton tee with the ReThinking The Leaf logo. Soft-washed, pre-shrunk. Unisex fit.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$28</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full-Color Logo Tee — White -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-logo-tee-white.png" alt="RTTLC Full-Color Logo Tee — White" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Full-Color Crest Tee — White</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Premium white tee with the full-color leaf &amp; lavender crest. Vibrant screen-print. Unisex fit.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$32</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hoodie -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-hoodie.png" alt="RTTLC Forest Green Hoodie" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-green-bright); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Heritage Hoodie</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Forest green heavyweight hoodie with gold embroidered RTTL crest. 80/20 cotton-poly blend.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$55</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dad Hat -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-hat.png" alt="RTTLC Olive Dad Hat" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Dad Hat — Olive</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Embroidered gold leaf logo. Adjustable strap, brushed cotton twill. One size fits most.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$24</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logo Crewneck Sweater -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-crewneck.png" alt="RTTLC Logo Crewneck Sweater" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Fan Favorite</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Logo Crewneck Sweater</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Black heavyweight fleece with the ReThinking The Leaf crest. Relaxed fit, brushed interior.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$45</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gray Zip Hoodie -->
+        <div class="product-card shop-item" data-category="apparel" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-hoodie-gray.png" alt="RTTLC Gray Zip Hoodie" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-green-bright); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">New</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Zip Hoodie — Gray</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Heather gray full-zip with embroidered gold leaf logo. Matte black hardware. 80/20 blend.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$58</span>
+              <a href="https://rethinkingtheleaf.printful.me/" target="_blank" rel="noopener" class="btn btn--primary" style="font-size: 0.8rem; padding: 0.5rem 1rem; text-decoration: none;">Order on Store →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Travel Tumbler -->
+        <div class="product-card shop-item" data-category="gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-travel-mug.png" alt="RTTLC Travel Tumbler" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Travel Tumbler</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">20oz insulated stainless steel with gold-engraved RTTL logo. Keeps drinks cold 12hrs, hot 6hrs.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTL Travel Tumbler','22','images/product-travel-mug.png',['One Size'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mug -->
+        <div class="product-card shop-item" data-category="food" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-mug.png" alt="RTTLC Signature Mug" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Signature Mug</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Matte black ceramic with gold leaf logo. 12oz. Microwave & dishwasher safe.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('RTTL Signature Mug','18','images/product-mug.png',['One Size'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Essential Oil -->
+        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-oil.png" alt="Pure Lavender Essential Oil" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Pure Lavender Essential Oil</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Steam-distilled from estate-grown Lavandula angustifolia. 15ml dropper bottle.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$24</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Pure Lavender Essential Oil','24','images/product-oil.png',['15ml'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Butter -->
+        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-cream.png" alt="Lavender Body Butter" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender Body Butter</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Rich shea butter infused with our lavender oil. Deeply moisturizing, 4oz jar.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender Body Butter','18','images/product-cream.png',['4oz'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lavender Honey -->
+        <div class="product-card shop-item" data-category="food" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-honey.png" alt="Lavender-Infused Raw Honey" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Farm Fresh</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender-Infused Honey</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Raw Virginia wildflower honey infused with our lavender blooms. 12oz jar.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$16</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender-Infused Honey','16','images/product-honey.png',['12oz'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hemp Relief Balm -->
+        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-balm.png" alt="Hemp Relief Balm" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Hemp Relief Balm</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Topical CBD balm from estate-grown hemp blended with lavender and arnica. 2oz tin.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$32</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Hemp Relief Balm','32','images/product-balm.png',['2oz'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soy Candle -->
+        <div class="product-card shop-item" data-category="lavender gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden;">
+            <img src="images/product-candle.png" alt="Lavender Soy Candle" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender Soy Candle</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Hand-poured 100% soy wax with dried lavender buds. 45-hour burn time. 8oz.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('Lavender Soy Candle','22','images/product-candle.png',['8oz'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gift Bundle -->
+        <div class="product-card shop-item" data-category="gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
+            <img src="images/product-bundle.png" alt="Lavender Gift Bundle" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-lavender); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Gift Set</span>
+          </div>
+          <div style="padding: var(--space-md);">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">The Lavender Gift Set</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Soap, sachet, balm, and dried bouquet — beautifully wrapped. The perfect gift from the farm.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$45</span>
+              <button class="btn btn--primary shop-order-btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="openOrder('The Lavender Gift Set','45','images/product-bundle.png',['One Set'])">Order</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FARM PROMISE BANNER
+       ============================================================ -->
+  <section class="section section--alt" style="padding: var(--space-xl) 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); text-align: center;">
+        <div>
+          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">🌿</div>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Estate Grown</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Every lavender product begins in our 66-acre fields</p>
+        </div>
+        <div>
+          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">🤲</div>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Handcrafted</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Small-batch, made with care by our community</p>
+        </div>
+        <div>
+          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">💚</div>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Mission-Driven</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Every purchase funds education & land stewardship</p>
+        </div>
+        <div>
+          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">📦</div>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Free Shipping</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">On orders over $50 — anywhere in the U.S.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo">
+            <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+            <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+          </a>
+          <p>An agrotourism and agrotherapy estate dedicated to heritage, healing, and generational wealth through land ownership and education.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__links">
+            <li><a href="index.html#mission">Our Mission</a></li>
+            <li><a href="index.html#estate">The Estate</a></li>
+            <li><a href="index.html#experiences">Experiences</a></li>
+            <li><a href="community.html">Community Hub</a></li>
+            <li><a href="index.html#events-calendar">Events Calendar</a></li>
+            <li><a href="#">Farm Store</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Community</h4>
+          <ul class="footer__links">
+            <li><a href="https://anointedacres.org" target="_blank" rel="noopener">Anointed Acres</a></li>
+            <li><a href="https://browntownfarms.com" target="_blank" rel="noopener">Browntown Farms</a></li>
+            <li><a href="https://thefunctiongroup.netlify.app/#home" target="_blank" rel="noopener">Brothers Function Group</a></li>
+            <li><a href="https://thinkdesignplanning.com" target="_blank" rel="noopener">Think! Design & Planning</a></li>
+            <li><a href="partner-apply.html">Become a Partner</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; <span id="year"></span> ReThinking The Leaf, LLC. All rights reserved.</span>
+        <span class="footer__bottom-entity">An RTTLC Holdings company · 240 Halifax Road, Lawrenceville, VA 23868</span>
+        <span style="display:block; margin-top:0.5rem; font-size:0.75rem; color:var(--text-muted); letter-spacing:0.03em;">Designed by Think! Design &amp; Planning</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+  <!-- ============================================================
+       ORDER MODAL (Netlify Forms — Arlen Pattern)
+       ============================================================ -->
+  <div id="order-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center;padding:var(--space-lg);">
+    <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative;">
+      <button onclick="closeOrder()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;">×</button>
+      <h2 style="font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem;color:var(--text-primary);">Place Your Order</h2>
+
+      <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;padding:1rem;background:rgba(255,255,255,.03);border-radius:var(--radius-md);">
+        <img id="order-img" src="" alt="Product" style="width:80px;height:80px;border-radius:var(--radius-md);object-fit:cover;">
+        <div>
+          <div id="order-name" style="font-weight:700;color:var(--text-primary);"></div>
+          <div id="order-price-display" style="color:var(--accent-gold);font-weight:700;font-size:1.2rem;"></div>
+        </div>
+      </div>
+
+      <form name="rttl-farm-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="order-form">
+        <p style="display:none;"><label>Don't fill: <input name="bot-field"></label></p>
+        <input type="hidden" name="product" id="order-product">
+        <input type="hidden" name="unit-price" id="order-unit-price">
+
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;">Size / Option *</label>
+          <div id="size-grid" style="display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
+          <input type="hidden" name="size" id="order-size" required>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;">Quantity</label>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <button type="button" onclick="changeQty(-1)" style="width:36px;height:36px;border:2px solid var(--border-subtle);border-radius:var(--radius-md);background:transparent;color:var(--text-primary);cursor:pointer;font-size:1.2rem;">−</button>
+            <span id="qty-val" style="font-size:1.1rem;font-weight:700;color:var(--text-primary);min-width:30px;text-align:center;">1</span>
+            <button type="button" onclick="changeQty(1)" style="width:36px;height:36px;border:2px solid var(--border-subtle);border-radius:var(--radius-md);background:transparent;color:var(--text-primary);cursor:pointer;font-size:1.2rem;">+</button>
+          </div>
+          <input type="hidden" name="quantity" id="order-qty" value="1">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-fname">First Name *</label>
+            <input type="text" id="order-fname" name="first-name" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-lname">Last Name *</label>
+            <input type="text" id="order-lname" name="last-name" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-email">Email *</label>
+          <input type="email" id="order-email" name="email" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-address">Shipping Address *</label>
+          <input type="text" id="order-address" name="address" placeholder="123 Main St" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-city">City *</label>
+            <input type="text" id="order-city" name="city" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-state">State *</label>
+            <input type="text" id="order-state" name="state" placeholder="VA" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-zip">ZIP Code *</label>
+            <input type="text" id="order-zip" name="zip" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-phone">Phone</label>
+            <input type="tel" id="order-phone" name="phone" style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
+          </div>
+        </div>
+
+        <div style="font-size:1.3rem;font-weight:800;color:var(--accent-gold);text-align:right;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);">Total: $<span id="order-total">0</span></div>
+
+        <button type="submit" class="btn btn--primary" style="width:100%;margin-top:1rem;padding:0.8rem;font-size:1rem;">Place Order</button>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:0.75rem;">Payment collected upon confirmation. Free shipping on orders over $50.</p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Year
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Mobile nav
+    const burger = document.getElementById('nav-burger');
+    const navLinks = document.getElementById('nav-links');
+    if (burger && navLinks) {
+      burger.addEventListener('click', () => {
+        burger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+      navLinks.querySelectorAll('.nav__link, .nav__cta').forEach(link => {
+        link.addEventListener('click', () => {
+          burger.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+    }
+
+    // Back to top
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Product filtering
+    const filters = document.querySelectorAll('.shop-filter');
+    const items = document.querySelectorAll('.shop-item');
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filters.forEach(b => {
+          b.style.background = 'transparent';
+          b.style.borderColor = 'var(--border-subtle)';
+          b.style.color = 'var(--text-secondary)';
+        });
+        btn.style.background = 'var(--accent-gold-dim)';
+        btn.style.borderColor = 'var(--accent-gold)';
+        btn.style.color = 'var(--accent-gold)';
+
+        const cat = btn.dataset.filter;
+        items.forEach(item => {
+          if (cat === 'all' || item.dataset.category.includes(cat)) {
+            item.style.display = '';
+            item.style.animation = 'fadeIn 0.4s ease';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Product card hover
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-6px)';
+        card.style.boxShadow = '0 12px 40px rgba(155, 126, 216, 0.2)';
+        const img = card.querySelector('img');
+        if (img) img.style.transform = 'scale(1.08)';
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+        const img = card.querySelector('img');
+        if (img) img.style.transform = '';
+      });
+    });
+
+    /* ==========================================
+       ORDER MODAL LOGIC (Arlen Pattern)
+       ========================================== */
+    let currentPrice = 0;
+    let currentQty = 1;
+
+    function openOrder(name, price, img, sizes) {
+      document.getElementById('order-name').textContent = name;
+      document.getElementById('order-price-display').textContent = '$' + price;
+      document.getElementById('order-img').src = img;
+      document.getElementById('order-product').value = name;
+      document.getElementById('order-unit-price').value = price;
+      currentPrice = parseInt(price);
+      currentQty = 1;
+      document.getElementById('qty-val').textContent = '1';
+      document.getElementById('order-qty').value = '1';
+      document.getElementById('order-size').value = '';
+      updateTotal();
+
+      // Build size buttons
+      const grid = document.getElementById('size-grid');
+      grid.innerHTML = '';
+      sizes.forEach(s => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = s;
+        btn.style.cssText = 'padding:8px 16px;border:2px solid var(--border-subtle);border-radius:var(--radius-md);background:transparent;color:var(--text-primary);cursor:pointer;font-weight:600;transition:all .2s ease;';
+        btn.onmouseover = () => { btn.style.borderColor = 'var(--accent-gold)'; btn.style.color = 'var(--accent-gold)'; };
+        btn.onmouseout = () => { if (!btn.classList.contains('selected')) { btn.style.borderColor = 'var(--border-subtle)'; btn.style.color = 'var(--text-primary)'; } };
+        btn.onclick = () => selectSize(s, btn);
+        grid.appendChild(btn);
+      });
+
+      document.getElementById('order-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrder() {
+      document.getElementById('order-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function selectSize(size, btn) {
+      document.querySelectorAll('#size-grid button').forEach(b => {
+        b.classList.remove('selected');
+        b.style.borderColor = 'var(--border-subtle)';
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-primary)';
+      });
+      btn.classList.add('selected');
+      btn.style.borderColor = 'var(--accent-gold)';
+      btn.style.background = 'rgba(212,175,55,.15)';
+      btn.style.color = 'var(--accent-gold)';
+      document.getElementById('order-size').value = size;
+    }
+
+    function changeQty(delta) {
+      currentQty = Math.max(1, Math.min(10, currentQty + delta));
+      document.getElementById('qty-val').textContent = currentQty;
+      document.getElementById('order-qty').value = currentQty;
+      updateTotal();
+    }
+
+    function updateTotal() {
+      document.getElementById('order-total').textContent = (currentPrice * currentQty).toFixed(2);
+    }
+
+    // Close on overlay click
+    document.getElementById('order-overlay').addEventListener('click', function(e) {
+      if (e.target === this) closeOrder();
+    });
+
+    // Form validation
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      if (!document.getElementById('order-size').value) {
+        e.preventDefault();
+        alert('Please select a size / option!');
+      }
+    });
+  </script>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 900px) {
+      #shop-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 600px) {
+      #shop-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+
+</body>
+</html>

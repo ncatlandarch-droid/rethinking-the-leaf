@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Hub — Community Partners | ReThinking The Leaf</title>
+  <meta name="description" content="Discover our community of minority-owned farms, businesses, and creators. Search services, goods, and experiences from Anointed Acres, Browntown Farms, BFG, and Think! Design & Planning.">
+  <meta property="og:title" content="The Hub — Community Partners | ReThinking The Leaf">
+  <meta property="og:description" content="Where everyone eats. Explore minority-owned businesses and farm partners in our community network.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav scrolled" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" id="nav-logo">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+        <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html#mission" class="nav__link">Our Mission</a>
+        <a href="index.html#estate" class="nav__link">The Estate</a>
+        <a href="index.html#experiences" class="nav__link">Experiences</a>
+        <a href="community.html" class="nav__link" style="color: var(--accent-gold);">Community</a>
+        <a href="index.html#education" class="nav__link">Education</a>
+        <a href="index.html#events-calendar" class="nav__link">Events</a>
+        <a href="shop.html" class="nav__link">Shop</a>
+        <a href="index.html#masterplan" class="nav__link">Master Plan</a>
+        <a href="index.html#contact" class="nav__cta">Visit Us</a>
+      </div>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HUB HERO
+       ============================================================ -->
+  <section class="hub-hero" id="hub-top">
+    <div class="hub-hero__bg"></div>
+    <div class="container">
+      <div class="hub-hero__content">
+        <div class="hub-hero__badge">
+          <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="8" r="3"/><path d="M8 0v3M8 13v3M0 8h3M13 8h3M2.3 2.3l2.1 2.1M11.6 11.6l2.1 2.1M2.3 13.7l2.1-2.1M11.6 4.4l2.1-2.1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          The Hub · Community Directory
+        </div>
+        <h1 class="hub-hero__title">Where Everyone <em>Eats</em></h1>
+        <p class="hub-hero__subtitle">
+          Minority-owned farms, businesses, and creators — all connected through a shared mission. Search for services, goods, and experiences across our partner network.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       AI SEARCH BAR
+       ============================================================ -->
+  <section class="hub-search-section" id="hub-search-section">
+    <div class="container">
+      <div class="hub-search">
+        <div class="hub-search__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <input
+          type="text"
+          class="hub-search__input"
+          id="hub-search-input"
+          placeholder="What are you looking for? Try: trail rides, jams, landscape design, apparel, party..."
+          autocomplete="off"
+        >
+        <button class="hub-search__clear" id="hub-search-clear" aria-label="Clear search" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="hub-search__tags" id="hub-search-tags">
+        <span class="hub-tag" data-query="trail rides">🐴 Trail Rides</span>
+        <span class="hub-tag" data-query="jams">🍓 Jams & Produce</span>
+        <span class="hub-tag" data-query="party">🎉 Events & Parties</span>
+        <span class="hub-tag" data-query="landscape design">🏗️ Design & Planning</span>
+        <span class="hub-tag" data-query="youth">🌱 Youth Programs</span>
+        <span class="hub-tag" data-query="apparel">👕 Apparel</span>
+      </div>
+      <div class="hub-search__status" id="hub-search-status"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARTNER DIRECTORY
+       ============================================================ -->
+  <section class="hub-directory" id="hub-directory">
+    <div class="container">
+
+      <!-- ===== ANOINTED ACRES ===== -->
+      <article class="hub-partner" id="partner-anointed" data-partner="anointed-acres">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: linear-gradient(135deg, #1a0e00, #2a1500, #3d2000);">
+            <img src="images/AnointedAcresFarmlogo.png" alt="Anointed Acres Stables" loading="lazy" style="object-fit: contain; padding: 1rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">Partner Farm</span>
+            <h2 class="hub-partner__name">Anointed Acres Stables</h2>
+            <p class="hub-partner__tagline">"Empowering Families Through Equine Connection"</p>
+            <p class="hub-partner__desc">
+              At Anointed Acres Stables, the journey is rooted in a mission of empowering families and at-risk youth through profound equine connection. This is a sanctuary where purpose and passion converge — fostering character, discipline, empathy, and resilience in every visit. Their specialized character development programs combine horsemanship with therapeutic farmwork, teaching children and families to navigate life's challenges with newfound confidence and purpose.
+            </p>
+            <div class="hub-partner__meta">
+              <span>📍 891 Bright Leaf Rd, Lawrenceville, VA</span>
+              <span>📞 (804) 824-7373</span>
+              <span>📧 info@anointedacres.org</span>
+              <span>🕒 Sat & Sun: 7AM–7PM · Weekdays: Scheduled Sessions</span>
+              <a href="https://anointedacres.org" target="_blank" rel="noopener">🌐 anointedacres.org</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Services & Experiences</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="trail rides">🐴 Trail Rides</span>
+            <span class="hub-chip" data-keyword="equine therapy">🧠 Equine-Assisted Therapy</span>
+            <span class="hub-chip" data-keyword="youth character development">🌱 Youth Character Development</span>
+            <span class="hub-chip" data-keyword="therapeutic farmwork">🌾 Therapeutic Farmwork</span>
+            <span class="hub-chip" data-keyword="birthday parties">🎂 Birthday Parties</span>
+            <span class="hub-chip" data-keyword="family experiences">👨‍👩‍👧‍👦 Family Experiences</span>
+            <span class="hub-chip" data-keyword="horseback riding">🐎 Horseback Riding</span>
+            <span class="hub-chip" data-keyword="farm tours">🚜 Farm Tours</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== BROWNTOWN FARMS ===== -->
+      <article class="hub-partner" id="partner-browntown" data-partner="browntown-farms">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: #f5f0e8;">
+            <img src="images/Browntown+Farms+-+Virginia+-+Browntown.Logo-F-10.18_color_png (1).webp" alt="Browntown Farms — Century Farm" loading="lazy" style="object-fit: contain; padding: 1.5rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">Virginia Century Farm · Est. 1908</span>
+            <h2 class="hub-partner__name">Browntown Farms</h2>
+            <p class="hub-partner__tagline">"Know Your Farmer, Know Your Food"</p>
+            <p class="hub-partner__desc">
+              Founded in 1908, Browntown Farms is a designated Virginia Century Farm — but they are more than a traditional farm that's been around for over 100 years. Their rich soils produce some of the finest naturally grown produce in Southern Virginia. "Quality foods and quality experiences is what life is all about. When it comes to food and fun, we are your farm." From their famous strawberry harvests to their jam-delicious product line, this 6th-generation family operation is the real deal.
+            </p>
+            <div class="hub-partner__meta">
+              <span>📍 255 Browntown Rd, Warfield, VA 23889</span>
+              <span>📞 (804) 704-0675</span>
+              <span>🛍️ <a href="https://app.barn2door.com/e/36WbL/all" target="_blank" rel="noopener">Shop Online</a></span>
+              <a href="https://browntownfarms.com" target="_blank" rel="noopener">🌐 browntownfarms.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Goods & Services</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="produce">🥬 Fresh Produce</span>
+            <span class="hub-chip" data-keyword="jams">🍓 Jams & Jellies</span>
+            <span class="hub-chip" data-keyword="sauces">🌶️ Sauces</span>
+            <span class="hub-chip" data-keyword="gift baskets">🎁 Gift Baskets</span>
+            <span class="hub-chip" data-keyword="bbq catering">🍖 Specialty BBQ</span>
+            <span class="hub-chip" data-keyword="farm tours">🚜 Farm Tours</span>
+            <span class="hub-chip" data-keyword="seasonal events">🎃 Seasonal Events</span>
+            <span class="hub-chip" data-keyword="custom orders">📦 Custom Orders</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== BROTHERS FUNCTION GROUP ===== -->
+      <article class="hub-partner" id="partner-bfg" data-partner="bfg">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);">
+            <img src="images/bfg-logo.png" alt="Brothers Function Group" loading="lazy" style="object-fit: contain; padding: 1.5rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">The Hub · Minority Business Directory</span>
+            <h2 class="hub-partner__name">Brothers Function Group</h2>
+            <p class="hub-partner__tagline">"A Premium Social Collective Founded on Brotherhood"</p>
+            <p class="hub-partner__desc">
+              BFG curates beautifully themed environments where connection invigorates and stirs the soul. From premium open-bar functions with curated DJ sets to "The Hub" — a digital directory of strategic ecosystem partners supporting minority-owned businesses — BFG is more than events. Their member-driven voting system lets the community choose theme, venue, and vibe. Experience the product, support the people, circulate the dollar within the community.
+            </p>
+            <div class="hub-partner__meta">
+              <span>🌐 NC · VA · DC · GA</span>
+              <span>🤝 Strategic Ecosystem Partners</span>
+              <span>🗳️ Member-Operated Voting System</span>
+              <span>👔 <a href="https://www.bonfire.com/store/brothers-function-group/" target="_blank" rel="noopener">The Boutique</a></span>
+              <a href="https://thefunctiongroup.netlify.app" target="_blank" rel="noopener">🌐 thefunctiongroup.netlify.app</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Services</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="event planning">🎊 Event Curation</span>
+            <span class="hub-chip" data-keyword="party">🎉 Party Planning</span>
+            <span class="hub-chip" data-keyword="membership">🗳️ Membership & Voting</span>
+            <span class="hub-chip" data-keyword="minority business">🤝 Minority Business Promotion</span>
+            <span class="hub-chip" data-keyword="vendor booths">🏪 Vendor Booth Setup</span>
+            <span class="hub-chip" data-keyword="catering">🍽️ Venue Catering Coordination</span>
+            <span class="hub-chip" data-keyword="networking">🤝 Business Networking</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== THINK! DESIGN & PLANNING ===== -->
+      <article class="hub-partner" id="partner-think" data-partner="think-design">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: linear-gradient(135deg, #0d1b0e, #142618, #1a3525);">
+            <img src="images/think-logo-white.png" alt="Think! Design & Planning" loading="lazy" style="object-fit: contain; padding: 2rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">USDA Technical Service Provider</span>
+            <h2 class="hub-partner__name">Think! Design & Planning</h2>
+            <p class="hub-partner__tagline">"Conservation • Culture • Memorial"</p>
+            <p class="hub-partner__desc">
+              A design studio at the intersection of conservation science, cultural landscapes, and memorial architecture. Think! bridges ecological performance, community identity, and design craft — helping landowners, institutions, and communities move from vision to implementation. As a USDA NRCS Technical Service Provider (TSP), Think! provides the expertise to make conservation-funded projects real. They are the design force behind the ReThinking The Leaf estate master plan.
+            </p>
+            <div class="hub-partner__meta">
+              <span>🌐 NC · VA · SC · DC (Consulting Nationwide)</span>
+              <span>🎓 NRCS Certified TSP</span>
+              <a href="https://thinkdesignplanning.com" target="_blank" rel="noopener">🌐 thinkdesignplanning.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Services & Goods</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="conservation">🌍 Conservation Strategy</span>
+            <span class="hub-chip" data-keyword="landscape design">🏗️ Landscape Architecture</span>
+            <span class="hub-chip" data-keyword="master planning">📐 Master Planning</span>
+            <span class="hub-chip" data-keyword="digital twin">💻 Digital Twin Technology</span>
+            <span class="hub-chip" data-keyword="NRCS TSP">📋 NRCS TSP Services</span>
+            <span class="hub-chip" data-keyword="habitat design">🦋 Habitat & Pollinator Design</span>
+            <span class="hub-chip" data-keyword="GIS">🗺️ GIS & Spatial Analysis</span>
+            <span class="hub-chip" data-keyword="cultural memorial">🕊️ Cultural & Memorial Design</span>
+            <span class="hub-chip" data-keyword="apparel">👕 Think! Apparel</span>
+            <span class="hub-chip" data-keyword="grant readiness">💰 USDA Grant Readiness</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== NATIONAL BLACK FARMERS ASSOCIATION ===== -->
+      <article class="hub-partner" id="partner-nbfa" data-partner="nbfa">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: #f5f5f0;">
+            <img src="images/nbfa-logo.jpg" alt="National Black Farmers Association" loading="lazy" style="object-fit: contain; padding: 1.5rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">Civil Rights & Agriculture · Est. 1995</span>
+            <h2 class="hub-partner__name">National Black Farmers Association</h2>
+            <p class="hub-partner__tagline">"Fighting for the Rights of Black Farmers Nationwide"</p>
+            <p class="hub-partner__desc">
+              Founded in 1995 by 4th-generation farmer and civil rights activist John W. Boyd, Jr., the NBFA is headquartered right here in Baskerville, VA — just minutes from the RTTLC estate. The organization advocates for land retention, equitable access to USDA programs, agricultural training, and rural economic development for tens of thousands of Black farmers across America. They've led marches on the White House, testified before Congress, and secured landmark settlements against USDA discrimination.
+            </p>
+            <div class="hub-partner__meta">
+              <span>📍 Baskerville, VA (Brunswick County)</span>
+              <span>🌾 Tens of Thousands of Members Nationwide</span>
+              <a href="https://blackfarmers.org" target="_blank" rel="noopener">🌐 blackfarmers.org</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Advocacy & Services</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="civil rights">⚖️ Civil Rights Advocacy</span>
+            <span class="hub-chip" data-keyword="land retention">🏡 Land Retention</span>
+            <span class="hub-chip" data-keyword="USDA programs">📋 USDA Program Access</span>
+            <span class="hub-chip" data-keyword="agricultural training">🌱 Agricultural Training</span>
+            <span class="hub-chip" data-keyword="rural development">🏗️ Rural Economic Development</span>
+            <span class="hub-chip" data-keyword="farm loans">💰 Farm Loan Assistance</span>
+            <span class="hub-chip" data-keyword="policy">📢 Federal Policy Advocacy</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== FULL CIRCLE BLOOM ===== -->
+      <article class="hub-partner" id="partner-fcb" data-partner="full-circle-bloom">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: #ffffff;">
+            <img src="images/fcb-logo.png" alt="Full Circle Bloom" loading="lazy" style="object-fit: contain; padding: 1.5rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">Black Woman & Veteran-Owned</span>
+            <h2 class="hub-partner__name">Full Circle Bloom</h2>
+            <p class="hub-partner__tagline">"Growing Clean, Growing Local, Growing Community"</p>
+            <p class="hub-partner__desc">
+              Full Circle Bloom is a Black-woman and veteran-owned aeroponic farm in Kenbridge, VA (Lunenburg County — right next door to Brunswick). Founded by Ashley Richardson, a former Senior Project Manager who traded the D.C. corporate world for the soil. Their cutting-edge aeroponic systems grow pesticide-free produce year-round. They've donated over 25,000 pounds of fresh produce to local schools, food banks, and community organizations — proving that tech and soul can grow together.
+            </p>
+            <div class="hub-partner__meta">
+              <span>📍 Kenbridge, VA (Lunenburg County)</span>
+              <span>🏆 Microsoft Southern VA Fund Recipient</span>
+              <span>🎖️ Tractor Supply Farmer Veteran Coalition</span>
+              <a href="https://www.fullcirclebloom.com/" target="_blank" rel="noopener">🌐 fullcirclebloom.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Products & Services</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="produce">🥬 Year-Round Produce</span>
+            <span class="hub-chip" data-keyword="aeroponic">🌿 Aeroponic Growing</span>
+            <span class="hub-chip" data-keyword="farm tours">🚜 Farm Tours</span>
+            <span class="hub-chip" data-keyword="education">📚 Educational Programs</span>
+            <span class="hub-chip" data-keyword="food access">🍽️ Food Access Initiative</span>
+            <span class="hub-chip" data-keyword="school partnerships">🏫 School Partnerships</span>
+            <span class="hub-chip" data-keyword="community donation">❤️ Community Produce Donation</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===== VSU SMALL FARM OUTREACH ===== -->
+      <article class="hub-partner" id="partner-vsu" data-partner="vsu-sfop">
+        <div class="hub-partner__header">
+          <div class="hub-partner__image hub-partner__image--logo" style="background: #ffffff;">
+            <img src="images/vsu-extension-logo.jpg" alt="Virginia State University Cooperative Extension" loading="lazy" style="object-fit: contain; padding: 1.5rem;">
+          </div>
+          <div class="hub-partner__info">
+            <span class="hub-partner__badge">HBCU · Land-Grant Institution</span>
+            <h2 class="hub-partner__name">VSU Small Farm Outreach Program</h2>
+            <p class="hub-partner__tagline">"Empowering Small, Minority, and Veteran Farmers"</p>
+            <p class="hub-partner__desc">
+              The Small Farm Outreach Program (SFOP) at Virginia State University is a critical resource for small-scale, socially disadvantaged, and minority farmers across the Commonwealth. Through Virginia Cooperative Extension, they provide hands-on technical assistance, educational workshops on whole farm planning, mentorship connecting new farmers with experienced producers, and direct help navigating USDA FSA loans and grants like REAP and VAPG. This is the bridge between dream and deed.
+            </p>
+            <div class="hub-partner__meta">
+              <span>📍 Petersburg, VA (VSU Randolph Farm)</span>
+              <span>📞 (804) 524-3292</span>
+              <span>📧 smallfarm@vsu.edu</span>
+              <a href="https://ext.vsu.edu" target="_blank" rel="noopener">🌐 ext.vsu.edu</a>
+            </div>
+          </div>
+        </div>
+        <div class="hub-partner__offerings">
+          <h3 class="hub-partner__section-title">Programs & Resources</h3>
+          <div class="hub-partner__chips">
+            <span class="hub-chip" data-keyword="farm mentorship">🤝 Farmer Mentorship</span>
+            <span class="hub-chip" data-keyword="technical assistance">🔧 Technical Assistance</span>
+            <span class="hub-chip" data-keyword="USDA grants">💰 USDA Grant Navigation</span>
+            <span class="hub-chip" data-keyword="farm planning">📋 Whole Farm Planning</span>
+            <span class="hub-chip" data-keyword="new farmers">🌱 New & Beginning Farmer Training</span>
+            <span class="hub-chip" data-keyword="risk management">📊 Financial & Risk Management</span>
+            <span class="hub-chip" data-keyword="marketing">📣 Agricultural Marketing</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       JOIN THE HUB CTA
+       ============================================================ -->
+  <section class="hub-cta-section">
+    <div class="container text-center">
+      <h2 class="section-title">Want to Join The Hub?</h2>
+      <p class="section-subtitle centered">
+        If you're a minority-owned business, farm, vendor, or artisan — we want to connect with you. The more we circulate the dollar within our community, the stronger we all become.
+      </p>
+      <div style="margin-top: 2rem;">
+        <a href="partner-apply.html" class="btn btn--primary">Become a Partner</a>
+        <a href="index.html" class="btn btn--outline" style="margin-left: 1rem;">← Back to Estate</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo">
+            <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+            <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+          </a>
+          <p>An agrotourism and agrotherapy estate dedicated to heritage, healing, and generational wealth through land ownership and education.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__links">
+            <li><a href="index.html#mission">Our Mission</a></li>
+            <li><a href="index.html#estate">The Estate</a></li>
+            <li><a href="index.html#experiences">Experiences</a></li>
+            <li><a href="community.html">Community Hub</a></li>
+            <li><a href="index.html#education">Education</a></li>
+            <li><a href="index.html#masterplan">Master Plan</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Community</h4>
+          <ul class="footer__links">
+            <li><a href="https://anointedacres.org" target="_blank" rel="noopener">Anointed Acres</a></li>
+            <li><a href="https://browntownfarms.com" target="_blank" rel="noopener">Browntown Farms</a></li>
+            <li><a href="#partner-bfg">Brothers Function Group</a></li>
+            <li><a href="https://thinkdesignplanning.com" target="_blank" rel="noopener">Think! Design & Planning</a></li>
+            <li><a href="index.html#contact">Become a Partner</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__partners">
+        <a href="https://anointedacres.org" target="_blank" rel="noopener" class="footer__partner-name">Anointed Acres</a>
+        <span style="color: var(--border-subtle);">·</span>
+        <a href="https://browntownfarms.com" target="_blank" rel="noopener" class="footer__partner-name">Browntown Farms</a>
+        <span style="color: var(--border-subtle);">·</span>
+        <span class="footer__partner-name">Brothers Function Group</span>
+        <span style="color: var(--border-subtle);">·</span>
+        <a href="https://thinkdesignplanning.com" target="_blank" rel="noopener" class="footer__partner-name">Think! Design & Planning</a>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="year"></span> ReThinking The Leaf. All rights reserved.</span>
+        <span class="footer__bottom-entity">Owned by Prisscise Property Ventures, LLC</span>
+        <span style="display:block; margin-top:0.5rem; font-size:0.75rem; color:var(--text-muted); letter-spacing:0.03em;">Designed by Think! Design &amp; Planning</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/hub-search.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

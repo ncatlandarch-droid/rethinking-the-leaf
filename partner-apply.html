@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Partner — ReThinking The Leaf Community Hub</title>
+  <meta name="description" content="Apply to join the ReThinking The Leaf Community Hub — a network of minority-owned businesses, farms, and artisans in Southside Virginia.">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ================================================================
+       PARTNER APPLICATION FORM STYLES
+       ================================================================ */
+    .form-hero {
+      padding: calc(var(--space-2xl) + 60px) 0 var(--space-xl);
+      background: linear-gradient(180deg, var(--bg-darker) 0%, var(--bg-main) 100%);
+      text-align: center;
+    }
+    .form-section {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-lg);
+    }
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+    }
+    .form-group {
+      margin-bottom: var(--space-md);
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+    .form-group label .required {
+      color: #e74c3c;
+      margin-left: 0.2rem;
+    }
+    .form-group small {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-darker);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px rgba(155, 126, 216, 0.15);
+    }
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23c8a84e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    .form-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent-gold);
+    }
+    .form-checkbox span {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .form-divider {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: var(--space-lg) 0;
+    }
+    .form-section-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--accent-gold);
+      margin-bottom: var(--space-md);
+      letter-spacing: 0.05em;
+    }
+    .form-submit-area {
+      margin-top: var(--space-lg);
+      text-align: center;
+    }
+    .form-submit-area .btn {
+      min-width: 240px;
+      font-size: 1rem;
+      padding: 0.85rem 2rem;
+    }
+    .form-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: var(--space-sm);
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: var(--space-xl);
+    }
+    .form-success.visible {
+      display: block;
+    }
+    .form-success__icon {
+      font-size: 4rem;
+      margin-bottom: var(--space-md);
+    }
+    .form-success__title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      margin-bottom: var(--space-sm);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .form-card { padding: var(--space-md); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" id="nav-logo">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+        <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html#mission" class="nav__link">Our Mission</a>
+        <a href="community.html" class="nav__link">Community</a>
+        <a href="shop.html" class="nav__link">Shop</a>
+        <a href="index.html#masterplan" class="nav__link">Master Plan</a>
+        <a href="index.html#contact" class="nav__cta">Visit Us</a>
+      </div>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- FORM HERO -->
+  <section class="form-hero">
+    <div class="container">
+      <div class="section-label" style="justify-content: center;"><span>Community Hub</span></div>
+      <h1 class="section-title">Become a Partner</h1>
+      <p class="section-subtitle centered" style="max-width: 600px; margin: 0 auto;">
+        Join a growing network of minority-owned businesses, farms, vendors, and artisans across Southside Virginia. 
+        Fill out this form and Shardell will review your application.
+      </p>
+    </div>
+  </section>
+
+  <!-- APPLICATION FORM -->
+  <section class="form-section">
+    <div class="form-card" id="application-form-card">
+
+      <!-- Netlify Forms — data-netlify="true" auto-detects during deploy -->
+      <form name="partner-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="partner-form">
+        
+        <!-- Honeypot for spam -->
+        <p class="hidden" style="display:none;">
+          <label>Don't fill this out: <input name="bot-field"></label>
+        </p>
+
+        <!-- SECTION 1: Business Information -->
+        <h3 class="form-section-title">📋 Business Information</h3>
+
+        <div class="form-group">
+          <label for="business-name">Business Name <span class="required">*</span></label>
+          <input type="text" class="form-input" id="business-name" name="business_name" required placeholder="e.g., Sunshine Valley Farm">
+        </div>
+
+        <div class="form-group">
+          <label for="business-tagline">Tagline / Motto</label>
+          <small>Your signature phrase — it'll appear on your partner card</small>
+          <input type="text" class="form-input" id="business-tagline" name="tagline" placeholder="e.g., &quot;Growing Goodness, One Seed at a Time&quot;">
+        </div>
+
+        <div class="form-group">
+          <label for="business-desc">Tell Us Your Story <span class="required">*</span></label>
+          <small>2–4 sentences about your business, what you do, and what makes you special</small>
+          <textarea class="form-textarea" id="business-desc" name="description" required placeholder="Tell us about your business, your mission, and what makes it unique..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="business-category">Category <span class="required">*</span></label>
+            <select class="form-select" id="business-category" name="category" required>
+              <option value="">Select a category...</option>
+              <option value="farm">🌾 Farm / Agriculture</option>
+              <option value="food">🍽️ Food & Beverage</option>
+              <option value="wellness">🧘 Wellness & Healing</option>
+              <option value="arts">🎨 Arts & Culture</option>
+              <option value="events">🎉 Events & Entertainment</option>
+              <option value="services">🏗️ Professional Services</option>
+              <option value="retail">🛍️ Retail & Products</option>
+              <option value="education">📚 Education & Training</option>
+              <option value="nonprofit">🤝 Nonprofit / Community Org</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="business-badge">Badge Label</label>
+            <small>e.g., "Century Farm", "Veteran Owned"</small>
+            <input type="text" class="form-input" id="business-badge" name="badge" placeholder="e.g., Black Veteran-Owned">
+          </div>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- SECTION 2: Contact & Location -->
+        <h3 class="form-section-title">📍 Contact & Location</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-name">Contact Person <span class="required">*</span></label>
+            <input type="text" class="form-input" id="contact-name" name="contact_name" required placeholder="Full name">
+          </div>
+          <div class="form-group">
+            <label for="contact-email">Email <span class="required">*</span></label>
+            <input type="email" class="form-input" id="contact-email" name="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contact-phone">Phone</label>
+            <input type="tel" class="form-input" id="contact-phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+          <div class="form-group">
+            <label for="contact-website">Website</label>
+            <input type="url" class="form-input" id="contact-website" name="website" placeholder="https://yourbusiness.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-address">Address</label>
+          <input type="text" class="form-input" id="contact-address" name="address" placeholder="123 Main St, Lawrenceville, VA 23868">
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- SECTION 3: Services & Offerings -->
+        <h3 class="form-section-title">🏷️ Services & Offerings</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: var(--space-sm);">Check all that apply — these will appear as searchable tags on your partner card:</p>
+
+        <div class="services-grid">
+          <label class="form-checkbox"><input type="checkbox" name="services" value="farm-tours"> <span>Farm Tours</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="produce"> <span>Fresh Produce</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="events"> <span>Event Hosting</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="catering"> <span>Catering / Food</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="wellness"> <span>Wellness / Therapy</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="education"> <span>Education / Workshops</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="retail"> <span>Retail / Products</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="arts"> <span>Arts / Crafts</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="youth"> <span>Youth Programs</span></label>
+          <label class="form-checkbox"><input type="checkbox" name="services" value="consulting"> <span>Consulting / Professional</span></label>
+        </div>
+
+        <div class="form-group" style="margin-top: var(--space-md);">
+          <label for="services-other">Other Services</label>
+          <input type="text" class="form-input" id="services-other" name="services_other" placeholder="e.g., Horseback Riding, Custom Orders, Mobile Market">
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- SECTION 4: Branding -->
+        <h3 class="form-section-title">🎨 Branding</h3>
+
+        <div class="form-group">
+          <label for="logo-url">Logo URL</label>
+          <small>Link to your logo image (Google Drive, Dropbox, or website). Or email it to us after submitting.</small>
+          <input type="url" class="form-input" id="logo-url" name="logo_url" placeholder="https://drive.google.com/file/d/...">
+        </div>
+
+        <div class="form-group">
+          <label for="social-links">Social Media Links</label>
+          <small>Instagram, Facebook, etc. — one per line or comma-separated</small>
+          <textarea class="form-textarea" id="social-links" name="social_links" placeholder="https://instagram.com/yourbiz&#10;https://facebook.com/yourbiz" style="min-height: 80px;"></textarea>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- Agreement -->
+        <label class="form-checkbox" style="margin-bottom: var(--space-md);">
+          <input type="checkbox" name="agreement" required>
+          <span>I confirm this is a <strong>minority-owned business</strong> and I authorize ReThinking The Leaf to feature us in their Community Hub directory. I understand my listing will be reviewed before being published.</span>
+        </label>
+
+        <!-- Submit -->
+        <div class="form-submit-area">
+          <button type="submit" class="btn btn--primary" id="submit-btn">Submit Application</button>
+          <p class="form-note">Applications are reviewed within 48 hours. You'll receive a confirmation email.</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Success State -->
+    <div class="form-success" id="form-success">
+      <div class="form-success__icon">🌱</div>
+      <h2 class="form-success__title">Application Received!</h2>
+      <p class="section-subtitle centered">
+        Thank you for your interest in joining the ReThinking The Leaf Community Hub. 
+        Shardell will review your application and reach out within 48 hours.
+      </p>
+      <a href="community.html" class="btn btn--outline" style="margin-top: 1.5rem;">← Back to Community Hub</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <p class="footer__copy">&copy; 2025 ReThinking The Leaf Corporation. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Handle form submission
+    const form = document.getElementById('partner-form');
+    const card = document.getElementById('application-form-card');
+    const success = document.getElementById('form-success');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.textContent = 'Submitting...';
+        btn.disabled = true;
+
+        try {
+          const formData = new FormData(form);
+          await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+          });
+          card.style.display = 'none';
+          success.classList.add('visible');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          btn.textContent = 'Submit Application';
+          btn.disabled = false;
+          alert('Something went wrong. Please try again or email us directly.');
+        }
+      });
+    }
+
+    // Mobile nav toggle
+    const burger = document.getElementById('nav-burger');
+    const links = document.getElementById('nav-links');
+    if (burger) {
+      burger.addEventListener('click', () => {
+        links.classList.toggle('active');
+        burger.classList.toggle('active');
+      });
+    }
+  </script>
+</body>
+</html>
