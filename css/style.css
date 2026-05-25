@@ -192,30 +192,28 @@ ul { list-style: none; }
 /* ── Nav Inner Layout ── */
 .nav__inner {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding-left: 180px;
+  overflow: visible;
 }
-/* ── Logo (absolutely positioned) ── */
+/* ── Logo (in flow, icon overflows) ── */
 .nav__logo {
-  position: absolute;
-  left: var(--space-lg);
-  top: 5px;
   display: flex;
-  align-items: center;          /* icon + text on same line */
+  align-items: flex-start;
   gap: 0.75rem;
   text-decoration: none;
   z-index: 1001;
+  flex-shrink: 0;
 }
-/* ── Logo Icon (big, overlays hero) ── */
+/* ── Logo Icon (big, overflows below nav) ── */
 .nav__logo-icon {
   width: 160px;
   height: 160px;
   object-fit: contain;
   flex-shrink: 0;
 }
-/* ── Logo Text ── */
+/* ── Logo Text (aligned to nav bar center) ── */
 .nav__logo-text {
   font-family: var(--font-display);
   font-size: 1.3rem;
@@ -223,6 +221,7 @@ ul { list-style: none; }
   color: var(--text-primary);
   letter-spacing: 0.02em;
   white-space: nowrap;
+  padding-top: 16px;            /* center text within 60px nav */
 }
 .nav__logo-text span {
   color: var(--accent-gold);
