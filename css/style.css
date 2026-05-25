@@ -449,6 +449,7 @@ ul { list-style: none; }
   gap: var(--space-sm);
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 80px;          /* room for Walk Through the Fields */
 }
 
 /* === Immersive Parallax Hero === */
@@ -583,7 +584,7 @@ ul { list-style: none; }
 
 .hero__scroll {
   position: absolute;
-  bottom: var(--space-lg);
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
