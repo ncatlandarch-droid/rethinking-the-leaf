@@ -19,18 +19,23 @@
   <nav class="nav scrolled" id="nav">
     <div class="container nav__inner">
       <a href="index.html" class="nav__logo" id="nav-logo">
-        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon">
         <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
       </a>
       <div class="nav__links" id="nav-links">
         <a href="index.html#mission" class="nav__link">Our Mission</a>
         <a href="index.html#estate" class="nav__link">The Estate</a>
-        <a href="index.html#experiences" class="nav__link">Experiences</a>
+        <div class="nav__dropdown">
+          <span class="nav__dropdown-trigger">Explore <svg viewBox="0 0 10 6" fill="currentColor"><path d="M1 1l4 4 4-4"/></svg></span>
+          <div class="nav__dropdown-menu">
+            <a href="index.html#the-system">The System</a>
+            <a href="index.html#experiences">Experiences</a>
+            <a href="index.html#events-calendar">Events</a>
+            <a href="index.html#science">The Science</a>
+            <a href="index.html#masterplan">Master Plan</a>
+          </div>
+        </div>
         <a href="community.html" class="nav__link" style="color: var(--accent-gold);">Community</a>
-        <a href="index.html#education" class="nav__link">Education</a>
-        <a href="index.html#events-calendar" class="nav__link">Events</a>
-        <a href="shop.html" class="nav__link">Shop</a>
-        <a href="index.html#masterplan" class="nav__link">Master Plan</a>
         <a href="index.html#contact" class="nav__cta">Visit Us</a>
       </div>
       <button class="nav__burger" id="nav-burger" aria-label="Toggle menu">
