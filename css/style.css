@@ -2309,6 +2309,304 @@ ul { list-style: none; }
 }
 
 /* ================================================================
+   THE SYSTEM — Circular Philosophy
+   ================================================================ */
+
+/* ── Circular Flow Ring ── */
+.system__flow {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: var(--space-xl) auto;
+}
+.system__flow-ring {
+  position: absolute;
+  inset: 0;
+  animation: spin-slow 30s linear infinite;
+}
+.system__flow-item {
+  position: absolute;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  animation: counter-spin 30s linear infinite;
+}
+.system__flow-item span { font-size: 1.1rem; }
+.system__flow-item:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+.system__flow-item:nth-child(2) { top: 25%; right: -10px; }
+.system__flow-item:nth-child(3) { bottom: 25%; right: -10px; }
+.system__flow-item:nth-child(4) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.system__flow-item:nth-child(5) { bottom: 25%; left: -10px; }
+.system__flow-item:nth-child(6) { top: 25%; left: -10px; }
+
+.system__flow-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+.system__flow-label {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.system__flow-tagline {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.system__flow-tagline em {
+  color: var(--accent-green-bright);
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes counter-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+/* ── 8 Core Elements Grid ── */
+.system__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+.system__card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+.system__card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 8px 30px rgba(200, 168, 78, 0.1);
+}
+.system__card-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.system__card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: var(--transition-smooth);
+}
+.system__card:hover .system__card-img img {
+  transform: scale(1.05);
+}
+.system__card-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  padding: var(--space-sm) var(--space-sm) 0.25rem;
+}
+.system__card-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 0 var(--space-sm);
+  line-height: 1.5;
+}
+.system__io {
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.system__input,
+.system__output {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+.system__input {
+  background: rgba(74, 124, 95, 0.12);
+  color: var(--accent-green-bright);
+  border-left: 2px solid var(--accent-green);
+}
+.system__output {
+  background: rgba(200, 168, 78, 0.08);
+  color: var(--accent-gold);
+  border-left: 2px solid var(--accent-gold);
+}
+.system__input strong,
+.system__output strong {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+/* ── Program Puzzle Pieces ── */
+.system__puzzle {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+.system__puzzle-piece {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+  transition: var(--transition-smooth);
+  position: relative;
+}
+.system__puzzle-piece::after {
+  content: '→';
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-gold);
+  font-size: 1.2rem;
+  opacity: 0.4;
+}
+.system__puzzle-piece:last-child::after { display: none; }
+.system__puzzle-piece:hover {
+  border-color: var(--accent-green);
+  transform: translateY(-3px);
+}
+.system__puzzle-piece--hemp {
+  border-color: rgba(74, 124, 95, 0.3);
+  background: linear-gradient(135deg, var(--bg-card), rgba(74, 124, 95, 0.08));
+}
+.system__puzzle-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.system__puzzle-piece h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.system__puzzle-piece p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Hemp Innovation Grid ── */
+.system__hemp-hero {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+.system__hemp-hero img {
+  width: 100%;
+  max-width: 800px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+}
+.system__hemp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+.system__hemp-cat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+.system__hemp-cat:hover {
+  border-color: var(--accent-green);
+  transform: translateY(-2px);
+}
+.system__hemp-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+.system__hemp-cat h5 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--accent-gold);
+  margin-bottom: 0.4rem;
+}
+.system__hemp-cat p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ── Spatial Breakdown ── */
+.system__spatial {
+  max-width: 700px;
+  margin: var(--space-xl) auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.system__spatial-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(74, 124, 95, 0.25) var(--bar-width), transparent var(--bar-width));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  transition: var(--transition-smooth);
+}
+.system__spatial-bar:hover {
+  border-color: var(--accent-green);
+  background: linear-gradient(90deg, rgba(74, 124, 95, 0.4) var(--bar-width), transparent var(--bar-width));
+}
+.system__spatial-bar:first-child {
+  background: linear-gradient(90deg, rgba(200, 168, 78, 0.2) var(--bar-width), transparent var(--bar-width));
+  border-color: rgba(200, 168, 78, 0.3);
+}
+.system__spatial-bar:first-child:hover {
+  background: linear-gradient(90deg, rgba(200, 168, 78, 0.35) var(--bar-width), transparent var(--bar-width));
+  border-color: var(--accent-gold);
+}
+.system__spatial-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.system__spatial-acres {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+/* ── System Section Responsive ── */
+@media (max-width: 1024px) {
+  .system__grid { grid-template-columns: repeat(2, 1fr); }
+  .system__puzzle { grid-template-columns: repeat(3, 1fr); }
+  .system__hemp-grid { grid-template-columns: repeat(2, 1fr); }
+  .system__puzzle-piece::after { display: none; }
+}
+@media (max-width: 768px) {
+  .system__grid { grid-template-columns: 1fr; }
+  .system__puzzle { grid-template-columns: 1fr; }
+  .system__hemp-grid { grid-template-columns: 1fr; }
+  .system__flow { width: 260px; height: 260px; }
+  .system__flow-item { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+}
+
+/* ================================================================
    MEET THE TEAM
    ================================================================ */
 .team__grid {
