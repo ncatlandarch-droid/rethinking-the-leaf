@@ -2315,61 +2315,67 @@ ul { list-style: none; }
 /* ── Circular Flow Ring ── */
 .system__flow {
   position: relative;
-  width: 420px;
-  height: 420px;
+  width: 500px;
+  height: 500px;
   margin: var(--space-2xl) auto;
 }
 .system__flow-ring {
   position: absolute;
   inset: 0;
-  animation: spin-slow 40s linear infinite;
+  animation: spin-slow 45s linear infinite;
 }
 .system__flow-circle {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  animation: spin-slow 40s linear infinite;
+  pointer-events: none;
 }
-/* ── Individual Node (uniform circles) ── */
+
+/* ── Node: orbits with the ring ── */
 .system__flow-node {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 70px;
-  height: 70px;
-  margin: -35px 0 0 -35px;
-  transform: rotate(var(--angle)) translateY(-170px) rotate(calc(-1 * var(--angle)));
-  animation: counter-spin-node 40s linear infinite;
-  animation-delay: inherit;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  transform: rotate(var(--angle)) translateY(-200px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.system__flow-node:hover {
+  border-color: rgba(200, 168, 78, 0.5);
+  box-shadow: 0 0 24px rgba(200, 168, 78, 0.15);
+}
+
+/* ── Inner: counter-rotates to stay upright ── */
+.system__flow-node-inner {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  gap: 3px;
   border-radius: 50%;
-  color: var(--accent-gold);
-  transition: var(--transition-smooth);
+  /* Cancel the node's --angle rotation AND the ring's spin */
+  transform: rotate(calc(-1 * var(--angle)));
+  animation: counter-spin 45s linear infinite;
 }
-.system__flow-node:hover {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 20px rgba(200, 168, 78, 0.2);
-  transform: rotate(var(--angle)) translateY(-170px) rotate(calc(-1 * var(--angle))) scale(1.15);
-}
-.system__flow-node svg {
-  width: 22px;
-  height: 22px;
-  stroke: var(--accent-gold);
+.system__flow-node-inner svg {
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
-.system__flow-node span {
+.system__flow-node-inner span {
   font-size: 0.55rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  line-height: 1;
 }
 
 .system__flow-center {
@@ -2382,14 +2388,14 @@ ul { list-style: none; }
 }
 .system__flow-label {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--accent-gold);
   line-height: 1.2;
   margin-bottom: 0.5rem;
 }
 .system__flow-tagline {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -2400,9 +2406,9 @@ ul { list-style: none; }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-@keyframes counter-spin-node {
-  from { }
-  to { }
+@keyframes counter-spin {
+  from { transform: rotate(calc(-1 * var(--angle))); }
+  to { transform: rotate(calc(-1 * var(--angle) - 360deg)); }
 }
 
 /* ── 8 Core Elements Grid ── */
@@ -2630,10 +2636,11 @@ ul { list-style: none; }
   .system__grid { grid-template-columns: 1fr; }
   .system__puzzle { grid-template-columns: 1fr; }
   .system__hemp-grid { grid-template-columns: 1fr; }
-  .system__flow { width: 340px; height: 340px; }
-  .system__flow-node { width: 60px; height: 60px; margin: -30px 0 0 -30px; transform: rotate(var(--angle)) translateY(-140px) rotate(calc(-1 * var(--angle))); }
-  .system__flow-node svg { width: 18px; height: 18px; }
-  .system__flow-node span { font-size: 0.5rem; }
+  .system__flow { width: 360px; height: 360px; }
+  .system__flow-node { width: 62px; height: 62px; margin: -31px 0 0 -31px; transform: rotate(var(--angle)) translateY(-148px); }
+  .system__flow-node-inner svg { width: 18px; height: 18px; }
+  .system__flow-node-inner span { font-size: 0.45rem; }
+  .system__flow-label { font-size: 1.4rem; }
 }
 
 /* ================================================================

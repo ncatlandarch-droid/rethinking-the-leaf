@@ -180,44 +180,81 @@
         </p>
       </div>
 
-      <!-- Circular Flow Concept -->
+      <!-- Circular Flow Concept — 8 Elements -->
       <div class="system__flow reveal">
         <div class="system__flow-ring">
-          <!-- People — top -->
+
+          <!-- People — 0° (top) -->
           <div class="system__flow-node" style="--angle: 0deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
-            <span>People</span>
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#E8B84B" stroke-width="1.5"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+              <span style="color: #E8B84B;">People</span>
+            </div>
           </div>
-          <!-- Plants — 60° -->
-          <div class="system__flow-node" style="--angle: 60deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22V8"/><path d="M5 12s2-5 7-5 7 5 7 5"/><path d="M8 6s1-4 4-4 4 4 4 4"/></svg>
-            <span>Plants</span>
+
+          <!-- Plants — 45° -->
+          <div class="system__flow-node" style="--angle: 45deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#5DB87A" stroke-width="1.5"><path d="M12 22V8"/><path d="M5 12s2-5 7-5 7 5 7 5"/><path d="M8 6s1-4 4-4 4 4 4 4"/></svg>
+              <span style="color: #5DB87A;">Plants</span>
+            </div>
           </div>
-          <!-- Animals — 120° -->
-          <div class="system__flow-node" style="--angle: 120deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><path d="M12 18c-4 0-6-2-6-4s2-4 6-4 6 2 6 4-2 4-6 4z"/><path d="M6 6l2 2m8-2l-2 2"/></svg>
-            <span>Animals</span>
+
+          <!-- Animals — 90° -->
+          <div class="system__flow-node" style="--angle: 90deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#D4915C" stroke-width="1.5"><circle cx="8" cy="10" r="2"/><circle cx="16" cy="10" r="2"/><path d="M12 18c-4 0-6-2-6-4s2-4 6-4 6 2 6 4-2 4-6 4z"/><path d="M6 6l2 2m8-2l-2 2"/></svg>
+              <span style="color: #D4915C;">Animals</span>
+            </div>
           </div>
-          <!-- Water — 180° -->
+
+          <!-- Water — 135° -->
+          <div class="system__flow-node" style="--angle: 135deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#5BA8D4" stroke-width="1.5"><path d="M12 2s-6 8-6 12a6 6 0 0 0 12 0c0-4-6-12-6-12z"/></svg>
+              <span style="color: #5BA8D4;">Water</span>
+            </div>
+          </div>
+
+          <!-- Soil — 180° (bottom) -->
           <div class="system__flow-node" style="--angle: 180deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2s-6 8-6 12a6 6 0 0 0 12 0c0-4-6-12-6-12z"/></svg>
-            <span>Water</span>
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9B7B5A" stroke-width="1.5"><path d="M3 18h18"/><path d="M6 14l3-6 4 4 3-5 5 7"/></svg>
+              <span style="color: #9B7B5A;">Soil</span>
+            </div>
           </div>
-          <!-- Soil — 240° -->
-          <div class="system__flow-node" style="--angle: 240deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18h18"/><path d="M6 14l3-6 4 4 3-5 5 7"/></svg>
-            <span>Soil</span>
+
+          <!-- Electricity — 225° -->
+          <div class="system__flow-node" style="--angle: 225deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F0C45A" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <span style="color: #F0C45A;">Electricity</span>
+            </div>
           </div>
-          <!-- Spirit — 300° -->
-          <div class="system__flow-node" style="--angle: 300deg;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m-11-11h2m18 0h2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            <span>Spirit</span>
+
+          <!-- Internet — 270° -->
+          <div class="system__flow-node" style="--angle: 270deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4ECDC4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/></svg>
+              <span style="color: #4ECDC4;">Internet</span>
+            </div>
           </div>
+
+          <!-- Spirit — 315° -->
+          <div class="system__flow-node" style="--angle: 315deg;">
+            <div class="system__flow-node-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#B58FD4" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2m-11-11h2m18 0h2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              <span style="color: #B58FD4;">Spirit</span>
+            </div>
+          </div>
+
         </div>
-        <!-- Connecting ring SVG -->
-        <svg class="system__flow-circle" viewBox="0 0 420 420">
-          <circle cx="210" cy="210" r="170" fill="none" stroke="rgba(200,168,78,0.15)" stroke-width="1" stroke-dasharray="8 6"/>
+
+        <!-- Dashed connecting ring -->
+        <svg class="system__flow-circle" viewBox="0 0 500 500">
+          <circle cx="250" cy="250" r="200" fill="none" stroke="rgba(200,168,78,0.15)" stroke-width="1" stroke-dasharray="8 6"/>
         </svg>
+
         <div class="system__flow-center">
           <div class="system__flow-label">Circular<br>Flow</div>
           <p class="system__flow-tagline">Every element feeds another:<br><em>Food · Water · Sunlight</em></p>
