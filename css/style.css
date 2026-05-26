@@ -2634,6 +2634,7 @@ ul { list-style: none; }
 }
 @media (max-width: 768px) {
   .system__grid { grid-template-columns: 1fr; }
+  .site-maps > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
   .system__puzzle { grid-template-columns: 1fr; }
   .system__hemp-grid { grid-template-columns: 1fr; }
   .system__flow { width: 360px; height: 360px; }
