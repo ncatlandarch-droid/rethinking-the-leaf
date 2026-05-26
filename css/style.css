@@ -2315,14 +2315,14 @@ ul { list-style: none; }
 /* ── Circular Flow Ring ── */
 .system__flow {
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: 580px;
+  height: 580px;
   margin: var(--space-2xl) auto;
 }
 .system__flow-ring {
   position: absolute;
   inset: 0;
-  animation: spin-slow 45s linear infinite;
+  animation: spin-slow 50s linear infinite;
 }
 .system__flow-circle {
   position: absolute;
@@ -2337,10 +2337,10 @@ ul { list-style: none; }
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 80px;
-  height: 80px;
-  margin: -40px 0 0 -40px;
-  transform: rotate(var(--angle)) translateY(-200px);
+  width: 86px;
+  height: 86px;
+  margin: -43px 0 0 -43px;
+  transform: rotate(var(--angle)) translateY(-235px);
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 50%;
@@ -2348,7 +2348,7 @@ ul { list-style: none; }
 }
 .system__flow-node:hover {
   border-color: rgba(200, 168, 78, 0.5);
-  box-shadow: 0 0 24px rgba(200, 168, 78, 0.15);
+  box-shadow: 0 0 28px rgba(200, 168, 78, 0.18);
 }
 
 /* ── Inner: counter-rotates to stay upright ── */
@@ -2359,19 +2359,18 @@ ul { list-style: none; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
   border-radius: 50%;
-  /* Cancel the node's --angle rotation AND the ring's spin */
   transform: rotate(calc(-1 * var(--angle)));
-  animation: counter-spin 45s linear infinite;
+  animation: counter-spin 50s linear infinite;
 }
 .system__flow-node-inner svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
 }
 .system__flow-node-inner span {
-  font-size: 0.55rem;
+  font-size: 0.58rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -2385,19 +2384,20 @@ ul { list-style: none; }
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 2;
+  max-width: 220px;
 }
 .system__flow-label {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: var(--accent-gold);
-  line-height: 1.2;
-  margin-bottom: 0.5rem;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
 }
 .system__flow-tagline {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 .system__flow-tagline em {
   color: var(--accent-green-bright);
