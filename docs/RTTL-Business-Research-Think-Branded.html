@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTTL Business Research — Think! Design & Planning, LLC</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --navy: #1b3460;
+    --green: #3eaa89;
+    --gold: #c8a84e;
+    --red: #c0392b;
+    --amber: #d4930d;
+    --blue: #2980b9;
+    --light-bg: #f8f9fa;
+    --border: #e0e4e8;
+    --text: #2c3e50;
+    --text-light: #5a6a7a;
+  }
+
+  @page {
+    size: letter;
+    margin: 0.75in 0.85in;
+    @top-right { content: "CONFIDENTIAL"; font-size: 8pt; color: #999; }
+    @bottom-center { content: "Think! Design & Planning, LLC · Page " counter(page); font-size: 8pt; color: #999; }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 0.5in;
+    background: white;
+  }
+
+  /* ============ COVER / HEADER ============ */
+  .cover {
+    background: var(--navy);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    page-break-after: avoid;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(62,170,137,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(40px, 40px);
+  }
+  .cover-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .cover-logo svg { width: 160px; height: auto; }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22pt;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.01em;
+  }
+  .cover .subtitle {
+    font-size: 11pt;
+    color: rgba(255,255,255,0.75);
+    font-weight: 300;
+    margin-bottom: 1.25rem;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 2rem;
+    font-size: 8.5pt;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 0.75rem;
+  }
+  .cover-meta strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+
+  .confidential-bar {
+    background: var(--red);
+    color: white;
+    text-align: center;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ============ SECTIONS ============ */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16pt;
+    color: var(--navy);
+    border-bottom: 3px solid var(--green);
+    padding-bottom: 0.4rem;
+    margin: 1.75rem 0 0.75rem;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 1.25rem 0 0.4rem;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 10pt;
+    font-weight: 600;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 1rem 0 0.3rem;
+  }
+
+  p { margin-bottom: 0.6rem; }
+  strong { font-weight: 600; }
+  em { font-style: italic; color: var(--text-light); }
+
+  /* ============ CALLOUT BOXES ============ */
+  .callout {
+    border-left: 4px solid;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  .callout-warning {
+    border-color: var(--red);
+    background: #fdf2f2;
+  }
+  .callout-warning .callout-label { color: var(--red); }
+  .callout-info {
+    border-color: var(--blue);
+    background: #f0f6fc;
+  }
+  .callout-info .callout-label { color: var(--blue); }
+  .callout-success {
+    border-color: var(--green);
+    background: #f0faf5;
+  }
+  .callout-success .callout-label { color: var(--green); }
+  .callout-gold {
+    border-color: var(--gold);
+    background: #fdf8ee;
+  }
+  .callout-gold .callout-label { color: var(--gold); }
+  .callout-label {
+    font-weight: 700;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  /* ============ TABLES ============ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  thead th {
+    background: var(--navy);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  tbody td {
+    padding: 0.45rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: var(--light-bg); }
+  tbody tr:hover { background: #e8f4f0; }
+
+  /* ============ BADGES ============ */
+  .badge {
+    display: inline-block;
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 50px;
+  }
+  .badge-urgent { background: #fde8e8; color: var(--red); }
+  .badge-high { background: #fef3cd; color: var(--amber); }
+  .badge-medium { background: #d6eaf8; color: var(--blue); }
+  .badge-star { background: #e8f8f0; color: var(--green); }
+
+  /* ============ GRANT CARD ============ */
+  .grant-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 0.6rem 0;
+    border-left: 4px solid var(--green);
+    page-break-inside: avoid;
+  }
+  .grant-card.urgent { border-left-color: var(--red); }
+  .grant-card.high { border-left-color: var(--amber); }
+  .grant-card.medium { border-left-color: var(--blue); }
+  .grant-card h4 { margin: 0 0 0.15rem; color: var(--navy); text-transform: none; letter-spacing: 0; font-size: 10.5pt; }
+  .grant-card .agency { font-size: 8.5pt; color: var(--text-light); }
+  .grant-card .amount { font-family: 'Playfair Display', serif; font-size: 13pt; color: var(--green); font-weight: 700; margin: 0.25rem 0; }
+  .grant-card p { font-size: 9.5pt; margin-bottom: 0; }
+
+  /* ============ REVENUE BAR ============ */
+  .revenue-bar {
+    margin: 1rem 0;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    height: 28px;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .revenue-bar div { display: flex; align-items: center; justify-content: center; }
+
+  /* ============ CHECK LIST ============ */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    padding: 0.35rem 0 0.35rem 1.5rem;
+    position: relative;
+    font-size: 10pt;
+  }
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    font-size: 12pt;
+    color: var(--green);
+  }
+
+  /* ============ DIVIDER ============ */
+  hr {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  .section-divider {
+    border-top: 3px solid var(--navy);
+    margin: 2rem 0 0.5rem;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border);
+    font-size: 8pt;
+    color: var(--text-light);
+    text-align: center;
+  }
+  .footer strong { color: var(--navy); }
+
+  /* ============ PRINT ============ */
+  .no-print { display: block; }
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    .cover { break-after: avoid; }
+    .no-print { display: none !important; }
+    h2 { break-after: avoid; }
+    .grant-card, .callout, table { break-inside: avoid; }
+  }
+
+  /* ============ DOWNLOAD BUTTON ============ */
+  .download-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--navy);
+    color: white;
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-size: 10pt;
+  }
+  .download-bar button {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 10pt;
+  }
+  .download-bar button:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<!-- Download Bar -->
+<div class="download-bar no-print">
+  <span>📄 RTTL Business Research — <strong>Think! Design & Planning, LLC</strong></span>
+  <button onclick="window.print()">⬇ Save as PDF (Ctrl+P)</button>
+</div>
+<div style="height: 48px;" class="no-print"></div>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="cover-logo">
+    <img src="think-logo-white.png" alt="Think! Design & Planning, LLC" style="height: 52px; width: auto;">
+    <span style="font-size: 10pt; opacity: 0.65; letter-spacing: 0.04em;">Design &amp; Planning, LLC</span>
+  </div>
+
+  <h1>RTTL Complete Strategy</h1>
+  <div class="subtitle">Integrated Agrotherapy Campus · Farm Grants · Elder Care · Business Analysis</div>
+  <div class="cover-meta">
+    <div><strong>Prepared for:</strong> Shardell Gerald &amp; Lamont Burgess</div>
+    <div><strong>Project:</strong> ReThinking The Leaf · TDP-2026-001</div>
+    <div><strong>Date:</strong> June 4, 2026</div>
+  </div>
+</div>
+
+<div class="confidential-bar">⚠ Confidential — Not for Public Distribution</div>
+
+<!-- ============ PART 1: INTEGRATED VISION ============ -->
+<h2>Part 1: The Vision — Integrated Agrotherapy Campus</h2>
+
+<div class="callout callout-gold">
+  <div class="callout-label">The Big Idea</div>
+  <p>The elderly care facility is not a separate project — <strong>it is the keystone that makes the entire 66-acre estate self-sustaining.</strong> The lavender farm becomes therapeutic infrastructure for elderly residents. The training programs produce workers for both the farm AND the facility. The farm feeds the facility. The facility funds the farm.</p>
+</div>
+
+<h3>🌿 Lavender IS Elder Care Medicine</h3>
+<p>Lavender has <strong>clinical evidence</strong> for the exact conditions elderly residents face. Your fields become the therapy itself — this is literally what "agrotherapy" means.</p>
+
+<table>
+  <thead><tr><th>Condition</th><th>Lavender / Hemp Application</th><th>Evidence Level</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Dementia Agitation</strong></td><td>Lavender aromatherapy reduces aggression &amp; anxiety</td><td>Multiple clinical trials</td></tr>
+    <tr><td><strong>Insomnia</strong></td><td>Lavender oil improves sleep quality in 65+</td><td>Peer-reviewed studies</td></tr>
+    <tr><td><strong>Depression / Isolation</strong></td><td>Horticultural therapy reduces depressive symptoms</td><td>Evidence-based practice</td></tr>
+    <tr><td><strong>Chronic Pain</strong></td><td>Topical lavender oil AND hemp creams for arthritis/joint pain</td><td>Complementary therapy</td></tr>
+    <tr><td><strong>Cognitive Decline</strong></td><td>Sensory garden stimulation slows progression</td><td>Occupational therapy standard</td></tr>
+    <tr><td><strong>Muscle &amp; Joint Soreness</strong></td><td>Hemp-infused topical creams — produced on-site from estate hemp</td><td>Growing clinical evidence</td></tr>
+    <tr><td><strong>Stress / Soul Healing</strong></td><td>Personal cedar saunas — infrared heat therapy for circulation, detox, relaxation</td><td>Traditional &amp; clinical</td></tr>
+  </tbody>
+</table>
+
+<h3>🔄 The 8 Programming Areas = Therapeutic Activities for Residents</h3>
+<p>Each existing training area serves double duty — training the next generation while providing therapy to residents:</p>
+
+<table>
+  <thead><tr><th>Training Area</th><th>Resident Therapy Version</th><th>Benefit</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Plant Processing</strong></td><td>Guided herb garden — residents harvest, dry, bundle lavender</td><td>Motor skills, purpose, sensory</td></tr>
+    <tr><td><strong>Animal Husbandry</strong></td><td>Egg collection, feeding chickens — animal-assisted therapy</td><td>Reduces loneliness, routine</td></tr>
+    <tr><td><strong>Solar / Off-Grid Tech</strong></td><td>Facility runs on the estate's solar infrastructure</td><td>Lower operating costs</td></tr>
+    <tr><td><strong>Rotational Grazing</strong></td><td>Walking paths through pasture areas — nature immersion</td><td>Exercise, cognitive stimulation</td></tr>
+    <tr><td><strong>Food Processing</strong></td><td>Farm-to-table cooking — residents prepare meals with farm produce</td><td>Nutrition, independence, dignity</td></tr>
+    <tr><td><strong>Lavender Products</strong></td><td>Light assembly — bundling sachets, labeling soaps</td><td>Occupational therapy, income</td></tr>
+    <tr><td><strong>Hemp Wellness</strong></td><td>Hemp cream preparation — residents help make topicals used in their own care</td><td>Self-sufficiency, purpose</td></tr>
+    <tr><td><strong>Cedar Saunas</strong></td><td>Personal cedar sauna sessions — infrared heat for soul healing, circulation</td><td>Relaxation, pain relief, dignity</td></tr>
+    <tr><td><strong>Conservation / Ecology</strong></td><td>Bird watching stations, pollinator garden visits</td><td>Mental health, engagement</td></tr>
+    <tr><td><strong>Education / History</strong></td><td>Storytelling circles — AKA legacy, oral history recording</td><td>Cultural preservation, purpose</td></tr>
+  </tbody>
+</table>
+
+<h3>💰 The Revenue Flywheel</h3>
+<div style="background:var(--light-bg);border:1px solid var(--border);border-radius:6px;padding:1.25rem;font-family:'Inter',monospace;font-size:9pt;line-height:1.8;page-break-inside:avoid;">
+<strong style="color:var(--navy);font-size:11pt;">RTTL Integrated Agrotherapy Campus Model</strong><br><br>
+<span style="color:var(--green);">LAVENDER FARM</span> ──── produces ────► <span style="color:var(--gold);">PRODUCTS</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;grows therapy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sells to:<br>
+&nbsp;&nbsp;&nbsp;ingredients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ Farm Store<br>
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ E-commerce<br>
+&nbsp;&nbsp;&nbsp;&nbsp;▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ Elder facility (in-house)<br>
+<span style="color:var(--navy);">ELDER CARE FACILITY</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;residents participate in ────► <span style="color:var(--blue);">TRAINING PROGRAMS</span><br>
+&nbsp;&nbsp;&nbsp;light farm activities&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trains young people<br>
+&nbsp;&nbsp;&nbsp;funded by:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in BOTH farming<br>
+&nbsp;&nbsp;&nbsp;├─ Medicaid (40%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND elder care<br>
+&nbsp;&nbsp;&nbsp;├─ VA Auxiliary (25%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;├─ Private Pay (20%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;workforce for<br>
+&nbsp;&nbsp;&nbsp;├─ Veterans (10%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the facility itself<br>
+&nbsp;&nbsp;&nbsp;└─ Grants (5%)<br><br>
+<strong style="color:var(--green);">The farm feeds the facility. The facility funds the farm. The training programs staff both.</strong>
+</div>
+
+<h3>🏗️ Physical Layout on the 66 Acres</h3>
+<table>
+  <thead><tr><th>Existing Zone</th><th>Integrated Campus Use</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lavender Fields</strong></td><td>Therapeutic walking gardens with raised beds for wheelchair access</td></tr>
+    <tr><td><strong>Hemp R&amp;D Fields</strong></td><td>5 acres dedicated to hemp research — alternative uses (creams, textiles, construction) until full legalization</td></tr>
+    <tr><td><strong>Processing Pavilion</strong></td><td>Shared between commercial production AND resident activity programs (lavender + hemp topicals)</td></tr>
+    <tr><td><strong>Farm Store</strong></td><td>Resident-made products sold alongside commercial — gives them income and purpose</td></tr>
+    <tr><td><strong>Cedar Sauna Pavilion</strong></td><td>Personal cedar saunas for residents and guests — infrared heat therapy, soul healing, relaxation</td></tr>
+    <tr><td><strong>Residential Zone</strong></td><td>Assisted living facility — new construction or adaptive reuse of existing structures</td></tr>
+    <tr><td><strong>Solar Array</strong></td><td>Powers the entire campus including ALF — reduces operating overhead significantly</td></tr>
+    <tr><td><strong>Pasture / Grazing</strong></td><td>Nature walking trails, sensory immersion paths, outdoor therapy stations</td></tr>
+    <tr><td><strong>Education Center</strong></td><td>Intergenerational hub — young trainees &amp; elderly residents learn and work together across programs</td></tr>
+  </tbody>
+</table>
+
+<h3>👥 Intergenerational Programming — Communal Across Generations</h3>
+<div class="callout callout-gold">
+  <div class="callout-label">Core Philosophy</div>
+  <p><strong>Young people and elderly residents work TOGETHER</strong> — not separately. Trainees help manage programs that serve residents. Residents mentor young people with life experience and wisdom. This communal model is how farming communities have always functioned — elders teach, youth do the heavy lifting, and everyone eats together.</p>
+</div>
+<table>
+  <thead><tr><th>Activity</th><th>Youth Role</th><th>Elder Role</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lavender Harvest</strong></td><td>Physical harvesting, carrying, drying</td><td>Bundling, quality sorting, teaching technique</td></tr>
+    <tr><td><strong>Hemp Cream Production</strong></td><td>Processing, packaging, labeling</td><td>Application knowledge, testing, product feedback</td></tr>
+    <tr><td><strong>Cedar Sauna Sessions</strong></td><td>Setup, scheduling, safety supervision</td><td>Rest, healing, storytelling during sessions</td></tr>
+    <tr><td><strong>Animal Care</strong></td><td>Feeding, cleaning, veterinary tasks</td><td>Egg collection, gentle grooming, companionship</td></tr>
+    <tr><td><strong>Farm Store</strong></td><td>Inventory, e-commerce, marketing</td><td>Customer greeting, product stories, artisan crafts</td></tr>
+    <tr><td><strong>Cooking Programs</strong></td><td>Prep, cleaning, serving</td><td>Recipes, seasoning wisdom, cultural food traditions</td></tr>
+  </tbody>
+</table>
+
+<h3>🌿 Hemp Research & Development — 5 Acres Dedicated</h3>
+<div class="callout callout-info">
+  <div class="callout-label">Strategic Positioning</div>
+  <p><strong>The 5-acre hemp field is an R&amp;D platform</strong> — not just a crop. Until full legalization, focus on researching and developing alternative hemp applications: topical creams, construction materials (hempcrete), textiles, bioplastics, and animal bedding. This positions RTTL as a <strong>research partner</strong> with NC A&amp;T and Virginia State University, not just a grower.</p>
+</div>
+<table>
+  <thead><tr><th>Hemp R&amp;D Track</th><th>Product</th><th>Elder Care Connection</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Topical Creams</strong></td><td>Hemp-infused pain relief, moisturizers, muscle rubs</td><td>Produced on-site, used by residents daily</td></tr>
+    <tr><td><strong>Construction</strong></td><td>Hempcrete blocks, insulation panels</td><td>Future ALF expansion built with on-site materials</td></tr>
+    <tr><td><strong>Textiles</strong></td><td>Bedding, towels, clothing prototypes</td><td>Resident linens made from estate-grown hemp</td></tr>
+    <tr><td><strong>Animal Bedding</strong></td><td>Hemp hurd bedding for goats, chickens</td><td>Farm waste cycle — animals to compost to soil</td></tr>
+    <tr><td><strong>Bioplastics</strong></td><td>Biodegradable packaging for farm store products</td><td>Sustainable packaging for all lavender &amp; hemp goods</td></tr>
+  </tbody>
+</table>
+
+<h3>🥬 Farm-to-Table Nutrition — Healing Through What We Eat</h3>
+<div class="callout callout-success">
+  <div class="callout-label">Core Principle</div>
+  <p><strong>Vegetable-based nutrition is not a diet — it is care.</strong> Everything grown on the 66 acres feeds into a whole-food, plant-forward nutrition program for residents. The food forest, raised beds, herb gardens, and hydroponic lab produce the meals. Residents participate in growing, harvesting, preparing, and sharing what they eat. Teaching people how to heal through food is foundational to this model.</p>
+</div>
+<table>
+  <thead><tr><th>Source</th><th>What It Produces</th><th>How It Heals</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Food Forest</strong></td><td>Fruit, berries, nuts, mushrooms, herbs</td><td>Antioxidants, fiber, immune support — picked fresh daily</td></tr>
+    <tr><td><strong>Raised Beds</strong></td><td>Greens, tomatoes, peppers, squash, root vegetables</td><td>Nutrient-dense meals reducing inflammation &amp; chronic disease</td></tr>
+    <tr><td><strong>Hydroponic Lab</strong></td><td>Microgreens, basil, lettuce, specialty herbs</td><td>Year-round nutrition — 90% less water, zero pesticides</td></tr>
+    <tr><td><strong>Herb Garden</strong></td><td>Lavender, rosemary, thyme, chamomile, mint</td><td>Teas, seasonings, aromatherapy — medicine from the garden</td></tr>
+    <tr><td><strong>Egg &amp; Dairy</strong></td><td>Fresh eggs from estate chickens, goat milk</td><td>Protein, calcium, community ritual of morning gathering</td></tr>
+    <tr><td><strong>Community Table</strong></td><td>Shared meals — elders, trainees, staff eat TOGETHER</td><td>Belonging, love, dignity — no one eats alone</td></tr>
+  </tbody>
+</table>
+
+<h3>🕊️ Spiritual Healing — Enjoying the Golden Years</h3>
+<div class="callout callout-gold">
+  <div class="callout-label">The Soul of the Mission</div>
+  <p>This is not a facility where people go to wait. <strong>This is a place where people come to LIVE</strong> — to learn how to enjoy the golden years surrounded by community and those who love them. Spiritual healing means learning how to be at peace, how to pass gently when the time comes, and how to fill the days between with purpose, joy, laughter, good food, and connection to the earth.</p>
+</div>
+<table>
+  <thead><tr><th>Element</th><th>What It Looks Like</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Morning Ritual</strong></td><td>Gather eggs, walk the lavender rows, breathe the morning air — not a schedule, a rhythm</td></tr>
+    <tr><td><strong>Cedar Sauna</strong></td><td>Infrared heat, quiet time, storytelling with others — soul healing, not clinical treatment</td></tr>
+    <tr><td><strong>Shared Meals</strong></td><td>Communal table with young trainees and elders — food they grew together</td></tr>
+    <tr><td><strong>Evening Circles</strong></td><td>Porch conversations, music, oral history recording — legacy being preserved in real time</td></tr>
+    <tr><td><strong>Generational Purpose</strong></td><td>Elders teach youth what schools can't — patience, wisdom, how to read the land</td></tr>
+    <tr><td><strong>Peaceful Transition</strong></td><td>When the time comes, surrounded by community, on beautiful land, at peace — not in a cold institution</td></tr>
+  </tbody>
+</table>
+
+<h3>🤝 Community Service Mission — Serving Brunswick County</h3>
+<div class="callout callout-info">
+  <div class="callout-label">Who This Serves</div>
+  <p><strong>This is for the lower-income community around them.</strong> Brunswick County is one of the most underserved areas in Virginia — high poverty, limited healthcare access, aging population. RTTL's elder care facility is designed to serve the people who can't afford private facilities. Every grant dollar sought is specifically to reduce barriers for the community that needs it most.</p>
+</div>
+<table>
+  <thead><tr><th>Service Model</th><th>How It Serves the Community</th><th>Funding Source</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Medicaid-Funded Beds</strong></td><td>Majority of beds at Medicaid rates — no one turned away for income</td><td>CCC Plus Waiver, Medicaid</td></tr>
+    <tr><td><strong>Virginia Auxiliary Grant</strong></td><td>State supplement covers gap between resident income and care cost</td><td>VA DSS</td></tr>
+    <tr><td><strong>Community Meals Program</strong></td><td>Open farm-to-table meals for neighborhood seniors not in the facility</td><td>ACL / Older Americans Act</td></tr>
+    <tr><td><strong>Free Wellness Days</strong></td><td>Cedar sauna, lavender garden walks, hemp cream samples — open to all</td><td>HRSA Rural Health Outreach</td></tr>
+    <tr><td><strong>Youth Employment</strong></td><td>Local teens trained and PAID to work alongside residents</td><td>Workforce Development grants</td></tr>
+    <tr><td><strong>Food Distribution</strong></td><td>Surplus produce from farm distributed to food-insecure families</td><td>USDA CSFP / SNAP Ed</td></tr>
+  </tbody>
+</table>
+
+<h3>🎯 The Killer Grant Narrative</h3>
+<div class="callout callout-success">
+  <div class="callout-label">Use This In Every Application</div>
+  <p><em>"We are building an integrated agrotherapy campus where elderly residents participate in lavender farming, hemp wellness production, and plant-based nutrition programs as evidence-based therapeutic programming — while simultaneously training the next generation of rural healthcare workers and sustainable farmers on historically significant Black-owned land, serving the lower-income community of Brunswick County, Virginia."</em></p>
+  <p style="margin-top:0.5rem;margin-bottom:0;"><strong>That single sentence hits every federal priority:</strong> rural health equity, workforce development, agricultural innovation, historic preservation, BIPOC economic empowerment, veteran services, food security, and community wellness.</p>
+</div>
+
+
+<hr style="border-top: 1px dashed var(--border); margin: 1.5rem 0;">
+
+<h3>🔄 The Circular System — Nothing Wasted, Everything Regenerated</h3>
+<p>A self-sustaining, hyper-locally connected homestead built on one principle: <strong>the output of one element becomes the input of another.</strong></p>
+
+<h4>The 8 Core Elements</h4>
+<table>
+  <thead><tr><th>Element</th><th>Description</th><th>Inputs</th><th>Outputs</th></tr></thead>
+  <tbody>
+    <tr><td><strong>People</strong></td><td>Community, labor, education, mentorship</td><td>Training, food, shelter, purpose</td><td>Labor, knowledge, community, generational wealth</td></tr>
+    <tr><td><strong>Animals</strong></td><td>Goats, chickens, geese, alpaca — controlled routes through food forest</td><td>Food forest forage, shelter, water</td><td>Fertilizer, pest control, fiber, eggs, land management</td></tr>
+    <tr><td><strong>Plants</strong></td><td>Lavender + support plants, 30-acre pine forest (truffles, ginger), hemp</td><td>Soil, water, sunlight, composted animal outputs</td><td>Products, food, medicine, building materials, animal forage</td></tr>
+    <tr><td><strong>Soil / Earth</strong></td><td>The living foundation — composting, mycelium networks, nutrient cycling</td><td>Compost, animal waste, fallen leaves, cover crops</td><td>Fertile growing medium, carbon sequestration, water filtration</td></tr>
+    <tr><td><strong>Water</strong></td><td>Streams, wetlands, irrigation — water flows through every system</td><td>Rain, springs, wetland filtration</td><td>Irrigation, animal hydration, ecosystem health</td></tr>
+    <tr><td><strong>Electricity</strong></td><td>Off-grid energy independence — solar, wind, hemp biomass fuel</td><td>Sunlight, wind, hemp biomass</td><td>Power for operations, lighting, processing, connectivity</td></tr>
+    <tr><td><strong>Internet</strong></td><td>Hyper-locally connected agrobusiness platform</td><td>Satellite/broadband, electricity, devices</td><td>E-commerce, training platform, data-driven farming</td></tr>
+    <tr><td><strong>Spirit</strong></td><td>The intangible element — purpose, healing, legacy, joy</td><td>Community, nature, purpose, heritage</td><td>Healing, peace, motivation, generational vision</td></tr>
+  </tbody>
+</table>
+
+<h4>Program Elements — The Puzzle Pieces</h4>
+<table>
+  <thead><tr><th>Element</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><strong>🏠 The Homestead</strong></td><td>Residential HQ — where people live, plan, and manage the system. Command center of the 66 acres.</td></tr>
+    <tr><td><strong>🎪 Event Center</strong></td><td>Community hosting — weddings, workshops, farm dinners, youth programs. Revenue that funds the system.</td></tr>
+    <tr><td><strong>🐐 Animal Systems</strong></td><td>Goats, chickens, geese, alpaca with shelter and controlled routes. Animals manage the food forest.</td></tr>
+    <tr><td><strong>🌳 Food Forest</strong></td><td>Permaculture plantings feeding animals and people. A living system where plants support each other.</td></tr>
+    <tr><td><strong>🌿 Hemp Innovation Hub</strong></td><td>Training center for 25,000+ hemp product applications. Research integration with NC A&amp;T. The original "Leaf."</td></tr>
+  </tbody>
+</table>
+
+<h4>🌿 Hemp: 25,000+ Products — Lamont's Vision</h4>
+<p>Hemp is one of the most versatile crops on Earth. The training platform teaches applications from textiles to bioplastics.</p>
+<table>
+  <thead><tr><th>Category</th><th>Applications</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Textiles &amp; Clothing</strong></td><td>Durable fabrics, denim, shoes, bags, upholstery — naturally mold &amp; UV resistant</td></tr>
+    <tr><td><strong>Construction</strong></td><td>Hempcrete, insulation, fiberboard, wall panels — lightweight, fire-resistant</td></tr>
+    <tr><td><strong>Paper &amp; Printing</strong></td><td>Stronger than wood pulp — packaging, printing, currency-grade materials</td></tr>
+    <tr><td><strong>Food &amp; Nutrition</strong></td><td>Protein powders, cooking oils, dairy alternatives — rich in essential fatty acids</td></tr>
+    <tr><td><strong>Health &amp; Body Care</strong></td><td>Lotions, soaps, shampoos, lip balms — anti-inflammatory hemp seed oil</td></tr>
+    <tr><td><strong>Fuel &amp; Industrial</strong></td><td>Biodiesel, ethanol from biomass — ropes, sails, canvas</td></tr>
+    <tr><td><strong>Animal Products</strong></td><td>Livestock bedding, pet treats, supplements from hemp oil and seeds</td></tr>
+    <tr><td><strong>Bioplastics</strong></td><td>Biodegradable plastics, car interior panels — the future of sustainable materials</td></tr>
+  </tbody>
+</table>
+
+<h4>🏡 The 11 Estate Zones</h4>
+<table>
+  <thead><tr><th>Zone</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lavender Fields &amp; Floralpy</strong></td><td>Sensory therapy gardens, pick-and-pay blooms, essential oil production, VSU Floralpy&reg;-inspired healing walks</td></tr>
+    <tr><td><strong>Agrotherapy Cabin Resort</strong></td><td>A-frame cabins for immersive nature retreats with fire pits and forest views</td></tr>
+    <tr><td><strong>Agro-Hound Dog Park</strong></td><td>Fenced areas for socializing, exercise, and vacation fun with support animals</td></tr>
+    <tr><td><strong>Wetland Education Zone</strong></td><td>Elevated boardwalks and outdoor classrooms for hands-on science education</td></tr>
+    <tr><td><strong>Trail Network</strong></td><td>ATV and walking trails through 30 acres of shortleaf pine plantation</td></tr>
+    <tr><td><strong>Farm Store &amp; Community Market</strong></td><td>Local produce, value-added products, lavender goods, artisan items</td></tr>
+    <tr><td><strong>Hemp Fields &amp; Phytoremediation</strong></td><td>Industrial hemp for soil remediation, CBD production, fiber harvest</td></tr>
+    <tr><td><strong>Hydroponic Innovation Lab</strong></td><td>Year-round vertical towers — microgreens, herbs, specialty greens, 90% less water</td></tr>
+    <tr><td><strong>Butterfly Pavilion</strong></td><td>Geodesic dome with tropical and native butterflies — education, beauty, conservation</td></tr>
+    <tr><td><strong>Food Forest &amp; Permaculture Garden</strong></td><td>Seven-layer permaculture: fruit trees, berry bushes, herbs, edible groundcovers, mushroom logs</td></tr>
+    <tr><td><strong>Strolling Gardens &amp; Pergola Walk</strong></td><td>Wisteria pergolas, pollinator meadows, echinacea, black-eyed Susans, butterfly bush</td></tr>
+  </tbody>
+</table>
+
+<h4>📐 Spatial Breakdown — 66 Acres of Purpose</h4>
+<div class="revenue-bar" style="height:auto;flex-wrap:wrap;">
+  <div style="width:45%;background:#5FA878;padding:0.3rem 0.5rem;">🌲 Pine Forest — 30 ac</div>
+  <div style="width:12%;background:#9B7EB8;padding:0.3rem 0.2rem;">💜 Lavender — 8 ac</div>
+  <div style="width:7.5%;background:#5DB87A;padding:0.3rem 0.2rem;">🌿 Hemp — 5 ac</div>
+  <div style="width:7.5%;background:#4A7C5F;padding:0.3rem 0.2rem;">🌳 Food — 5 ac</div>
+  <div style="width:7.5%;background:#5BA8D4;padding:0.3rem 0.2rem;">🥾 Trails — 5 ac</div>
+  <div style="width:6%;background:#D4915C;padding:0.3rem 0.2rem;">🐐 Animals — 4 ac</div>
+  <div style="width:4.5%;background:#E8B84B;padding:0.3rem 0.1rem;">🏠 3 ac</div>
+  <div style="width:4.5%;background:#C8A84E;padding:0.3rem 0.1rem;">🏕️ 3 ac</div>
+  <div style="width:4.5%;background:var(--text-light);padding:0.3rem 0.1rem;">🅿️ 3 ac</div>
+</div>
+
+<h4>🎓 8 Training Programs — Farm Academy (Enrollment 2027)</h4>
+<table>
+  <thead><tr><th>#</th><th>Program</th><th>Curriculum Highlights</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Off-Grid Solar &amp; Energy</strong></td><td>Panel installation, battery storage, inverters, passive solar design, grid-tied vs off-grid</td></tr>
+    <tr><td>2</td><td><strong>Water Systems &amp; Harvesting</strong></td><td>Rainwater cisterns, drip irrigation, greywater recycling, water quality testing</td></tr>
+    <tr><td>3</td><td><strong>Soil Science &amp; Composting</strong></td><td>Soil testing, biochar, cover cropping, phytoremediation with hemp</td></tr>
+    <tr><td>4</td><td><strong>Plant Processing &amp; Permaculture</strong></td><td>Seed-to-harvest, essential oil distillation, hemp fiber processing, companion planting</td></tr>
+    <tr><td>5</td><td><strong>Animal Husbandry &amp; Processing</strong></td><td>Rotational grazing, poultry care, egg collection, beekeeping, humane butchering</td></tr>
+    <tr><td>6</td><td><strong>Community Building &amp; Wellness</strong></td><td>Cooperative farming models, farm-to-table business, mental health through land work</td></tr>
+    <tr><td>7</td><td><strong>Natural Building &amp; Off-Grid Living</strong></td><td>Cob &amp; straw bale, timber framing, passive heating/cooling, tiny home &amp; A-frame</td></tr>
+    <tr><td>8</td><td><strong>Zero-Waste Farm Operations</strong></td><td>Vermiculture, biodigester, waste-to-energy, closed-loop system design</td></tr>
+  </tbody>
+</table>
+
+<p style="text-align:center;font-style:italic;color:var(--gold);font-size:10pt;margin-top:0.75rem;">"Has to be fun. See the system, play with it — not slave to it."</p>
+
+<hr class="section-divider">
+
+<!-- ============ PART 2: FARM GRANT STRATEGY ============ -->
+<h2>Part 2: Farm Grant Strategy — $925,000+ Identified</h2>
+
+
+<div class="callout callout-success">
+  <div class="callout-label">✓ 11 Programs Mapped to Project</div>
+  <p>We've identified <strong>$925,000+</strong> in potential funding across 11 federal, state, and local programs — each mapped to specific elements of the agrotherapy estate. Grant data sourced from USDA, Virginia AFID, Virginia DHR, VDACS, and local economic development agencies.</p>
+</div>
+
+<h3>🔴 URGENT Priority — Apply Immediately</h3>
+
+<div class="grant-card urgent">
+  <span class="badge badge-urgent">URGENT</span>
+  <h4>AFID Infrastructure Grant</h4>
+  <div class="agency">Virginia AFID</div>
+  <div class="amount">Up to $50,000</div>
+  <p>Infrastructure for Agrotherapy Processing Pavilion and Farm Store. Brunswick County EDA applies on behalf of project.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Infrastructure</div>
+</div>
+
+<div class="grant-card urgent">
+  <span class="badge badge-urgent">URGENT</span>
+  <h4>VAPG — Value-Added Producer Grant</h4>
+  <div class="agency">USDA Agricultural Marketing Service</div>
+  <div class="amount">Up to $75,000</div>
+  <p>Working capital for value-added products — lavender soaps, oils, farm store goods, e-commerce platform.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Agricultural</div>
+</div>
+
+<div class="grant-card urgent">
+  <span class="badge badge-urgent">URGENT</span>
+  <h4>VA BIPOC Historic Preservation</h4>
+  <div class="agency">Virginia DHR / BIPOC Program</div>
+  <div class="amount">Varies</div>
+  <p>Historic site stabilization and cultural workforce development. Lawrenceville Historic District qualifies.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Historic / Cultural</div>
+</div>
+
+<h3>🟡 HIGH Priority</h3>
+
+<div class="grant-card high">
+  <span class="badge badge-high">HIGH</span>
+  <h4>TRIAD — Tobacco Region Incentive</h4>
+  <div class="agency">VA Tobacco Region Revitalization Commission</div>
+  <div class="amount">Varies</div>
+  <p>Agribusiness development in historic tobacco region. Brunswick County is an eligible tobacco region county.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Infrastructure</div>
+</div>
+
+<div class="grant-card high">
+  <span class="badge badge-high">HIGH</span>
+  <h4>EQIP — Environmental Quality Incentives</h4>
+  <div class="agency">USDA NRCS</div>
+  <div class="amount">Up to $450,000</div>
+  <p>Wetland buffers, pollinator habitats, soil conservation practices. Eligible after TSP certification.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Ecological</div>
+</div>
+
+<div class="grant-card high">
+  <span class="badge badge-high">HIGH</span>
+  <h4>Socially-Disadvantaged Groups Grant</h4>
+  <div class="agency">USDA Farm Service Agency</div>
+  <div class="amount">Varies</div>
+  <p>BIPOC landowner support — document minority ownership structure and land stewardship mission.</p>
+  <div style="font-size:8pt;color:var(--text-light);margin-top:0.25rem;">Zone: Minority Support</div>
+</div>
+
+<h3>🔵 MEDIUM Priority</h3>
+
+<table>
+  <thead><tr><th>Program</th><th>Agency</th><th>Amount</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>VSU Small Farm Outreach</strong></td><td>Virginia State University / VCE</td><td>Free Technical Assistance</td><td>Extension agent support for beginning and minority farmers</td></tr>
+    <tr><td><strong>Virginia BMP Tax Credit</strong></td><td>Virginia DCR</td><td>25% of BMP Costs</td><td>Tax credit for agricultural best management practices</td></tr>
+    <tr><td><strong>Beginning Farmer &amp; Rancher</strong></td><td>USDA NIFA</td><td>Up to $250,000</td><td>Partner with NC A&amp;T or VSU for university-backed application</td></tr>
+  </tbody>
+</table>
+
+<h3>⚪ PLANNED (2027+)</h3>
+
+<table>
+  <thead><tr><th>Program</th><th>Agency</th><th>Amount</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Specialty Crop Block Grant</strong></td><td>VDACS</td><td>Varies</td><td>Lavender qualifies as specialty crop — targeting 2027 window</td></tr>
+    <tr><td><strong>USDA REAP — Rural Energy</strong></td><td>USDA Rural Development</td><td>Varies</td><td>Solar and renewable energy for A-frame solar array (Phase 2)</td></tr>
+  </tbody>
+</table>
+
+<p style="text-align:center;font-size:8.5pt;color:var(--text-light);margin-top:1rem;"><em>Strategy prepared by Think! Design &amp; Planning, LLC for Prisscise Property Ventures.</em></p>
+
+<hr class="section-divider">
+
+<!-- ============ PART 2: ELDERLY CARE ============ -->
+<h2>Part 3: Elderly Care Facility — Grant Opportunities</h2>
+
+
+<div class="callout callout-success">
+  <div class="callout-label">✓ Strong Eligibility</div>
+  <p>Brunswick County (pop. ~15,849) is well under the 20,000 threshold for USDA rural eligibility AND is in the Virginia Tobacco Region. This opens <strong>multiple funding streams</strong> most applicants can't access.</p>
+</div>
+
+<h3>🔴 Top Priority Grants</h3>
+
+<div class="grant-card urgent">
+  <span class="badge badge-star">⭐ TOP PRIORITY</span>
+  <h4>USDA Community Facilities Direct Loan & Grant Program</h4>
+  <div class="agency">USDA Rural Development · Rolling Applications</div>
+  <div class="amount">Up to 75% of eligible project costs</div>
+  <p>FY2026 funding: ~$671M nationally. Covers construction, expansion, remodeling, equipment, land purchase for nursing homes and assisted living facilities. <em>Note: Must be nonprofit, public body, or tribe — consider creating a 501(c)(3) for the elder care component.</em></p>
+</div>
+
+<div class="grant-card urgent">
+  <span class="badge badge-star">⭐ HIGH RELEVANCE</span>
+  <h4>Virginia Tobacco Region Revitalization Commission (TRRC)</h4>
+  <div class="agency">RevitalizeVA.org · Brunswick County is eligible</div>
+  <div class="amount">Varies — Recent Brunswick County awards: $1.35M+</div>
+  <p>Funds agribusiness, business development, workforce, and infrastructure. An "Agrotherapy + Elder Care" model is exactly the innovation the TRRC funds.</p>
+</div>
+
+<div class="grant-card urgent">
+  <span class="badge badge-urgent">🆕 NEW PROGRAM</span>
+  <h4>Rural Health Transformation (RHT) Program</h4>
+  <div class="agency">CMS via State Health Departments · 2026-2030</div>
+  <div class="amount">$50 BILLION over 5 years</div>
+  <p>Brand new federal program to stabilize and transform rural healthcare. Contact Virginia Department of Health for Brunswick County allocation details.</p>
+</div>
+
+<h3>🟡 High-Value Federal Programs</h3>
+<table>
+  <thead><tr><th>Program</th><th>Agency</th><th>Amount</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>B&I Loan Guarantee</td><td>USDA</td><td>Varies</td><td>Works for <strong>for-profit</strong> entities — guarantees bank loans</td></tr>
+    <tr><td>HRSA Rural Health Outreach</td><td>HRSA</td><td>Varies</td><td>Brunswick likely qualifies as Health Professional Shortage Area</td></tr>
+    <tr><td>EDA Public Works</td><td>EDA</td><td>Varies</td><td>Healthcare infrastructure tied to job creation</td></tr>
+    <tr><td>Section 504 Home Repair</td><td>USDA</td><td>Grants to $10K</td><td>For homeowners 62+ — could serve residents</td></tr>
+    <tr><td>ACL / Older Americans Act</td><td>ACL</td><td>Via Area Agency on Aging</td><td>Nutrition, caregiver support, independent living</td></tr>
+  </tbody>
+</table>
+
+<h3>🟡 Virginia State Programs</h3>
+<table>
+  <thead><tr><th>Program</th><th>What It Does</th><th>Revenue Impact</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Virginia Auxiliary Grant (AG)</strong></td><td>State supplement for low-income residents (65+) in approved ALFs</td><td>Key revenue stream — covers gap between resident income and facility rate</td></tr>
+    <tr><td><strong>DARS Programs</strong></td><td>Respite vouchers, independent living, assistive tech</td><td>Additional service funding</td></tr>
+    <tr><td><strong>CCC Plus Waiver</strong> ⭐</td><td>Medicaid waiver for home/community-based elder care</td><td><strong>Recurring Medicaid revenue</strong> — must enroll as provider through DMAS</td></tr>
+  </tbody>
+</table>
+
+<h3>🟠 BIPOC-Specific Opportunities</h3>
+<table>
+  <thead><tr><th>Resource</th><th>Type</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>SBA 8(a) Program</td><td>Certification</td><td>Strengthens profile for all federal funding</td></tr>
+    <tr><td>MBDA Business Centers</td><td>Free consulting</td><td>Help prepare loan packages and navigate capital</td></tr>
+    <tr><td>New Markets Tax Credit</td><td>39% tax credit</td><td>Brunswick County likely qualifies as low-income census tract</td></tr>
+    <tr><td>CDFIs (e.g., The Innovate Fund)</td><td>Financing</td><td>Prioritize health/wellness projects in underserved areas</td></tr>
+    <tr><td>RWJF Foundation</td><td>Grants</td><td>Health equity focus — monitor calls for proposals</td></tr>
+    <tr><td>AARP Foundation</td><td>Grants</td><td>Economic opportunity for low-income seniors</td></tr>
+  </tbody>
+</table>
+
+<h3>🏥 Virginia Licensing Requirements</h3>
+<p><strong>Licensing Authority:</strong> Virginia Department of Social Services (VDSS)<br>
+<strong>Regulations:</strong> 22VAC40-73 — Standards for Licensed Assisted Living Facilities</p>
+
+<h4>Administrator License (ALFA) — The Critical Personal Credential</h4>
+<table>
+  <thead><tr><th>Requirement</th><th>Details</th></tr></thead>
+  <tbody>
+    <tr><td>Age</td><td>Must be 21+</td></tr>
+    <tr><td>Education</td><td>High school diploma/GED minimum</td></tr>
+    <tr><td>Training (AIT)</td><td>320–640 hours depending on education background</td></tr>
+    <tr><td>Exam</td><td>National RC/AL examination (NAB)</td></tr>
+    <tr><td>Continuing Ed</td><td>20 hours per renewal period</td></tr>
+    <tr><td>Fees</td><td>~$595 total (application + licensure)</td></tr>
+  </tbody>
+</table>
+
+<h3>Projected Revenue Model</h3>
+<div class="revenue-bar">
+  <div style="width:40%;background:var(--green);">Medicaid 40%</div>
+  <div style="width:25%;background:var(--navy);">VA Auxiliary 25%</div>
+  <div style="width:20%;background:var(--gold);">Private Pay 20%</div>
+  <div style="width:10%;background:var(--blue);">Veterans 10%</div>
+  <div style="width:5%;background:var(--text-light);">Grants 5%</div>
+</div>
+
+<h3>💡 Strategic Recommendations</h3>
+
+<div class="callout callout-gold">
+  <div class="callout-label">Key Insight</div>
+  <p><strong>"Agrotherapy + Elder Care" is a unique and fundable model.</strong> Position this as innovative rural health equity programming serving an underserved BIPOC community with agricultural therapy. This narrative strengthens nearly every grant application.</p>
+</div>
+
+<h4>Immediate Actions (Next 30 Days)</h4>
+<ul class="checklist">
+  <li>Register on <strong>SAM.gov</strong> — required for ALL federal grants; registration takes weeks</li>
+  <li>Contact <strong>USDA Virginia Rural Development</strong> — free guidance, rolling applications</li>
+  <li>Contact <strong>Virginia Tobacco Region Commission</strong> — Brunswick County is in their service area</li>
+  <li>Begin <strong>ALFA administrator license pathway</strong> — this is the bottleneck</li>
+</ul>
+
+<div class="callout callout-info">
+  <div class="callout-label">⚠️ Structural Decision</div>
+  <p><strong>Consider creating a 501(c)(3) nonprofit</strong> for the elder care component while keeping RTTL/Prisscise as the for-profit entity for agritourism. Many of the best grants (USDA CF, RBDG) require nonprofit status. A hybrid structure opens the most doors.</p>
+</div>
+
+<h3>Key Contacts</h3>
+<table>
+  <thead><tr><th>Who</th><th>Why</th><th>How</th></tr></thead>
+  <tbody>
+    <tr><td>USDA VA Rural Development</td><td>CF Grant guidance</td><td>rd.usda.gov/contact-us/state-offices/va</td></tr>
+    <tr><td>VA Tobacco Region Commission</td><td>Regional grants</td><td>RevitalizeVA.org</td></tr>
+    <tr><td>Brunswick County DSS</td><td>Auxiliary Grant provider enrollment</td><td>Local office</td></tr>
+    <tr><td>DMAS Provider Services</td><td>CCC Plus waiver enrollment</td><td>vamedicaid.dmas.virginia.gov/provider</td></tr>
+    <tr><td>VDSS Licensing</td><td>ALF application</td><td>licensing.dss.virginia.gov</td></tr>
+    <tr><td>Board of Long-Term Care Admins</td><td>ALFA license</td><td>(804) 367-4400</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- ============ PART 3: CHRONIC GURU ============ -->
+<h2>Part 4: Chronic Guru — Business Model Analysis</h2>
+
+<h3>What Is Chronic Guru?</h3>
+<p><strong>Chronic Guru is a cannabis/hemp dispensary brand</strong> — not a health/wellness company. Founded in 2016 by Patrick O'Brien (a veteran and third-generation cannabis grower) and co-founded with Erdem Sezer, headquartered in Apopka, Florida.</p>
+<p>They sell THCa flower, edibles, concentrates, pre-rolls, THC-infused drinks, and vape products — marketing themselves as "farm-direct," organic, and family-owned.</p>
+
+<h3>How They Make Money (3 Revenue Streams)</h3>
+<table>
+  <thead><tr><th>Stream</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Retail Dispensary/Lounges</strong></td><td>6 locations (4 FL, 2 NC) — "Amsterdam coffee-shop" style with events</td></tr>
+    <tr><td><strong>E-Commerce</strong></td><td>Nationwide hemp shipping under 2018 Farm Bill (&lt;0.3% Delta-9 THC)</td></tr>
+    <tr><td><strong>Franchise Model</strong></td><td>Recruiting franchisees for managed-operation/passive-income locations</td></tr>
+  </tbody>
+</table>
+
+<h3>What's Unique / Hard to Copy</h3>
+<table>
+  <thead><tr><th>Element</th><th>Details</th></tr></thead>
+  <tbody>
+    <tr><td>Vertically integrated</td><td>Own farm in Apopka — farm-to-consumer pipeline</td></tr>
+    <tr><td>Lounge/social experience</td><td>On-site consumption with events (Puff & Paint, music)</td></tr>
+    <tr><td>Education arm</td><td>"Sativa University" — trained 60,000+ students</td></tr>
+    <tr><td>Franchise scaling</td><td>Unusual in cannabis space</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-warning">
+  <div class="callout-label">⚠️ Critical Legal Warning</div>
+  <p><strong>Federal legislation (H.R. 5371)</strong> signed November 2025 shifts hemp's legal definition to a <strong>"total THC" standard</strong> (counting both Delta-9 THC AND THCa). <strong>Effective November 12, 2026</strong> — after this date, high-THCa products will be classified as marijuana. Many states have already enacted bans ahead of the federal deadline.</p>
+</div>
+
+<div class="callout callout-info">
+  <div class="callout-label">Recommendation</div>
+  <p><strong>Lamont is right to be cautious.</strong> The model has been widely copied — it is NOT proprietary. The legal window closes in ~5 months (Nov 2026). Pivoting to state-licensed marijuana operations requires much heavier regulation, taxation, and capital. <strong>We recommend focusing energy on the elderly care idea instead</strong> — it has real long-term viability and strong grant support.</p>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <img src="think-logo-emerald.png" alt="Think!" style="height: 36px; width: auto; margin-bottom: 0.5rem;"><br>
+  <strong>Think! Design & Planning, LLC</strong><br>
+  W. Chris Harrison, MLA, ASLA · Project TDP-2026-001<br>
+  Grant data and business model research compiled June 4, 2026. All figures should be verified with issuing agencies before application.<br>
+  <em>This document is confidential and prepared exclusively for Prisscise Property Ventures, LLC / RTTLC.</em>
+</div>
+
+</body>
+</html>
