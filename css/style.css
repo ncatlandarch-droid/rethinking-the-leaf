@@ -205,8 +205,8 @@ ul { list-style: none; }
   flex-shrink: 0;
 }
 .nav__logo-icon {
-  width: 110px;
-  height: 110px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
   border-radius: 50%;
 }
