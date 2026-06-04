@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support the Mission — ReThinking The Leaf</title>
+  <meta name="description" content="Support ReThinking The Leaf's mission to build an integrated agrotherapy campus serving Brunswick County, Virginia. Every dollar funds elder care, youth training, and community healing.">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .donate-hero {
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-3xl) var(--space-lg);
+      background: linear-gradient(135deg, rgba(10,14,10,0.92), rgba(20,28,18,0.88)), url('images/hero-lavender.png') center/cover;
+    }
+    .donate-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .donate-hero p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .donate-section {
+      padding: var(--space-3xl) var(--space-lg);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .donate-section h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+      text-align: center;
+    }
+    .donate-tiers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+    }
+    .donate-tier {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--space-xl);
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .donate-tier:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-gold);
+    }
+    .donate-tier--featured {
+      border-color: var(--accent-gold);
+      background: linear-gradient(135deg, rgba(200,168,78,0.08), rgba(95,168,120,0.05));
+    }
+    .donate-tier--featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: 12px;
+      right: -28px;
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 32px;
+      transform: rotate(45deg);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .donate-tier__icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-sm);
+    }
+    .donate-tier__name {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--accent-gold);
+      margin-bottom: var(--space-xs);
+    }
+    .donate-tier__amount {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .donate-tier__desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+    }
+    .donate-tier__btn {
+      display: inline-block;
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .donate-tier__btn:hover {
+      background: #d4b44a;
+      transform: scale(1.03);
+    }
+    .donate-impact {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .donate-impact__item {
+      text-align: center;
+      padding: var(--space-lg);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .donate-impact__num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+    .donate-impact__label {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-top: var(--space-xs);
+    }
+    .donate-ways {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--space-xl);
+      margin: var(--space-xl) 0;
+    }
+    .donate-ways h3 {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 1.3rem;
+      margin-bottom: var(--space-md);
+    }
+    .donate-ways__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-md);
+    }
+    .donate-ways__method {
+      text-align: center;
+      padding: var(--space-md);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+    }
+    .donate-ways__method-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .donate-ways__method-detail {
+      color: var(--accent-gold);
+      font-size: 0.9rem;
+      word-break: break-all;
+    }
+    .donate-note {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-top: var(--space-xl);
+      padding: var(--space-md);
+      border: 1px dashed rgba(200,168,78,0.3);
+      border-radius: 8px;
+      background: rgba(200,168,78,0.05);
+    }
+    .donate-mission {
+      background: linear-gradient(135deg, rgba(95,168,120,0.08), rgba(200,168,78,0.05));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: var(--space-xl);
+      margin: var(--space-xl) 0;
+      line-height: 1.8;
+    }
+    .donate-mission p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+    .donate-mission strong {
+      color: var(--text-primary);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-lg);
+    }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" id="nav-logo">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon">
+        <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html" class="nav__link">Home</a>
+        <a href="index.html#estate" class="nav__link">The Estate</a>
+        <a href="index.html#team" class="nav__link">Team</a>
+        <a href="#donate" class="nav__cta" id="nav-donate-cta">Donate Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="donate-hero" id="top">
+    <div>
+      <p style="color: var(--accent-gold); font-family: var(--font-display); letter-spacing: 0.15em; font-size: 0.85rem; margin-bottom: var(--space-md); text-transform: uppercase;">Support the Mission</p>
+      <h1>Help Us Build Something<br>That Heals a Community</h1>
+      <p>Every dollar goes directly to building an integrated agrotherapy campus — where elderly residents find dignity, young people find purpose, and a community finds its way back to the land.</p>
+    </div>
+  </section>
+
+  <!-- IMPACT STATS -->
+  <div class="donate-section">
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <div class="donate-impact">
+      <div class="donate-impact__item">
+        <div class="donate-impact__num">66</div>
+        <div class="donate-impact__label">Acres of Purpose</div>
+      </div>
+      <div class="donate-impact__item">
+        <div class="donate-impact__num">8</div>
+        <div class="donate-impact__label">Training Programs</div>
+      </div>
+      <div class="donate-impact__item">
+        <div class="donate-impact__num">11</div>
+        <div class="donate-impact__label">Estate Zones</div>
+      </div>
+      <div class="donate-impact__item">
+        <div class="donate-impact__num">1</div>
+        <div class="donate-impact__label">Community Served</div>
+      </div>
+    </div>
+
+    <!-- MISSION -->
+    <div class="donate-mission">
+      <p><strong>ReThinking The Leaf Corporation</strong> is building an integrated agrotherapy campus in Brunswick County, Virginia — one of the most underserved communities in the state. Our vision connects lavender farming, hemp research, elder care, youth training, and spiritual healing into one self-sustaining system on historically significant Black-owned land.</p>
+      <p style="margin-top: 1rem;"><strong>Your donation directly funds:</strong> elder care facility development, farm-to-table nutrition programs for seniors, youth employment and training, cedar sauna wellness amenities, community meal programs for neighborhood elders, and food distribution to food-insecure families.</p>
+    </div>
+
+    <!-- DONATION TIERS -->
+    <h2 id="donate">Choose Your Impact</h2>
+    <div class="donate-tiers">
+
+      <div class="donate-tier">
+        <div class="donate-tier__icon">🌱</div>
+        <div class="donate-tier__name">Friend of the Farm</div>
+        <div class="donate-tier__amount">$25</div>
+        <p class="donate-tier__desc">Provides seeds for one raised bed in the community nutrition garden. Your name added to our Supporters Wall.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $25</a>
+      </div>
+
+      <div class="donate-tier donate-tier--featured">
+        <div class="donate-tier__icon">🌿</div>
+        <div class="donate-tier__name">Seed Planter</div>
+        <div class="donate-tier__amount">$50</div>
+        <p class="donate-tier__desc">Funds one community meal for neighborhood seniors. Includes a handwritten thank-you from our team.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $50</a>
+      </div>
+
+      <div class="donate-tier">
+        <div class="donate-tier__icon">🌳</div>
+        <div class="donate-tier__name">Legacy Builder</div>
+        <div class="donate-tier__amount">$100</div>
+        <p class="donate-tier__desc">Sponsors one youth trainee for a week of hands-on farm education. Recognition on our website.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $100</a>
+      </div>
+
+      <div class="donate-tier">
+        <div class="donate-tier__icon">💜</div>
+        <div class="donate-tier__name">Lavender Circle</div>
+        <div class="donate-tier__amount">$250</div>
+        <p class="donate-tier__desc">Funds one month of cedar sauna wellness sessions for elderly residents. Invitation to our annual harvest gathering.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $250</a>
+      </div>
+
+      <div class="donate-tier">
+        <div class="donate-tier__icon">🏡</div>
+        <div class="donate-tier__name">Homestead Partner</div>
+        <div class="donate-tier__amount">$500</div>
+        <p class="donate-tier__desc">Directly funds elder care facility development. Named recognition in the facility. Private farm tour for your family.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $500</a>
+      </div>
+
+      <div class="donate-tier">
+        <div class="donate-tier__icon">⭐</div>
+        <div class="donate-tier__name">Founding Patron</div>
+        <div class="donate-tier__amount">$1,000+</div>
+        <p class="donate-tier__desc">Cornerstone supporter of the entire campus vision. Permanent naming recognition. Annual VIP harvest dinner invitation.</p>
+        <a href="https://cash.app/$RTTLC" class="donate-tier__btn">Give $1,000+</a>
+      </div>
+
+    </div>
+
+    <!-- OTHER WAYS TO GIVE -->
+    <div class="donate-ways">
+      <h3 style="text-align: center;">Other Ways to Give</h3>
+      <div class="donate-ways__grid">
+        <div class="donate-ways__method">
+          <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">💵</div>
+          <div class="donate-ways__method-name">CashApp</div>
+          <div class="donate-ways__method-detail">$RTTLC</div>
+        </div>
+        <div class="donate-ways__method">
+          <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">📱</div>
+          <div class="donate-ways__method-name">Venmo</div>
+          <div class="donate-ways__method-detail">@RTTLC</div>
+        </div>
+        <div class="donate-ways__method">
+          <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">🏦</div>
+          <div class="donate-ways__method-name">Zelle</div>
+          <div class="donate-ways__method-detail">donate@rethinkingtheleaf.com</div>
+        </div>
+        <div class="donate-ways__method">
+          <div style="font-size: 1.5rem; margin-bottom: 0.3rem;">✉️</div>
+          <div class="donate-ways__method-name">By Mail</div>
+          <div class="donate-ways__method-detail">Contact us for mailing address</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAX NOTE -->
+    <div class="donate-note">
+      <strong>501(c)(3) Status:</strong> ReThinking The Leaf Foundation is in the process of filing for 501(c)(3) nonprofit tax-exempt status. Once approved, all qualifying donations will be retroactively tax-deductible. We will notify all donors when tax-exempt status is confirmed.
+    </div>
+
+    <!-- QUOTE -->
+    <p style="text-align: center; font-style: italic; color: var(--accent-gold); font-family: var(--font-accent); font-size: 1.2rem; margin-top: var(--space-3xl); margin-bottom: var(--space-xl);">
+      "The farm feeds the facility. The facility funds the farm.<br>The training programs staff both. And the community heals together."
+    </p>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" style="border-top: 1px solid var(--border); padding: var(--space-xl) 0; text-align: center;">
+    <div class="container">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        &copy; 2026 ReThinking The Leaf Corporation. All rights reserved.<br>
+        Lawrenceville, Brunswick County, Virginia<br>
+        <a href="index.html" style="color: var(--accent-gold); text-decoration: none;">Return to Main Site</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
