@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
       burger.classList.toggle('active');
       navLinks.classList.toggle('active');
     });
-    // Close on link click
-    navLinks.querySelectorAll('.nav__link, .nav__cta').forEach(link => {
+    // Close on link click (includes dropdown links)
+    navLinks.querySelectorAll('.nav__link, .nav__cta, .nav__dropdown-menu a').forEach(link => {
       link.addEventListener('click', () => {
         burger.classList.remove('active');
         navLinks.classList.remove('active');

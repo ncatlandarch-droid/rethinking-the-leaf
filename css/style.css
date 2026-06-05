@@ -1473,27 +1473,51 @@ ul { list-style: none; }
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-md);
+    z-index: 999;
+    overflow-y: auto;
+    padding: var(--space-3xl) var(--space-md);
   }
   .nav__links.active { display: flex; }
   .nav__link { font-size: 1.2rem; }
-  .nav__burger { display: flex; }
-  /* Secondary nav links smaller on mobile */
-  .nav__link[id="nav-science"],
-  .nav__link[id="nav-masterplan"],
-  .nav__link[id="nav-community"],
-  .nav__link[id="nav-events"] {
-    font-size: 0.85rem;
-    opacity: 0.65;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  .nav__burger { display: flex; z-index: 1001; }
+
+  /* Dropdown opens inline on mobile (no hover needed) */
+  .nav__dropdown { position: static; }
+  .nav__dropdown-trigger { display: none; }
+  .nav__dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    min-width: auto;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
+  .nav__dropdown-menu a {
+    font-size: 0.95rem;
+    padding: 0.4rem 0;
+    color: var(--text-muted);
+  }
+
+  /* Team grid — 2 columns on tablet, stacks well */
+  .team__grid { grid-template-columns: repeat(2, 1fr) !important; gap: var(--space-md); }
+
   /* Testimonials grid stacks on mobile */
   #testimonials > .container > div:last-child {
     grid-template-columns: 1fr !important;
   }
 
   .hero__title { font-size: clamp(2rem, 8vw, 3.5rem); }
+  .hero__subtitle { font-size: clamp(1rem, 3vw, 1.3rem); }
+  .hero__badge { font-size: 0.7rem; }
 
   .mission__grid { grid-template-columns: 1fr; gap: var(--space-xl); }
   .mission__values { grid-template-columns: 1fr; }
@@ -1514,6 +1538,18 @@ ul { list-style: none; }
 
   .footer__grid { grid-template-columns: 1fr; }
   .footer__bottom { flex-direction: column; gap: var(--space-xs); text-align: center; }
+
+  /* Prevent any horizontal overflow */
+  .section { overflow-x: hidden; }
+  .container { padding: 0 var(--space-sm); }
+}
+
+/* Ultra-small screens (iPhone SE, etc.) */
+@media (max-width: 380px) {
+  .hero__title { font-size: 1.8rem; }
+  .nav__logo-text { font-size: 1.2rem; }
+  .nav__logo-icon { width: 50px; height: 50px; }
+  .team__grid { grid-template-columns: 1fr !important; }
 }
 
 /* ================================================================
