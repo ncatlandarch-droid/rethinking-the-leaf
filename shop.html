@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Farm Store — ReThinking The Leaf</title>
-  <meta name="description" content="Shop RTTL apparel, lavender products, honey, candles, and farm goods. Every purchase supports the 66-acre agrotherapy estate.">
+  <meta name="description" content="Shop RTTL apparel — t-shirts printed on demand and shipped to your door. Every purchase supports the 66-acre agrotherapy estate.">
   <meta property="og:title" content="The Farm Store — ReThinking The Leaf">
-  <meta property="og:description" content="Shop RTTL apparel, lavender products, honey, candles, and farm goods.">
+  <meta property="og:description" content="Shop RTTL apparel — every purchase supports the mission.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
   <link rel="stylesheet" href="css/style.css">
@@ -19,19 +19,27 @@
   <nav class="nav scrolled" id="nav">
     <div class="container nav__inner">
       <a href="index.html" class="nav__logo">
-        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon" style="width: 180px; height: 180px; object-fit: contain;">
+        <img src="images/rttlc-logo.png" alt="ReThinking The Leaf" class="nav__logo-icon">
         <span class="nav__logo-text">Re<span>Thinking</span> The Leaf</span>
       </a>
       <div class="nav__links" id="nav-links">
         <a href="index.html" class="nav__link">Home</a>
         <a href="index.html#estate" class="nav__link">The Estate</a>
-        <a href="index.html#experiences" class="nav__link">Experiences</a>
-        <a href="index.html#events-calendar" class="nav__link">Events</a>
+        <div class="nav__dropdown">
+          <span class="nav__dropdown-trigger">Explore <svg viewBox="0 0 10 6" fill="currentColor"><path d="M1 1l4 4 4-4"/></svg></span>
+          <div class="nav__dropdown-menu">
+            <a href="the-system.html">The System</a>
+            <a href="programs.html">Programs</a>
+            <a href="programs.html#experiences">Experiences</a>
+            <a href="programs.html#events">Events</a>
+            <a href="the-system.html#science">The Science</a>
+            <a href="the-system.html#legacy">Our Legacy</a>
+            <a href="the-system.html#masterplan">Master Plan</a>
+          </div>
+        </div>
         <a href="community.html" class="nav__link">Community</a>
+        <a href="donate.html" class="nav__link" style="color: var(--accent-gold);">Donate</a>
         <a href="#" class="nav__link" style="color: var(--accent-gold);">Shop</a>
-        <a href="#" id="nav-cart" style="position: relative; font-size: 1.4rem; color: var(--text-primary); text-decoration: none; margin-left: 0.5rem;" title="Shopping Cart">
-          🛒<span id="cart-badge" style="position: absolute; top: -6px; right: -10px; background: var(--accent-gold); color: var(--bg-dark); font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: none; align-items: center; justify-content: center;">0</span>
-        </a>
         <a href="index.html#contact" class="nav__cta">Visit the Farm</a>
       </div>
       <button class="nav__burger" id="nav-burger" aria-label="Toggle navigation">
@@ -46,24 +54,11 @@
   <section class="hub-hero" style="padding-top: calc(var(--space-3xl) + 100px);">
     <div class="hub-hero__bg"></div>
     <div class="hub-hero__content" style="max-width: 800px; text-align: center; margin: 0 auto;">
-      <div class="hub-hero__badge">🌿 From the Farm to Your Life</div>
+      <div class="hub-hero__badge">🌿 Wear the Mission</div>
       <h1 class="hub-hero__title" style="text-align: center;">The Farm <em>Store</em></h1>
       <p class="hub-hero__subtitle" style="text-align: center; margin: 0 auto;">
-        Handcrafted lavender products, estate-grown honey, premium apparel, and farmstead goods — every purchase supports the 66-acre mission.
+        Premium apparel printed on demand and shipped to your door — every purchase supports the 66-acre agrotherapy estate.
       </p>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       CATEGORY FILTER
-       ============================================================ -->
-  <section style="background: var(--bg-darker); border-bottom: 1px solid var(--border-subtle); padding: var(--space-md) 0; position: sticky; top: 60px; z-index: 100; backdrop-filter: blur(20px);">
-    <div class="container" style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
-      <button class="shop-filter active" data-filter="all" style="background: var(--accent-gold-dim); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">All Products</button>
-      <button class="shop-filter" data-filter="apparel" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Apparel</button>
-      <button class="shop-filter" data-filter="lavender" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Lavender</button>
-      <button class="shop-filter" data-filter="food" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Food & Drink</button>
-      <button class="shop-filter" data-filter="gifts" style="background: transparent; border: 1px solid var(--border-subtle); color: var(--text-secondary); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">Gifts</button>
     </div>
   </section>
 
@@ -119,129 +114,6 @@
           </div>
         </div>
 
-
-        <!-- Travel Tumbler -->
-        <div class="product-card shop-item" data-category="gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-travel-mug.png" alt="RTTLC Travel Tumbler" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Travel Tumbler</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">20oz insulated stainless steel with gold-engraved RTTL logo. Keeps drinks cold 12hrs, hot 6hrs.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mug -->
-        <div class="product-card shop-item" data-category="food" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-mug.png" alt="RTTLC Signature Mug" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">RTTL Signature Mug</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Matte black ceramic with gold leaf logo. 12oz. Microwave & dishwasher safe.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Essential Oil -->
-        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-oil.png" alt="Pure Lavender Essential Oil" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Pure Lavender Essential Oil</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Steam-distilled from estate-grown Lavandula angustifolia. 15ml dropper bottle.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$24</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Body Butter -->
-        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-cream.png" alt="Lavender Body Butter" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender Body Butter</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Rich shea butter infused with our lavender oil. Deeply moisturizing, 4oz jar.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$18</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lavender Honey -->
-        <div class="product-card shop-item" data-category="food" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-honey.png" alt="Lavender-Infused Raw Honey" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-gold); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Farm Fresh</span>
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender-Infused Honey</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Raw Virginia wildflower honey infused with our lavender blooms. 12oz jar.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$16</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hemp Relief Balm -->
-        <div class="product-card shop-item" data-category="lavender" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-balm.png" alt="Hemp Relief Balm" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Hemp Relief Balm</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Topical CBD balm from estate-grown hemp blended with lavender and arnica. 2oz tin.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$32</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Soy Candle -->
-        <div class="product-card shop-item" data-category="lavender gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden;">
-            <img src="images/product-candle.png" alt="Lavender Soy Candle" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">Lavender Soy Candle</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Hand-poured 100% soy wax with dried lavender buds. 45-hour burn time. 8oz.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$22</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gift Bundle -->
-        <div class="product-card shop-item" data-category="gifts" style="background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: transform 0.3s ease, box-shadow 0.3s ease;">
-          <div style="aspect-ratio: 1; overflow: hidden; position: relative;">
-            <img src="images/product-bundle.png" alt="Lavender Gift Bundle" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
-            <span style="position: absolute; top: 12px; left: 12px; background: var(--accent-lavender); color: var(--bg-dark); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Gift Set</span>
-          </div>
-          <div style="padding: var(--space-md);">
-            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.25rem;">The Lavender Gift Set</h3>
-            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-sm);">Soap, sachet, balm, and dried bouquet — beautifully wrapped. The perfect gift from the farm.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-family: var(--font-display); font-size: 1.4rem; color: var(--accent-gold);">$45</span>
-              <span style="font-size: 0.8rem; padding: 0.5rem 1rem; border: 1px solid var(--accent-lavender); border-radius: 6px; color: var(--accent-lavender); font-weight: 600; letter-spacing: 0.05em;">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -251,26 +123,21 @@
        ============================================================ -->
   <section class="section section--alt" style="padding: var(--space-xl) 0;">
     <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); text-align: center;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); text-align: center;">
         <div>
-          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">🌿</div>
-          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Estate Grown</h4>
-          <p style="color: var(--text-muted); font-size: 0.8rem;">Every lavender product begins in our 66-acre fields</p>
-        </div>
-        <div>
-          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">🤲</div>
-          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Handcrafted</h4>
-          <p style="color: var(--text-muted); font-size: 0.8rem;">Small-batch, made with care by our community</p>
+          <div style="font-size: 2rem; margin-bottom: var(--space-xs);">🖨️</div>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Print on Demand</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Made just for you — no waste, no overstock</p>
         </div>
         <div>
           <div style="font-size: 2rem; margin-bottom: var(--space-xs);">💚</div>
           <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Mission-Driven</h4>
-          <p style="color: var(--text-muted); font-size: 0.8rem;">Every purchase funds education & land stewardship</p>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Every purchase supports the 66-acre agrotherapy estate</p>
         </div>
         <div>
           <div style="font-size: 2rem; margin-bottom: var(--space-xs);">📦</div>
-          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Free Shipping</h4>
-          <p style="color: var(--text-muted); font-size: 0.8rem;">On orders over $50 — anywhere in the U.S.</p>
+          <h4 style="font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0.25rem;">Shipped Direct</h4>
+          <p style="color: var(--text-muted); font-size: 0.8rem;">Printed &amp; shipped directly to your door</p>
         </div>
       </div>
     </div>
