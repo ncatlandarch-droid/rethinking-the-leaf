@@ -208,7 +208,8 @@ ul { list-style: none; }
   width: 80px;
   height: 80px;
   object-fit: contain;
-  border-radius: 50%;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));
 }
 .nav__logo-text {
   font-family: var(--font-display);

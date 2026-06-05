@@ -366,15 +366,39 @@ print("25: Legal Warning")
 # =====================================================================
 # RECOMMENDATIONS & CLOSE
 # =====================================================================
+content("501(c)(3) Hybrid Structure -- CRITICAL", [
+    ("RTTL Corporation (For-Profit) -- KEEP AS-IS", 0),
+    ("Farm products, hemp R&D, farm store, cabins, events", 1),
+    ("RTTL Foundation (501(c)(3) Nonprofit) -- CREATE NEW", 0),
+    ("Elder care, training programs, community meals, youth jobs", 1),
+    ("Without 501(c)(3): INELIGIBLE for biggest grants", 0),
+    ("USDA Community Facilities = 75% of facility costs", 1),
+    ("No tax-deductible donations, no foundation grants", 1),
+])
+print("26: 501c3 Structure")
+
+content("501(c)(3) Filing Steps", [
+    ("Step 1: Form VA nonprofit corp through SCC (~$100)", 0),
+    ("Step 2: Articles of Incorporation with IRS language", 0),
+    ("Step 3: Bylaws + Board of Directors (minimum 3)", 0),
+    ("Step 4: Obtain EIN from IRS (free, same-day)", 0),
+    ("Step 5: File Form 1023 or 1023-EZ (~$275-$600)", 0),
+    ("Step 6: Wait for determination (3-6 months)", 0),
+    ("Step 7: VA charitable solicitation registration", 0),
+    ("Donation page is LIVE at rethinkingtheleaf.com/donate", 1),
+])
+print("27: Filing Steps")
+
 content("Strategic Recommendations", [
     ("Register on SAM.gov immediately (takes weeks)", 0),
+    ("File 501(c)(3) for RTTL Foundation ASAP", 0),
     ("Contact USDA VA Rural Development for CF Grant guidance", 0),
     ("Contact VA Tobacco Region Commission", 0),
-    ("Consider 501(c)(3) for elder care component", 0),
     ("Begin ALFA administrator license pathway", 0),
     ("Position as \"Agrotherapy + Elder Care\" in all applications", 0),
+    ("Share donation page: rethinkingtheleaf.com/donate", 0),
 ])
-print("26: Recommendations")
+print("28: Recommendations")
 
 content("Revenue Flywheel -- Self-Sustaining Model", [
     ("LAVENDER FARM produces PRODUCTS", 0),
