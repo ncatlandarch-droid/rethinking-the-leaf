@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RTTL Admin — Team Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/retro logo rttlc copy white with purpletips.png">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-primary: #0b0f1a;
+      --bg-card: #141928;
+      --bg-card-alt: #1a2035;
+      --bg-hover: #1e2745;
+      --border: rgba(255,255,255,0.06);
+      --border-focus: rgba(139,92,246,0.4);
+      --text-primary: #e8eaf0;
+      --text-secondary: #8b95b0;
+      --text-muted: #5a6380;
+      --accent-purple: #8b5cf6;
+      --accent-green: #10b981;
+      --accent-gold: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-blue: #3b82f6;
+      --accent-lavender: #a78bfa;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* ── Login Gate ── */
+    #login-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    #login-gate img { width: 80px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(139,92,246,0.3)); }
+    #login-gate h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+    #login-gate p { color: var(--text-secondary); margin-bottom: 2rem; }
+    #login-gate button {
+      background: var(--accent-purple);
+      color: white;
+      border: none;
+      padding: 0.85rem 2.5rem;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #login-gate button:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+
+    /* ── Dashboard (hidden until login) ── */
+    #dashboard { display: none; }
+
+    /* ── Top Bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar__left { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar__left img { width: 36px; height: 36px; object-fit: contain; }
+    .topbar__left h1 { font-size: 1.1rem; font-weight: 700; }
+    .topbar__left span { color: var(--accent-lavender); font-size: 0.75rem; background: rgba(139,92,246,0.15); padding: 0.15rem 0.6rem; border-radius: 50px; }
+    .topbar__right { display: flex; align-items: center; gap: 1rem; }
+    .topbar__user { color: var(--text-secondary); font-size: 0.85rem; }
+    .topbar__logout {
+      background: none; border: 1px solid var(--border); color: var(--text-secondary);
+      padding: 0.4rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+    }
+    .topbar__logout:hover { border-color: var(--accent-red); color: var(--accent-red); }
+    .topbar__back {
+      background: none; border: 1px solid var(--border); color: var(--text-secondary);
+      padding: 0.4rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; text-decoration: none; transition: all 0.2s;
+    }
+    .topbar__back:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+    /* ── Tab Navigation ── */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 0 2rem;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 1rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--accent-purple); border-bottom-color: var(--accent-purple); }
+
+    /* ── Content ── */
+    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Summary Cards ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: all 0.2s;
+    }
+    .summary-card:hover { border-color: var(--border-focus); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .summary-card__label { color: var(--text-muted); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .summary-card__value { font-size: 1.8rem; font-weight: 800; }
+    .summary-card__value.green { color: var(--accent-green); }
+    .summary-card__value.gold { color: var(--accent-gold); }
+    .summary-card__value.purple { color: var(--accent-purple); }
+    .summary-card__value.red { color: var(--accent-red); }
+    .summary-card__value.blue { color: var(--accent-blue); }
+    .summary-card__note { color: var(--text-muted); font-size: 0.7rem; margin-top: 0.35rem; }
+
+    /* ── Section Headers ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .section-header h2 { font-size: 1.15rem; font-weight: 700; }
+    .section-header span { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* ── Tables ── */
+    .table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      background: var(--bg-card-alt);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-hover); }
+    .amount { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .amount.positive { color: var(--accent-green); }
+    .amount.negative { color: var(--accent-red); }
+    .amount.zero { color: var(--text-muted); }
+
+    /* ── Status Badges ── */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge--planning { background: rgba(139,92,246,0.15); color: var(--accent-purple); }
+    .badge--in-progress { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+    .badge--done { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+    .badge--not-started { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
+    .badge--research { background: rgba(139,92,246,0.1); color: var(--accent-lavender); }
+    .badge--high { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+    .badge--medium { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
+    .badge--low { background: rgba(16,185,129,0.1); color: var(--accent-green); }
+
+    /* ── Progress Bars ── */
+    .progress-bar {
+      background: var(--bg-card-alt);
+      border-radius: 50px;
+      height: 8px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progress-bar__fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--accent-purple), var(--accent-lavender));
+      transition: width 0.6s ease;
+    }
+
+    /* ── Team Cards ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .team-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      transition: all 0.2s;
+    }
+    .team-card:hover { border-color: var(--border-focus); box-shadow: var(--shadow); }
+    .team-card__name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+    .team-card__role { color: var(--accent-lavender); font-size: 0.8rem; font-weight: 500; margin-bottom: 0.75rem; }
+    .team-card__info { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
+    .team-card__info a { color: var(--accent-purple); text-decoration: none; }
+
+    /* ── Financial Recommendation ── */
+    .rec-card {
+      background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(59,130,246,0.1));
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    .rec-card h3 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--accent-lavender); }
+    .rec-card p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem; }
+    .rec-card ul { list-style: none; padding: 0; }
+    .rec-card li { padding: 0.4rem 0; font-size: 0.85rem; color: var(--text-secondary); }
+    .rec-card li::before { content: "→ "; color: var(--accent-purple); font-weight: 700; }
+    .rec-card strong { color: var(--text-primary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .topbar { padding: 0.75rem 1rem; }
+      .tabs { padding: 0 0.5rem; }
+      .tab { padding: 0.75rem 1rem; font-size: 0.8rem; }
+      .content { padding: 1rem; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: 1fr; }
+      table { font-size: 0.8rem; }
+      thead th, tbody td { padding: 0.6rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Login Gate ── -->
+  <div id="login-gate">
+    <img src="images/retro logo rttlc copy white with purpletips.png" alt="RTTL">
+    <h1>RTTL Team Dashboard</h1>
+    <p>Sign in with your team account to access financials, tasks, and operations.</p>
+    <button onclick="netlifyIdentity.open('login')">Sign In →</button>
+  </div>
+
+  <!-- ── Dashboard ── -->
+  <div id="dashboard">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar__left">
+        <img src="images/retro logo rttlc copy white with purpletips.png" alt="RTTL">
+        <h1>RTTL Admin</h1>
+        <span>Team Dashboard</span>
+      </div>
+      <div class="topbar__right">
+        <span class="topbar__user" id="user-email">—</span>
+        <a href="index.html" class="topbar__back">← Back to Site</a>
+        <button class="topbar__logout" onclick="netlifyIdentity.logout()">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-panel="finances">💰 Finances</div>
+      <div class="tab" data-panel="tasks">✅ Tasks</div>
+      <div class="tab" data-panel="projects">🏗️ Capital Projects</div>
+      <div class="tab" data-panel="team">👥 Team</div>
+      <div class="tab" data-panel="tools">🔧 Tools & Integrations</div>
+    </div>
+
+    <!-- Content Panels -->
+    <div class="content">
+
+      <!-- ═══ FINANCES PANEL ═══ -->
+      <div class="panel active" id="panel-finances">
+        <div class="summary-grid" id="finance-summary"></div>
+
+        <div class="section-header">
+          <h2>Revenue Streams</h2>
+          <span>Monthly recurring unless noted</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Source</th><th>Amount</th><th>Period</th><th>Notes</th></tr></thead>
+            <tbody id="revenue-table"></tbody>
+          </table>
+        </div>
+
+        <div class="section-header">
+          <h2>Expenses</h2>
+          <span>Operating costs</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Amount</th><th>Period</th><th>Category</th><th>Notes</th></tr></thead>
+            <tbody id="expenses-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ TASKS PANEL ═══ -->
+      <div class="panel" id="panel-tasks">
+        <div class="summary-grid" id="tasks-summary"></div>
+        <div class="section-header">
+          <h2>Action Items</h2>
+          <span>What needs to get done</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Task</th><th>Assigned To</th><th>Priority</th><th>Category</th><th>Status</th></tr></thead>
+            <tbody id="tasks-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ CAPITAL PROJECTS PANEL ═══ -->
+      <div class="panel" id="panel-projects">
+        <div class="summary-grid" id="projects-summary"></div>
+        <div class="section-header">
+          <h2>Capital Improvement Projects</h2>
+          <span>Infrastructure & buildout phases</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Project</th><th>Estimated Cost</th><th>Funded</th><th>Progress</th><th>Priority</th><th>Status</th></tr></thead>
+            <tbody id="projects-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ TEAM PANEL ═══ -->
+      <div class="panel" id="panel-team">
+        <div class="section-header">
+          <h2>Team Directory</h2>
+          <span id="team-count"></span>
+        </div>
+        <div class="team-grid" id="team-grid"></div>
+      </div>
+
+      <!-- ═══ TOOLS PANEL ═══ -->
+      <div class="panel" id="panel-tools">
+        <div class="section-header">
+          <h2>Financial Management Recommendations</h2>
+          <span>Options for tracking money in & out</span>
+        </div>
+
+        <div class="rec-card">
+          <h3>🏆 Recommended: Wave (Free)</h3>
+          <p><strong>Best fit for RTTL right now.</strong> Wave is completely free accounting software for small businesses — no credit card needed. It handles invoicing, receipt scanning, financial reports, and connects to your PayPal & bank accounts.</p>
+          <ul>
+            <li><strong>Cost:</strong> $0/month (free forever for accounting & invoicing)</li>
+            <li><strong>PayPal integration:</strong> Auto-imports PayPal donations</li>
+            <li><strong>Reports:</strong> Profit & loss, balance sheet, sales tax</li>
+            <li><strong>Receipt scanning:</strong> Phone app scans receipts → auto-categorizes</li>
+            <li><strong>Best for:</strong> Pre-revenue / early-stage businesses exactly like RTTL</li>
+            <li><strong>Website:</strong> waveapps.com</li>
+          </ul>
+        </div>
+
+        <div class="rec-card" style="border-color: var(--border); background: var(--bg-card);">
+          <h3>💼 Alternative: QuickBooks Simple Start ($20/mo)</h3>
+          <p>Industry standard, but costs money. Better when you have regular revenue flowing and need payroll, inventory tracking, or tax prep exports for an accountant.</p>
+          <ul>
+            <li><strong>Cost:</strong> $20/month (Simple Start plan)</li>
+            <li><strong>Best for:</strong> When RTTL starts generating $1K+/month</li>
+            <li><strong>Payroll add-on:</strong> $45/month extra when you hire staff</li>
+          </ul>
+        </div>
+
+        <div class="rec-card" style="border-color: var(--border); background: var(--bg-card);">
+          <h3>📱 Alternative: This Dashboard (Custom — Free)</h3>
+          <p>What you're looking at right now! A built-in lightweight tracker. Good for visibility across the team, but not a replacement for proper accounting software. Use this for team coordination and Wave/QB for actual bookkeeping.</p>
+          <ul>
+            <li><strong>Cost:</strong> $0 — built into your website</li>
+            <li><strong>Limitations:</strong> Manual data entry (edit data.json), no bank sync</li>
+            <li><strong>Best for:</strong> Team visibility, task tracking, project planning</li>
+            <li><strong>Future:</strong> Can evolve into a full app with database if needed</li>
+          </ul>
+        </div>
+
+        <div class="rec-card" style="border-color: var(--accent-gold); background: rgba(245,158,11,0.05); margin-top: 1rem;">
+          <h3>💡 Recommended Setup</h3>
+          <p>Use <strong>both together</strong>:</p>
+          <ul>
+            <li><strong>Wave</strong> → actual bookkeeping, PayPal sync, financial reports, taxes</li>
+            <li><strong>This Dashboard</strong> → team task board, capital project tracking, team directory, quick financial overview</li>
+          </ul>
+          <p style="margin-top: 0.5rem;">As RTTL grows, upgrade Wave → QuickBooks and this dashboard → a custom farm management app.</p>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /dashboard -->
+
+  <script>
+    /* ── Netlify Identity ── */
+    const netlifyIdentity = window.netlifyIdentity;
+    
+    netlifyIdentity.on('init', user => { if (user) showDashboard(user); });
+    netlifyIdentity.on('login', user => { showDashboard(user); netlifyIdentity.close(); });
+    netlifyIdentity.on('logout', () => { document.getElementById('dashboard').style.display = 'none'; document.getElementById('login-gate').style.display = 'flex'; });
+
+    function showDashboard(user) {
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('user-email').textContent = user.email;
+      loadData();
+    }
+
+    /* ── Tab Switching ── */
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      });
+    });
+
+    /* ── Format Currency ── */
+    function fmt(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+    function fmtClass(n) { return n > 0 ? 'positive' : n < 0 ? 'negative' : 'zero'; }
+
+    /* ── Load Data ── */
+    async function loadData() {
+      try {
+        const res = await fetch('admin/data.json?t=' + Date.now());
+        const data = await res.json();
+        renderFinances(data.finances);
+        renderTasks(data.tasks);
+        renderProjects(data.finances.capitalProjects);
+        renderTeam(data.team);
+      } catch (e) {
+        console.error('Failed to load data:', e);
+      }
+    }
+
+    /* ── Render Finances ── */
+    function renderFinances(fin) {
+      const totalRev = fin.revenue.reduce((s, r) => s + r.amount, 0);
+      const totalExp = fin.expenses.reduce((s, e) => s + e.amount, 0);
+      const net = totalRev - totalExp;
+
+      document.getElementById('finance-summary').innerHTML = `
+        <div class="summary-card"><div class="summary-card__label">Total Revenue</div><div class="summary-card__value green">${fmt(totalRev)}</div><div class="summary-card__note">All sources combined</div></div>
+        <div class="summary-card"><div class="summary-card__label">Total Expenses</div><div class="summary-card__value red">${fmt(totalExp)}</div><div class="summary-card__note">Monthly operating costs</div></div>
+        <div class="summary-card"><div class="summary-card__label">Net Balance</div><div class="summary-card__value ${net >= 0 ? 'green' : 'red'}">${fmt(net)}</div><div class="summary-card__note">Revenue − Expenses</div></div>
+        <div class="summary-card"><div class="summary-card__label">Donations</div><div class="summary-card__value purple">${fmt(fin.summary.donationsReceived)}</div><div class="summary-card__note">Via PayPal & CashApp</div></div>
+        <div class="summary-card"><div class="summary-card__label">Merch Sales</div><div class="summary-card__value gold">${fmt(fin.summary.merchSales)}</div><div class="summary-card__note">Printful t-shirts</div></div>
+      `;
+
+      document.getElementById('revenue-table').innerHTML = fin.revenue.map(r => `
+        <tr><td>${r.source}</td><td class="amount ${fmtClass(r.amount)}">${fmt(r.amount)}</td><td>${r.period}</td><td style="color:var(--text-muted)">${r.notes || '—'}</td></tr>
+      `).join('');
+
+      document.getElementById('expenses-table').innerHTML = fin.expenses.map(e => `
+        <tr><td>${e.item}</td><td class="amount negative">${fmt(e.amount)}</td><td>${e.period}</td><td><span class="badge badge--planning">${e.category}</span></td><td style="color:var(--text-muted)">${e.notes || '—'}</td></tr>
+      `).join('');
+    }
+
+    /* ── Render Tasks ── */
+    function renderTasks(tasks) {
+      const done = tasks.filter(t => t.status === 'done').length;
+      const inProg = tasks.filter(t => t.status === 'in-progress').length;
+      const notStarted = tasks.filter(t => t.status === 'not-started').length;
+      const high = tasks.filter(t => t.priority === 'high').length;
+
+      document.getElementById('tasks-summary').innerHTML = `
+        <div class="summary-card"><div class="summary-card__label">Total Tasks</div><div class="summary-card__value blue">${tasks.length}</div></div>
+        <div class="summary-card"><div class="summary-card__label">High Priority</div><div class="summary-card__value red">${high}</div></div>
+        <div class="summary-card"><div class="summary-card__label">In Progress</div><div class="summary-card__value gold">${inProg}</div></div>
+        <div class="summary-card"><div class="summary-card__label">Completed</div><div class="summary-card__value green">${done}</div></div>
+      `;
+
+      document.getElementById('tasks-table').innerHTML = tasks.map(t => `
+        <tr>
+          <td><strong>${t.task}</strong></td>
+          <td>${t.assignee}</td>
+          <td><span class="badge badge--${t.priority}">${t.priority}</span></td>
+          <td><span class="badge badge--planning">${t.category}</span></td>
+          <td><span class="badge badge--${t.status}">${t.status.replace('-', ' ')}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    /* ── Render Capital Projects ── */
+    function renderProjects(projects) {
+      const totalCost = projects.reduce((s, p) => s + p.estimatedCost, 0);
+      const totalFunded = projects.reduce((s, p) => s + p.funded, 0);
+      const pct = totalCost > 0 ? Math.round((totalFunded / totalCost) * 100) : 0;
+
+      document.getElementById('projects-summary').innerHTML = `
+        <div class="summary-card"><div class="summary-card__label">Total Capital Needed</div><div class="summary-card__value purple">${fmt(totalCost)}</div></div>
+        <div class="summary-card"><div class="summary-card__label">Total Funded</div><div class="summary-card__value green">${fmt(totalFunded)}</div></div>
+        <div class="summary-card"><div class="summary-card__label">Funding Gap</div><div class="summary-card__value red">${fmt(totalCost - totalFunded)}</div></div>
+        <div class="summary-card"><div class="summary-card__label">Overall Progress</div><div class="summary-card__value gold">${pct}%</div><div class="progress-bar" style="margin-top:0.5rem"><div class="progress-bar__fill" style="width:${pct}%"></div></div></div>
+      `;
+
+      document.getElementById('projects-table').innerHTML = projects.map(p => {
+        const ppct = p.estimatedCost > 0 ? Math.round((p.funded / p.estimatedCost) * 100) : 0;
+        return `
+        <tr>
+          <td><strong>${p.project}</strong></td>
+          <td class="amount">${fmt(p.estimatedCost)}</td>
+          <td class="amount ${fmtClass(p.funded)}">${fmt(p.funded)}</td>
+          <td style="min-width:120px"><div class="progress-bar"><div class="progress-bar__fill" style="width:${ppct}%"></div></div><span style="font-size:0.7rem;color:var(--text-muted)">${ppct}%</span></td>
+          <td><span class="badge badge--${p.priority}">${p.priority}</span></td>
+          <td><span class="badge badge--${p.status}">${p.status}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* ── Render Team ── */
+    function renderTeam(team) {
+      document.getElementById('team-count').textContent = team.length + ' members';
+      document.getElementById('team-grid').innerHTML = team.map(m => `
+        <div class="team-card">
+          <div class="team-card__name">${m.name}</div>
+          <div class="team-card__role">${m.role}</div>
+          <div class="team-card__info">
+            ${m.email ? '✉️ <a href="mailto:' + m.email + '">' + m.email + '</a><br>' : ''}
+            ${m.phone ? '📞 ' + m.phone + '<br>' : ''}
+            ${m.notes ? '📝 ' + m.notes : '<span style="color:var(--text-muted)">No notes</span>'}
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+
+</body>
+</html>
