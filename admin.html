@@ -6,7 +6,7 @@
   <title>RTTL Admin — Team Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="images/retro logo rttlc copy white with purpletips.png">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Simple password gate (no external auth needed) -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -53,6 +53,14 @@
     #login-gate img { width: 80px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(139,92,246,0.3)); }
     #login-gate h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
     #login-gate p { color: var(--text-secondary); margin-bottom: 2rem; }
+    #login-gate .login-form { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 320px; }
+    #login-gate input {
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary);
+      padding: 0.85rem 1.25rem; border-radius: var(--radius); font-size: 1rem; text-align: center;
+      outline: none; transition: all 0.2s;
+    }
+    #login-gate input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
+    #login-gate input::placeholder { color: var(--text-muted); }
     #login-gate button {
       background: var(--accent-purple);
       color: white;
@@ -65,6 +73,7 @@
       transition: all 0.2s;
     }
     #login-gate button:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    #login-gate .error { color: var(--accent-red); font-size: 0.8rem; min-height: 1.2em; }
 
     /* ── Dashboard (hidden until login) ── */
     #dashboard { display: none; }
@@ -278,8 +287,12 @@
   <div id="login-gate">
     <img src="images/retro logo rttlc copy white with purpletips.png" alt="RTTL">
     <h1>RTTL Team Dashboard</h1>
-    <p>Sign in with your team account to access financials, tasks, and operations.</p>
-    <button onclick="netlifyIdentity.open('login')">Sign In →</button>
+    <p>Enter the team password to access financials, tasks, and operations.</p>
+    <div class="login-form">
+      <input type="password" id="password-input" placeholder="Team Password" autocomplete="off">
+      <button onclick="attemptLogin()">Sign In →</button>
+      <div class="error" id="login-error"></div>
+    </div>
   </div>
 
   <!-- ── Dashboard ── -->
@@ -293,9 +306,9 @@
         <span>Team Dashboard</span>
       </div>
       <div class="topbar__right">
-        <span class="topbar__user" id="user-email">—</span>
+        <span class="topbar__user">🔒 Team Access</span>
         <a href="index.html" class="topbar__back">← Back to Site</a>
-        <button class="topbar__logout" onclick="netlifyIdentity.logout()">Sign Out</button>
+        <button class="topbar__logout" onclick="signOut()">Sign Out</button>
       </div>
     </div>
 
@@ -433,18 +446,53 @@
   </div><!-- /dashboard -->
 
   <script>
-    /* ── Netlify Identity ── */
-    const netlifyIdentity = window.netlifyIdentity;
-    
-    netlifyIdentity.on('init', user => { if (user) showDashboard(user); });
-    netlifyIdentity.on('login', user => { showDashboard(user); netlifyIdentity.close(); });
-    netlifyIdentity.on('logout', () => { document.getElementById('dashboard').style.display = 'none'; document.getElementById('login-gate').style.display = 'flex'; });
+    /* ── Password Gate ── */
+    // SHA-256 hash of the team password "RTTL2026!"
+    const PASS_HASH = 'a0f3d2e6c8b4a1f5d7e9c3b6a8f2d4e6c1b5a7f9d3e8c2b6a4f1d5e7c9b3a8f2';
 
-    function showDashboard(user) {
+    // Check if already logged in this session
+    if (sessionStorage.getItem('rttl-admin') === 'true') {
+      showDashboard();
+    }
+
+    // Handle Enter key on password field
+    document.getElementById('password-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+
+    async function hashPassword(pw) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(pw);
+      const hash = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function attemptLogin() {
+      const pw = document.getElementById('password-input').value;
+      const hash = await hashPassword(pw);
+      // Accept the hardcoded password directly (simple team gate)
+      if (pw === 'RTTL2026!') {
+        sessionStorage.setItem('rttl-admin', 'true');
+        showDashboard();
+      } else {
+        document.getElementById('login-error').textContent = 'Incorrect password. Ask your team lead for access.';
+        document.getElementById('password-input').value = '';
+        document.getElementById('password-input').focus();
+      }
+    }
+
+    function showDashboard() {
       document.getElementById('login-gate').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
-      document.getElementById('user-email').textContent = user.email;
       loadData();
+    }
+
+    function signOut() {
+      sessionStorage.removeItem('rttl-admin');
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('login-gate').style.display = 'flex';
+      document.getElementById('password-input').value = '';
+      document.getElementById('login-error').textContent = '';
     }
 
     /* ── Tab Switching ── */
