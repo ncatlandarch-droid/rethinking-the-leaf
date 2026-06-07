@@ -209,7 +209,7 @@ ul { list-style: none; }
   height: 80px;
   object-fit: contain;
   border-radius: 12px;
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));
+  /* glow removed */
 }
 .nav__logo-text {
   font-family: var(--font-display);
