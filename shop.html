@@ -117,7 +117,7 @@
         <div style="grid-column: 1/-1; text-align: center; padding: var(--space-xl) 0 var(--space-md);">
           <div style="display: inline-flex; align-items: center; gap: 1rem;">
             <div style="width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-gold));"></div>
-            <img src="images/retro logo rttlc copy white with purpletips.png" alt="RTTLC Hemp" style="width: 40px; height: 40px; object-fit: contain;">
+            <img src="images/rttlc-leaf-corp hand holding leaf.png" alt="RTTLC Hemp" style="width: 40px; height: 40px; object-fit: contain;">
             <span style="font-family: var(--font-display); font-size: 1.1rem; color: var(--accent-gold); letter-spacing: 0.1em; text-transform: uppercase;">Hemp Collection</span>
             <div style="width: 60px; height: 1px; background: linear-gradient(90deg, var(--accent-gold), transparent);"></div>
           </div>
@@ -326,8 +326,10 @@
 
         <div style="font-size:1.3rem;font-weight:800;color:var(--accent-gold);text-align:right;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);">Total: $<span id="order-total">0</span></div>
 
-        <button type="submit" class="btn btn--primary" style="width:100%;margin-top:1rem;padding:0.8rem;font-size:1rem;">Place Order</button>
-        <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:0.75rem;">Payment collected upon confirmation. Free shipping on orders over $50.</p>
+        <button type="submit" class="btn btn--primary" style="width:100%;margin-top:1rem;padding:0.8rem;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+            💳 Pay Now — Card or PayPal
+          </button>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:0.75rem;">Accepts credit cards, debit cards, and PayPal. Secure checkout. Free shipping on orders over $50.</p>
       </form>
     </div>
   </div>
@@ -478,13 +480,53 @@
       if (e.target === this) closeOrder();
     });
 
-    // Form validation
+    // Form → Netlify record + PayPal checkout (accepts cards + PayPal)
     document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
       if (!document.getElementById('order-size').value) {
-        e.preventDefault();
         alert('Please select a size / option!');
+        return;
       }
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const total = document.getElementById('order-total').textContent;
+      const productName = document.getElementById('order-product').value;
+      const size = formData.get('size');
+      const qty = formData.get('quantity');
+
+      // 1. Save order to Netlify Forms (record keeping)
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      }).finally(() => {
+        // 2. Redirect to PayPal checkout (accepts cards + PayPal balance)
+        const params = new URLSearchParams({
+          cmd: '_xclick',
+          business: 'rethinkingtheleaf@gmail.com',
+          item_name: productName + ' — Size: ' + size,
+          quantity: qty,
+          amount: document.getElementById('order-unit-price').value,
+          currency_code: 'USD',
+          no_shipping: '0',
+          return: 'https://rethinkingtheleaf.com/shop.html?thanks=1',
+          cancel_return: 'https://rethinkingtheleaf.com/shop.html'
+        });
+        window.location.href = 'https://www.paypal.com/cgi-bin/webscr?' + params.toString();
+      });
     });
+
+    // Show thank you message if returning from PayPal
+    if (new URLSearchParams(window.location.search).get('thanks')) {
+      setTimeout(() => {
+        const banner = document.createElement('div');
+        banner.innerHTML = '<div style="position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2d6b3f,#1a4a28);color:white;padding:1rem 2rem;border-radius:12px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.3);font-family:var(--font-display);text-align:center;"><strong>🎉 Thank you for your order!</strong><br><span style=\'font-size:0.85rem;opacity:0.9;\'>Your payment has been received. We\'ll ship your order soon!</span></div>';
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 6000);
+      }, 500);
+    }
   </script>
 
   <style>
