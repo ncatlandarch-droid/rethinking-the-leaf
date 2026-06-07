@@ -254,81 +254,6 @@
 
   <!-- Back to Top Button -->
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
-      </div>
-
-      <form name="rttl-farm-orders" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="order-form">
-        <p style="display:none;"><label>Don't fill: <input name="bot-field"></label></p>
-        <input type="hidden" name="product" id="order-product">
-        <input type="hidden" name="unit-price" id="order-unit-price">
-
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;">Size / Option *</label>
-          <div id="size-grid" style="display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
-          <input type="hidden" name="size" id="order-size" required>
-        </div>
-
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;">Quantity</label>
-          <div style="display:flex;align-items:center;gap:0.75rem;">
-            <button type="button" onclick="changeQty(-1)" style="width:36px;height:36px;border:2px solid var(--border-subtle);border-radius:var(--radius-md);background:transparent;color:var(--text-primary);cursor:pointer;font-size:1.2rem;">−</button>
-            <span id="qty-val" style="font-size:1.1rem;font-weight:700;color:var(--text-primary);min-width:30px;text-align:center;">1</span>
-            <button type="button" onclick="changeQty(1)" style="width:36px;height:36px;border:2px solid var(--border-subtle);border-radius:var(--radius-md);background:transparent;color:var(--text-primary);cursor:pointer;font-size:1.2rem;">+</button>
-          </div>
-          <input type="hidden" name="quantity" id="order-qty" value="1">
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-fname">First Name *</label>
-            <input type="text" id="order-fname" name="first-name" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-lname">Last Name *</label>
-            <input type="text" id="order-lname" name="last-name" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-        </div>
-
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-email">Email *</label>
-          <input type="email" id="order-email" name="email" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-        </div>
-
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-address">Shipping Address *</label>
-          <input type="text" id="order-address" name="address" placeholder="123 Main St" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-city">City *</label>
-            <input type="text" id="order-city" name="city" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-state">State *</label>
-            <input type="text" id="order-state" name="state" placeholder="VA" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-zip">ZIP Code *</label>
-            <input type="text" id="order-zip" name="zip" required style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-          <div>
-            <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:0.4rem;font-size:0.85rem;" for="order-phone">Phone</label>
-            <input type="tel" id="order-phone" name="phone" style="width:100%;padding:0.6rem 0.8rem;background:var(--bg-darker);border:1px solid var(--border-subtle);border-radius:var(--radius-md);color:var(--text-primary);font-size:0.9rem;">
-          </div>
-        </div>
-
-        <div style="font-size:1.3rem;font-weight:800;color:var(--accent-gold);text-align:right;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-subtle);">Total: $<span id="order-total">0</span></div>
-
-        <button type="submit" class="btn btn--primary" style="width:100%;margin-top:1rem;padding:0.8rem;font-size:1rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
-            💳 Pay Now — Card or PayPal
-          </button>
-        <p style="text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:0.75rem;">Secure checkout powered by Stripe. Printed on demand and shipped direct to your door.</p>
-      </form>
-    </div>
-  </div>
 
   <script>
     // Year
@@ -362,32 +287,6 @@
       });
     }
 
-    // Product filtering
-    const filters = document.querySelectorAll('.shop-filter');
-    const items = document.querySelectorAll('.shop-item');
-    filters.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filters.forEach(b => {
-          b.style.background = 'transparent';
-          b.style.borderColor = 'var(--border-subtle)';
-          b.style.color = 'var(--text-secondary)';
-        });
-        btn.style.background = 'var(--accent-gold-dim)';
-        btn.style.borderColor = 'var(--accent-gold)';
-        btn.style.color = 'var(--accent-gold)';
-
-        const cat = btn.dataset.filter;
-        items.forEach(item => {
-          if (cat === 'all' || item.dataset.category.includes(cat)) {
-            item.style.display = '';
-            item.style.animation = 'fadeIn 0.4s ease';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
-
     // Product card hover
     document.querySelectorAll('.product-card').forEach(card => {
       card.addEventListener('mouseenter', () => {
@@ -403,21 +302,6 @@
         if (img) img.style.transform = '';
       });
     });
-
-    // Orders handled by Printful QuickStore at https://rethinkingtheleaf.printful.me/
-        window.location.href = 'https://www.paypal.com/cgi-bin/webscr?' + params.toString();
-      });
-    });
-
-    // Show thank you message if returning from PayPal
-    if (new URLSearchParams(window.location.search).get('thanks')) {
-      setTimeout(() => {
-        const banner = document.createElement('div');
-        banner.innerHTML = '<div style="position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2d6b3f,#1a4a28);color:white;padding:1rem 2rem;border-radius:12px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.3);font-family:var(--font-display);text-align:center;"><strong>🎉 Thank you for your order!</strong><br><span style=\'font-size:0.85rem;opacity:0.9;\'>Your payment has been received. We\'ll ship your order soon!</span></div>';
-        document.body.appendChild(banner);
-        setTimeout(() => banner.remove(), 6000);
-      }, 500);
-    }
   </script>
 
   <style>
@@ -438,5 +322,3 @@
 
 </body>
 </html>
-
-
