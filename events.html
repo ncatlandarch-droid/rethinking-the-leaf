@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events &amp; Venue Rental — ReThinking The Leaf</title>
+  <meta name="description" content="Host your next event at ReThinking The Leaf's 66-acre estate in Brunswick County, Virginia. Weddings, retreats, reunions, farm-to-table dinners, and corporate events.">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .nav {
+      background: rgba(10, 15, 13, 0.95) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    /* ── Hero ── */
+    .events-hero {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px var(--space-lg) var(--space-3xl);
+      background: linear-gradient(135deg, rgba(10,14,10,0.94), rgba(20,28,18,0.90)),
+                  linear-gradient(45deg, rgba(155,126,216,0.08), rgba(76,140,76,0.08));
+      position: relative;
+      z-index: 1;
+    }
+    .events-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .events-hero p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Content Wrapper ── */
+    .events-wrap {
+      background: var(--bg-primary);
+      position: relative;
+      z-index: 1;
+    }
+    .events-section {
+      padding: var(--space-3xl) var(--space-lg);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .events-section h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: var(--space-sm);
+    }
+    .events-section .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+      font-size: 1.05rem;
+    }
+
+    /* ── Venue Cards ── */
+    .venue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+    }
+    .venue-card {
+      background: var(--card-bg, rgba(25,32,28,0.8));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 16px;
+      padding: var(--space-xl);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .venue-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(155,126,216,0.3);
+    }
+    .venue-card__icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: var(--space-md);
+      background: linear-gradient(135deg, rgba(155,126,216,0.15), rgba(76,140,76,0.15));
+      border: 1px solid rgba(155,126,216,0.2);
+    }
+    .venue-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .venue-card__capacity {
+      color: var(--accent-gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.05em;
+    }
+    .venue-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: var(--space-md);
+    }
+    .venue-card__ideal {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .venue-card__tag {
+      background: rgba(155,126,216,0.1);
+      color: rgba(200,180,240,0.9);
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(155,126,216,0.15);
+    }
+
+    /* ── Event Types ── */
+    .event-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-3xl);
+    }
+    .event-type {
+      text-align: center;
+      padding: var(--space-lg);
+      border-radius: 12px;
+      background: rgba(25,32,28,0.5);
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.3s ease;
+    }
+    .event-type:hover {
+      border-color: rgba(155,126,216,0.2);
+    }
+    .event-type__icon {
+      font-size: 2rem;
+      margin-bottom: var(--space-sm);
+    }
+    .event-type__name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--text-primary);
+    }
+
+    /* ── Pricing ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+    }
+    .pricing-card {
+      background: var(--card-bg, rgba(25,32,28,0.8));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 16px;
+      padding: var(--space-xl);
+      text-align: center;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(155,126,216,0.3);
+    }
+    .pricing-card--featured {
+      border-color: var(--accent-gold);
+      position: relative;
+    }
+    .pricing-card--featured::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-gold);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+    }
+    .pricing-card__name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card__price {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.3rem;
+    }
+    .pricing-card__unit {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: var(--space-md);
+    }
+    .pricing-card__features {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+    }
+    .pricing-card__features li {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .pricing-card__features li::before {
+      content: '✓ ';
+      color: var(--accent-gold);
+      font-weight: bold;
+    }
+
+    /* ── Booking Form ── */
+    .booking-form {
+      background: var(--card-bg, rgba(25,32,28,0.8));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 16px;
+      padding: var(--space-xl);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .booking-form label {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      margin-top: var(--space-md);
+    }
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(10,15,13,0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+    .booking-form input:focus,
+    .booking-form select:focus,
+    .booking-form textarea:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+    .booking-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .booking-form button {
+      margin-top: var(--space-lg);
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent-gold);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      letter-spacing: 0.05em;
+    }
+    .booking-form button:hover {
+      opacity: 0.9;
+    }
+
+    /* ── Calendar ── */
+    .calendar-wrap {
+      background: var(--card-bg, rgba(25,32,28,0.8));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 16px;
+      padding: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+      text-align: center;
+    }
+    .calendar-wrap p {
+      color: var(--text-muted);
+      margin-top: var(--space-md);
+      font-size: 0.9rem;
+    }
+
+    /* ── Divider ── */
+    .events-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(155,126,216,0.2), transparent);
+      margin: 0 auto var(--space-3xl);
+      max-width: 400px;
+    }
+
+    @media (max-width: 768px) {
+      .form-row { grid-template-columns: 1fr; }
+      .venue-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="main-nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+        <img src="images/RethinkingtheLeaf Brand Logo.png" alt="RTTLC Logo" class="nav__logo-icon">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0;">
+          <span class="nav__ppv-label" style="font-size:0.55rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2;">Prisscise Property<br>Ventures, LLC</span>
+          <span class="nav__logo-text">Re<em>Thinking</em> The Leaf</span>
+        </div>
+      </a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html#mission">Our Mission</a>
+        <a href="the-system.html">The Estate</a>
+        <div class="nav__dropdown">
+          <a href="#" class="nav__dropdown-toggle">Explore <span style="font-size:0.6em;">▼</span></a>
+          <div class="nav__dropdown-menu">
+            <a href="programs.html">Programs</a>
+            <a href="events.html">Events</a>
+          </div>
+        </div>
+        <a href="community.html">Community</a>
+        <a href="donate.html">Donate</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#visit" class="nav__cta">VISIT US</a>
+      </div>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="events-hero">
+    <div>
+      <p style="color: var(--accent-gold); font-family: var(--font-display); letter-spacing: 0.15em; font-size: 0.85rem; margin-bottom: var(--space-md); text-transform: uppercase;">Events &amp; Venue Rental</p>
+      <h1>Your Event.<br>Our Land. Their Legacy.</h1>
+      <p>Host your next gathering on 66 acres of purpose in Brunswick County, Virginia. Every rental directly funds community wellness programs.</p>
+      <a href="#booking" style="display: inline-block; margin-top: var(--space-lg); padding: 0.8rem 2rem; background: var(--accent-gold); color: #000; text-decoration: none; border-radius: 8px; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.05em; transition: opacity 0.3s;">Book Your Event →</a>
+    </div>
+  </section>
+
+  <div class="events-wrap">
+    <div class="events-section">
+      <a href="index.html" class="back-link">← Back to Home</a>
+
+      <!-- ── EVENT TYPES ── -->
+      <h2>What We Host</h2>
+      <p class="subtitle">From intimate gatherings to large celebrations</p>
+      <div class="event-types">
+        <div class="event-type">
+          <div class="event-type__icon">💒</div>
+          <div class="event-type__name">Weddings</div>
+        </div>
+        <div class="event-type">
+          <div class="event-type__icon">🌿</div>
+          <div class="event-type__name">Wellness Retreats</div>
+        </div>
+        <div class="event-type">
+          <div class="event-type__icon">👨‍👩‍👧‍👦</div>
+          <div class="event-type__name">Family Reunions</div>
+        </div>
+        <div class="event-type">
+          <div class="event-type__icon">🎓</div>
+          <div class="event-type__name">Workshops</div>
+        </div>
+        <div class="event-type">
+          <div class="event-type__icon">🍽️</div>
+          <div class="event-type__name">Farm-to-Table Dinners</div>
+        </div>
+        <div class="event-type">
+          <div class="event-type__icon">🏢</div>
+          <div class="event-type__name">Corporate Events</div>
+        </div>
+      </div>
+
+      <hr class="events-divider">
+
+      <!-- ── VENUE SPACES ── -->
+      <h2>Our Spaces</h2>
+      <p class="subtitle">11 unique estate zones across 66 acres</p>
+      <div class="venue-grid">
+
+        <div class="venue-card">
+          <div class="venue-card__icon">💜</div>
+          <h3>The Lavender Fields</h3>
+          <div class="venue-card__capacity">Up to 200 guests</div>
+          <p>Acres of lavender rows creating a stunning natural backdrop for ceremonies, photo shoots, and outdoor celebrations.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Weddings</span>
+            <span class="venue-card__tag">Photo Shoots</span>
+            <span class="venue-card__tag">Ceremonies</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-card__icon">🏡</div>
+          <h3>The Community Pavilion</h3>
+          <div class="venue-card__capacity">Up to 150 guests</div>
+          <p>Covered outdoor gathering space with farm views, perfect for receptions, dinners, and celebrations under the stars.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Receptions</span>
+            <span class="venue-card__tag">Dinners</span>
+            <span class="venue-card__tag">Reunions</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-card__icon">🌲</div>
+          <h3>Cedar Wellness Center</h3>
+          <div class="venue-card__capacity">Up to 30 guests</div>
+          <p>Intimate cedar sauna and wellness space for yoga retreats, meditation workshops, and holistic healing sessions.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Retreats</span>
+            <span class="venue-card__tag">Yoga</span>
+            <span class="venue-card__tag">Wellness</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-card__icon">🌾</div>
+          <h3>The Farm Grounds</h3>
+          <div class="venue-card__capacity">Up to 500 guests</div>
+          <p>Open pasture and working farmland for large festivals, community gatherings, outdoor markets, and farm-to-table experiences.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Festivals</span>
+            <span class="venue-card__tag">Markets</span>
+            <span class="venue-card__tag">Corporate</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-card__icon">📚</div>
+          <h3>Training Center</h3>
+          <div class="venue-card__capacity">Up to 50 guests</div>
+          <p>Indoor classroom and workshop space for educational events, seminars, team-building, and professional development.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Seminars</span>
+            <span class="venue-card__tag">Team Building</span>
+            <span class="venue-card__tag">Workshops</span>
+          </div>
+        </div>
+
+        <div class="venue-card">
+          <div class="venue-card__icon">🌳</div>
+          <h3>The Heritage Grove</h3>
+          <div class="venue-card__capacity">Up to 75 guests</div>
+          <p>Shaded grove of mature trees on historically significant land — ideal for intimate gatherings and memorial events.</p>
+          <div class="venue-card__ideal">
+            <span class="venue-card__tag">Intimate Events</span>
+            <span class="venue-card__tag">Memorials</span>
+            <span class="venue-card__tag">Picnics</span>
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="events-divider">
+
+      <!-- ── PRICING ── -->
+      <h2>Rental Packages</h2>
+      <p class="subtitle">All proceeds fund community programs</p>
+      <div class="pricing-grid">
+
+        <div class="pricing-card">
+          <div class="pricing-card__name">Half Day</div>
+          <div class="pricing-card__price">$500</div>
+          <div class="pricing-card__unit">up to 4 hours</div>
+          <ul class="pricing-card__features">
+            <li>Single venue space</li>
+            <li>Setup &amp; breakdown time</li>
+            <li>Parking for up to 50 vehicles</li>
+            <li>Basic amenities</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card pricing-card--featured">
+          <div class="pricing-card__name">Full Day</div>
+          <div class="pricing-card__price">$1,200</div>
+          <div class="pricing-card__unit">up to 10 hours</div>
+          <ul class="pricing-card__features">
+            <li>Up to 2 venue spaces</li>
+            <li>Extended setup time</li>
+            <li>Parking for up to 100 vehicles</li>
+            <li>Tables &amp; chairs included</li>
+            <li>On-site coordinator</li>
+          </ul>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-card__name">Weekend</div>
+          <div class="pricing-card__price">$2,500</div>
+          <div class="pricing-card__unit">Friday – Sunday</div>
+          <ul class="pricing-card__features">
+            <li>Full estate access</li>
+            <li>All venue spaces</li>
+            <li>Unlimited parking</li>
+            <li>Tables, chairs &amp; linens</li>
+            <li>Dedicated coordinator</li>
+            <li>Farm tour included</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-3xl);">
+        Custom packages available. Event planning services by <strong style="color: var(--accent-gold);">Brother Function Group</strong> available upon request.
+      </p>
+
+      <hr class="events-divider">
+
+      <!-- ── CALENDAR ── -->
+      <h2>Event Calendar</h2>
+      <p class="subtitle">See what's coming up and check availability</p>
+      <div class="calendar-wrap">
+        <iframe src="https://calendar.google.com/calendar/embed?src=rethinkingtheleaf%40gmail.com&ctz=America%2FNew_York&mode=MONTH&showTitle=0&showPrint=0&showCalendars=0&bgcolor=%230a0f0d&color=%239b7ed8" style="border: 0; width: 100%; height: 450px; border-radius: 8px; filter: invert(0.88) hue-rotate(180deg);" frameborder="0" scrolling="no"></iframe>
+        <p>Can't see the calendar? <a href="https://calendar.google.com/calendar/u/0/r?cid=rethinkingtheleaf@gmail.com" target="_blank" style="color: var(--accent-gold);">Open in Google Calendar</a></p>
+      </div>
+
+      <hr class="events-divider">
+
+      <!-- ── BOOKING FORM ── -->
+      <h2 id="booking">Book Your Event</h2>
+      <p class="subtitle">Tell us about your vision — we'll make it happen</p>
+      <form class="booking-form" name="event-booking" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="event-booking">
+        <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+        <div class="form-row">
+          <div>
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Full name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+          </div>
+          <div>
+            <label for="event-date">Preferred Date</label>
+            <input type="date" id="event-date" name="event-date" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="event-type">Event Type</label>
+            <select id="event-type" name="event-type" required>
+              <option value="">Select an event type</option>
+              <option value="wedding">Wedding / Ceremony</option>
+              <option value="reception">Reception / Dinner</option>
+              <option value="reunion">Family Reunion</option>
+              <option value="retreat">Wellness Retreat</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="workshop">Workshop / Seminar</option>
+              <option value="festival">Festival / Market</option>
+              <option value="photoshoot">Photo / Video Shoot</option>
+              <option value="memorial">Memorial / Celebration of Life</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="guests">Estimated Guests</label>
+            <select id="guests" name="guests" required>
+              <option value="">Select guest count</option>
+              <option value="1-25">1 – 25</option>
+              <option value="26-50">26 – 50</option>
+              <option value="51-100">51 – 100</option>
+              <option value="101-200">101 – 200</option>
+              <option value="200+">200+</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="venue">Preferred Space</label>
+        <select id="venue" name="venue">
+          <option value="">Select a venue (optional)</option>
+          <option value="lavender-fields">The Lavender Fields</option>
+          <option value="community-pavilion">The Community Pavilion</option>
+          <option value="cedar-wellness">Cedar Wellness Center</option>
+          <option value="farm-grounds">The Farm Grounds</option>
+          <option value="training-center">Training Center</option>
+          <option value="heritage-grove">The Heritage Grove</option>
+          <option value="full-estate">Full Estate</option>
+        </select>
+
+        <label for="package">Rental Package</label>
+        <select id="package" name="package">
+          <option value="">Select a package (optional)</option>
+          <option value="half-day">Half Day — $500</option>
+          <option value="full-day">Full Day — $1,200</option>
+          <option value="weekend">Weekend — $2,500</option>
+          <option value="custom">Custom Package</option>
+        </select>
+
+        <label for="details">Tell Us About Your Event</label>
+        <textarea id="details" name="details" placeholder="Share your vision — theme, special requests, catering needs, etc."></textarea>
+
+        <button type="submit">Submit Booking Request</button>
+        <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: var(--space-sm);">We'll respond within 24 hours. No payment required to inquire.</p>
+      </form>
+
+      <br><br>
+
+      <!-- ── QUOTE ── -->
+      <p style="text-align: center; font-style: italic; color: var(--accent-gold); font-family: var(--font-accent); font-size: 1.2rem; margin-top: var(--space-xl); margin-bottom: var(--space-xl);">
+        "When you celebrate on this land, you're investing in a community's future."
+      </p>
+
+    </div>
+  </div> <!-- /events-wrap -->
+
+  <!-- FOOTER -->
+  <footer class="footer" style="border-top: 1px solid var(--border); padding: var(--space-xl) 0; text-align: center;">
+    <div class="container">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        &copy; 2026 ReThinking The Leaf Corporation. All rights reserved.<br>
+        240 Halifax Road, Lawrenceville, Brunswick County, Virginia<br>
+        <a href="index.html" style="color: var(--accent-gold); text-decoration: none;">Return to Main Site</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
