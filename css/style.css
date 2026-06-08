@@ -1542,6 +1542,37 @@ ul { list-style: none; }
   /* Prevent any horizontal overflow */
   .section { overflow-x: hidden; }
   .container { padding: 0 var(--space-sm); }
+
+  /* Mobile tap targets (WCAG 44px minimum) */
+  .nav__dropdown-menu a { padding: 0.75rem 0; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+  .nav__link { padding: 0.6rem 0; min-height: 44px; }
+
+  /* Footer logos — cap size on mobile */
+  .footer__brand .nav__logo-icon { width: min(180px, 40vw) !important; height: auto !important; }
+
+  /* CTA buttons stack cleanly on mobile */
+  .btn { margin-left: 0 !important; margin-bottom: 0.5rem; }
+
+  /* Newsletter form wraps on mobile */
+  [style*="display: flex"][style*="max-width: 480px"] { flex-wrap: wrap !important; }
+
+  /* Promise banners stack */
+  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; gap: var(--space-md) !important; }
+
+  /* Section titles tighter on mobile */
+  .section-title { word-break: break-word; }
+
+  /* Hub partner cards — stack header cleanly */
+  .hub-partner__meta { flex-wrap: wrap; gap: 0.4rem; }
+  .hub-partner__desc { font-size: 0.9rem; }
+
+  /* Inline grids that might overflow */
+  [style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(5"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Phase/Timeline readability */
+  .timeline__content h3 { font-size: 1.1rem; }
+  .timeline__content li { font-size: 0.9rem; }
 }
 
 /* Ultra-small screens (iPhone SE, etc.) */
@@ -1550,6 +1581,8 @@ ul { list-style: none; }
   .nav__logo-text { font-size: 1.2rem; }
   .nav__logo-icon { width: 50px; height: 50px; }
   .team__grid { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
 }
 
 /* ================================================================
@@ -1972,8 +2005,9 @@ ul { list-style: none; }
   text-align: center;
 }
 .mission__aerial-frame {
-  width: 680px;
-  height: 520px;
+  width: min(680px, 100%);
+  height: auto;
+  aspect-ratio: 680 / 520;
   margin: 0 auto var(--space-md);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -2351,8 +2385,8 @@ ul { list-style: none; }
 /* ── Circular Flow Ring ── */
 .system__flow {
   position: relative;
-  width: 580px;
-  height: 580px;
+  width: min(580px, 90vw);
+  height: min(580px, 90vw);
   margin: var(--space-2xl) auto;
 }
 .system__flow-ring {
