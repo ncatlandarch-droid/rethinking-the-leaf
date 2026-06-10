@@ -65,6 +65,20 @@
         'grant', 'grant readiness', 'EQIP', 'funding',
         'soil', 'agroforestry', 'vegetation', 'ecological'
       ]
+    },
+    {
+      id: 'lake-jeanette',
+      name: 'Lake Jeanette Family & Implant Dentistry',
+      keywords: [
+        'dentist', 'dentistry', 'dental', 'teeth', 'tooth',
+        'implants', 'dental implants', 'implant',
+        'family dentistry', 'family', 'cosmetic', 'cosmetic dentistry',
+        'prosthodontist', 'prosthodontics', 'crowns', 'bridges',
+        '3d scanning', '3d', 'digital', 'digital dentistry',
+        'whitening', 'teeth whitening', 'cleaning',
+        'emergency', 'emergency dental',
+        'greensboro', 'dr brenes', 'brenes'
+      ]
     }
   ];
 
