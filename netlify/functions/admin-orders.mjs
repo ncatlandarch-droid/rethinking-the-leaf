@@ -78,17 +78,20 @@ export default async function handler(req) {
       console.log('Products API unavailable, using local catalog');
     }
 
-    // Calculate summary stats — filter orders to only RTTL-related ones
+    // Calculate summary stats
     const orders = ordersData.result || [];
     const statusCounts = {};
     let totalRevenue = 0;
+    let totalCost = 0;
 
     orders.forEach(order => {
       const status = order.status || 'unknown';
       statusCounts[status] = (statusCounts[status] || 0) + 1;
-      if (order.retail_costs) {
-        totalRevenue += parseFloat(order.retail_costs.total || 0);
-      }
+      // Use retail_costs.total if available, otherwise use costs.total as fallback
+      const retail = parseFloat(order.retail_costs?.total || order.costs?.total || 0);
+      const cost = parseFloat(order.costs?.total || 0);
+      totalRevenue += retail;
+      totalCost += cost;
     });
 
     return new Response(JSON.stringify({
