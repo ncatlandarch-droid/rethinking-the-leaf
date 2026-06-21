@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,10 +6,10 @@
   <title>RTTL Admin — Team Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="images/rttlc-logo-original.png">
-  <!-- Simple password gate (no external auth needed) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
     :root {
       --bg-primary: #0b0f1a;
       --bg-card: #141928;
@@ -57,7 +57,7 @@
     #login-gate input {
       background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary);
       padding: 0.85rem 1.25rem; border-radius: var(--radius); font-size: 1rem; text-align: center;
-      outline: none; transition: all 0.2s;
+      outline: none; transition: all 0.2s; font-family: 'Inter', sans-serif;
     }
     #login-gate input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
     #login-gate input::placeholder { color: var(--text-muted); }
@@ -71,6 +71,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
     }
     #login-gate button:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
     #login-gate .error { color: var(--accent-red); font-size: 0.8rem; min-height: 1.2em; }
@@ -89,16 +90,31 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .topbar::before {
+      content: '';
+      position: absolute;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
     .topbar__left { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar__left img { width: 36px; height: 36px; object-fit: contain; }
+    .topbar__left img { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(139,92,246,0.2)); }
     .topbar__left h1 { font-size: 1.1rem; font-weight: 700; }
     .topbar__left span { color: var(--accent-lavender); font-size: 0.75rem; background: rgba(139,92,246,0.15); padding: 0.15rem 0.6rem; border-radius: 50px; }
-    .topbar__right { display: flex; align-items: center; gap: 1rem; }
+    .topbar__right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+    .topbar__timer { color: var(--text-muted); font-size: 0.7rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .topbar__user { color: var(--text-secondary); font-size: 0.85rem; }
     .topbar__logout {
       background: none; border: 1px solid var(--border); color: var(--text-secondary);
-      padding: 0.4rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+      padding: 0.4rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: all 0.2s; font-family: 'Inter', sans-serif;
     }
     .topbar__logout:hover { border-color: var(--accent-red); color: var(--accent-red); }
     .topbar__back {
@@ -115,7 +131,10 @@
       background: var(--bg-card);
       padding: 0 2rem;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .tabs::-webkit-scrollbar { display: none; }
     .tab {
       padding: 1rem 1.5rem;
       color: var(--text-muted);
@@ -125,14 +144,29 @@
       border-bottom: 2px solid transparent;
       transition: all 0.2s;
       white-space: nowrap;
+      user-select: none;
     }
     .tab:hover { color: var(--text-secondary); }
     .tab.active { color: var(--accent-purple); border-bottom-color: var(--accent-purple); }
+    .tab .tab-badge {
+      display: inline-block;
+      background: var(--accent-purple);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.1rem 0.4rem;
+      border-radius: 50px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .tab .tab-badge.green { background: var(--accent-green); }
 
     /* ── Content ── */
     .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
-    .panel { display: none; }
+    .panel { display: none; animation: fadeIn 0.3s ease; }
     .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── Summary Cards ── */
     .summary-grid {
@@ -146,9 +180,22 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.25rem;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .summary-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
     .summary-card:hover { border-color: var(--border-focus); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .summary-card:hover::after { opacity: 1; }
+    .summary-card__icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
     .summary-card__label { color: var(--text-muted); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
     .summary-card__value { font-size: 1.8rem; font-weight: 800; }
     .summary-card__value.green { color: var(--accent-green); }
@@ -156,6 +203,7 @@
     .summary-card__value.purple { color: var(--accent-purple); }
     .summary-card__value.red { color: var(--accent-red); }
     .summary-card__value.blue { color: var(--accent-blue); }
+    .summary-card__value.lavender { color: var(--accent-lavender); }
     .summary-card__note { color: var(--text-muted); font-size: 0.7rem; margin-top: 0.35rem; }
 
     /* ── Section Headers ── */
@@ -168,6 +216,33 @@
     .section-header h2 { font-size: 1.15rem; font-weight: 700; }
     .section-header span { color: var(--text-muted); font-size: 0.8rem; }
 
+    /* ── Refresh Bar ── */
+    .refresh-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .refresh-bar__time { color: var(--text-muted); font-size: 0.75rem; }
+    .refresh-bar__btn {
+      background: rgba(139,92,246,0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(139,92,246,0.2);
+      padding: 0.4rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .refresh-bar__btn:hover { background: rgba(139,92,246,0.25); border-color: var(--accent-purple); }
+    .refresh-bar__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
     /* ── Tables ── */
     .table-wrap {
       background: var(--bg-card);
@@ -176,6 +251,7 @@
       overflow: hidden;
       margin-bottom: 2rem;
     }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; }
     thead th {
       text-align: left;
@@ -187,6 +263,7 @@
       color: var(--text-muted);
       background: var(--bg-card-alt);
       border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
     tbody td {
       padding: 0.85rem 1rem;
@@ -194,6 +271,7 @@
       border-bottom: 1px solid var(--border);
     }
     tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background 0.15s ease; }
     tbody tr:hover { background: var(--bg-hover); }
     .amount { font-weight: 600; font-variant-numeric: tabular-nums; }
     .amount.positive { color: var(--accent-green); }
@@ -209,6 +287,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.03em;
+      white-space: nowrap;
     }
     .badge--planning { background: rgba(139,92,246,0.15); color: var(--accent-purple); }
     .badge--in-progress { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
@@ -218,6 +297,21 @@
     .badge--high { background: rgba(239,68,68,0.15); color: var(--accent-red); }
     .badge--medium { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
     .badge--low { background: rgba(16,185,129,0.1); color: var(--accent-green); }
+    /* Deploy / Order badges */
+    .badge--ready { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+    .badge--building { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
+    .badge--error { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+    .badge--fulfilled { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+    .badge--pending { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
+    .badge--canceled, .badge--cancelled { background: rgba(239,68,68,0.1); color: var(--accent-red); }
+    .badge--draft { background: rgba(90,99,128,0.2); color: var(--text-muted); }
+    /* Form type badges */
+    .badge--contact { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+    .badge--newsletter { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+    .badge--event-booking { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
+    .badge--partner-application { background: rgba(139,92,246,0.15); color: var(--accent-purple); }
+    .badge--membership { background: rgba(167,139,250,0.15); color: var(--accent-lavender); }
+    .badge--email-list { background: rgba(16,185,129,0.1); color: var(--accent-green); }
 
     /* ── Progress Bars ── */
     .progress-bar {
@@ -245,13 +339,42 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.25rem;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
     }
     .team-card:hover { border-color: var(--border-focus); box-shadow: var(--shadow); }
     .team-card__name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
     .team-card__role { color: var(--accent-lavender); font-size: 0.8rem; font-weight: 500; margin-bottom: 0.75rem; }
     .team-card__info { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
     .team-card__info a { color: var(--accent-purple); text-decoration: none; }
+    .team-card__info a:hover { text-decoration: underline; }
+
+    /* ── Product Grid ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+    .product-card:hover { border-color: var(--border-focus); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .product-card img {
+      width: 100%;
+      max-width: 140px;
+      height: 140px;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      background: rgba(255,255,255,0.03);
+    }
+    .product-card__name { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.35rem; }
+    .product-card__meta { color: var(--text-muted); font-size: 0.7rem; }
 
     /* ── Financial Recommendation ── */
     .rec-card {
@@ -268,16 +391,137 @@
     .rec-card li::before { content: "→ "; color: var(--accent-purple); font-weight: 700; }
     .rec-card strong { color: var(--text-primary); }
 
+    /* ── Skeleton Loader ── */
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent);
+      animation: shimmer 1.8s infinite;
+    }
+    @keyframes shimmer { to { left: 100%; } }
+    .skeleton-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .skeleton-card {
+      height: 110px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+    .skeleton-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent);
+      animation: shimmer 1.8s infinite;
+    }
+    .skeleton-table {
+      height: 200px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .skeleton-table::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.06), transparent);
+      animation: shimmer 1.8s infinite;
+    }
+
+    /* ── Error State ── */
+    .error-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+    .error-state__icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .error-state__title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .error-state__msg { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.25rem; }
+    .error-state__btn {
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .error-state__btn:hover { background: #dc2626; transform: translateY(-1px); }
+
+    /* ── Empty State ── */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .empty-state__icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+    /* ── Mailto link styling ── */
+    a.mailto-link {
+      color: var(--accent-purple);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    a.mailto-link:hover { color: var(--accent-lavender); text-decoration: underline; }
+    a.quick-reply {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--accent-purple);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background: rgba(139,92,246,0.1);
+      transition: all 0.2s;
+    }
+    a.quick-reply:hover { background: rgba(139,92,246,0.2); }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      .topbar { padding: 0.75rem 1rem; }
+      .topbar { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+      .topbar__right { gap: 0.5rem; }
+      .topbar__user { display: none; }
       .tabs { padding: 0 0.5rem; }
       .tab { padding: 0.75rem 1rem; font-size: 0.8rem; }
       .content { padding: 1rem; }
       .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .skeleton-grid { grid-template-columns: repeat(2, 1fr); }
       .team-grid { grid-template-columns: 1fr; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
       table { font-size: 0.8rem; }
       thead th, tbody td { padding: 0.6rem 0.5rem; }
+      .refresh-bar { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+      .summary-card { padding: 1rem; }
+      .summary-card__value { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -306,6 +550,7 @@
         <span>Team Dashboard</span>
       </div>
       <div class="topbar__right">
+        <span class="topbar__timer" id="auto-refresh-timer"></span>
         <span class="topbar__user">🔒 Team Access</span>
         <a href="index.html" class="topbar__back">← Back to Site</a>
         <button class="topbar__logout" onclick="signOut()">Sign Out</button>
@@ -314,7 +559,10 @@
 
     <!-- Tabs -->
     <div class="tabs" id="tabs">
-      <div class="tab active" data-panel="finances">💰 Finances</div>
+      <div class="tab active" data-panel="pulse">📊 Site Pulse</div>
+      <div class="tab" data-panel="orders">📦 Merch Orders</div>
+      <div class="tab" data-panel="inbox">📬 Inbox</div>
+      <div class="tab" data-panel="finances">💰 Finances</div>
       <div class="tab" data-panel="tasks">✅ Tasks</div>
       <div class="tab" data-panel="projects">🏗️ Capital Projects</div>
       <div class="tab" data-panel="team">👥 Team</div>
@@ -324,8 +572,38 @@
     <!-- Content Panels -->
     <div class="content">
 
+      <!-- ═══ SITE PULSE PANEL ═══ -->
+      <div class="panel active" id="panel-pulse">
+        <div id="pulse-content">
+          <div class="skeleton-grid">
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+          </div>
+          <div class="skeleton-table"></div>
+        </div>
+      </div>
+
+      <!-- ═══ MERCH ORDERS PANEL ═══ -->
+      <div class="panel" id="panel-orders">
+        <div id="orders-content">
+          <div class="skeleton-grid">
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            <div class="skeleton-card"></div><div class="skeleton-card"></div>
+          </div>
+          <div class="skeleton-table"></div>
+        </div>
+      </div>
+
+      <!-- ═══ INBOX PANEL ═══ -->
+      <div class="panel" id="panel-inbox">
+        <div id="inbox-content">
+          <div class="skeleton-table"></div>
+        </div>
+      </div>
+
       <!-- ═══ FINANCES PANEL ═══ -->
-      <div class="panel active" id="panel-finances">
+      <div class="panel" id="panel-finances">
         <div class="summary-grid" id="finance-summary"></div>
 
         <div class="section-header">
@@ -333,10 +611,12 @@
           <span>Monthly recurring unless noted</span>
         </div>
         <div class="table-wrap">
+          <div class="table-scroll">
           <table>
             <thead><tr><th>Source</th><th>Amount</th><th>Period</th><th>Notes</th></tr></thead>
             <tbody id="revenue-table"></tbody>
           </table>
+          </div>
         </div>
 
         <div class="section-header">
@@ -344,10 +624,12 @@
           <span>Operating costs</span>
         </div>
         <div class="table-wrap">
+          <div class="table-scroll">
           <table>
             <thead><tr><th>Item</th><th>Amount</th><th>Period</th><th>Category</th><th>Notes</th></tr></thead>
             <tbody id="expenses-table"></tbody>
           </table>
+          </div>
         </div>
       </div>
 
@@ -359,10 +641,12 @@
           <span>What needs to get done</span>
         </div>
         <div class="table-wrap">
+          <div class="table-scroll">
           <table>
             <thead><tr><th>Task</th><th>Assigned To</th><th>Priority</th><th>Category</th><th>Status</th></tr></thead>
             <tbody id="tasks-table"></tbody>
           </table>
+          </div>
         </div>
       </div>
 
@@ -374,10 +658,12 @@
           <span>Infrastructure & buildout phases</span>
         </div>
         <div class="table-wrap">
+          <div class="table-scroll">
           <table>
             <thead><tr><th>Project</th><th>Estimated Cost</th><th>Funded</th><th>Progress</th><th>Priority</th><th>Status</th></tr></thead>
             <tbody id="projects-table"></tbody>
           </table>
+          </div>
         </div>
       </div>
 
@@ -446,16 +732,15 @@
   </div><!-- /dashboard -->
 
   <script>
-    /* ── Password Gate ── */
-    // SHA-256 hash of the team password "RTTL2026!"
-    const PASS_HASH = 'a0f3d2e6c8b4a1f5d7e9c3b6a8f2d4e6c1b5a7f9d3e8c2b6a4f1d5e7c9b3a8f2';
+    /* ═══════════════════════════════════════════════
+       PASSWORD GATE — SHA-256 Hash Comparison
+    ═══════════════════════════════════════════════ */
+    const PASS_HASH = 'e22690b7086b3b21deb0761c66b5335bbbbbd5926b67a4494cb167b71b614963';
 
-    // Check if already logged in this session
     if (sessionStorage.getItem('rttl-admin') === 'true') {
       showDashboard();
     }
 
-    // Handle Enter key on password field
     document.getElementById('password-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') attemptLogin();
     });
@@ -470,8 +755,7 @@
     async function attemptLogin() {
       const pw = document.getElementById('password-input').value;
       const hash = await hashPassword(pw);
-      // Accept the hardcoded password directly (simple team gate)
-      if (pw === 'RTTL2026!') {
+      if (hash === PASS_HASH) {
         sessionStorage.setItem('rttl-admin', 'true');
         showDashboard();
       } else {
@@ -485,17 +769,24 @@
       document.getElementById('login-gate').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       loadData();
+      loadLiveData();
+      startAutoRefresh();
     }
 
     function signOut() {
       sessionStorage.removeItem('rttl-admin');
+      sessionStorage.removeItem('rttl-forms-cache');
+      sessionStorage.removeItem('rttl-orders-cache');
+      stopAutoRefresh();
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('login-gate').style.display = 'flex';
       document.getElementById('password-input').value = '';
       document.getElementById('login-error').textContent = '';
     }
 
-    /* ── Tab Switching ── */
+    /* ═══════════════════════════════════════════════
+       TAB SWITCHING
+    ═══════════════════════════════════════════════ */
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -505,11 +796,110 @@
       });
     });
 
-    /* ── Format Currency ── */
-    function fmt(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+    /* ═══════════════════════════════════════════════
+       UTILITY FUNCTIONS
+    ═══════════════════════════════════════════════ */
+    function fmt(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+    function fmtDec(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
     function fmtClass(n) { return n > 0 ? 'positive' : n < 0 ? 'negative' : 'zero'; }
 
-    /* ── Load Data ── */
+    function fmtDate(d) {
+      if (!d) return '—';
+      const date = new Date(d);
+      if (isNaN(date)) return '—';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function fmtDateTime(d) {
+      if (!d) return '—';
+      const date = new Date(d);
+      if (isNaN(date)) return '—';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function fmtTimeAgo(d) {
+      if (!d) return '';
+      const now = Date.now();
+      const ts = new Date(d).getTime();
+      if (isNaN(ts)) return '';
+      const diff = Math.floor((now - ts) / 1000);
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      return Math.floor(diff / 86400) + 'd ago';
+    }
+
+    function renderSkeleton(target, cards = 4) {
+      const el = document.getElementById(target);
+      if (!el) return;
+      el.innerHTML = `
+        <div class="skeleton-grid">${Array(cards).fill('<div class="skeleton-card"></div>').join('')}</div>
+        <div class="skeleton-table"></div>
+      `;
+    }
+
+    function renderError(target, msg, retryFn) {
+      const el = document.getElementById(target);
+      if (!el) return;
+      el.innerHTML = `
+        <div class="error-state">
+          <div class="error-state__icon">⚠️</div>
+          <div class="error-state__title">Failed to Load</div>
+          <div class="error-state__msg">${msg}</div>
+          <button class="error-state__btn" onclick="${retryFn}">Retry</button>
+        </div>
+      `;
+    }
+
+    function escHtml(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ═══════════════════════════════════════════════
+       AUTO-REFRESH (5 min = 300s)
+    ═══════════════════════════════════════════════ */
+    const AUTO_REFRESH_INTERVAL = 300;
+    let refreshCountdown = AUTO_REFRESH_INTERVAL;
+    let refreshTimerId = null;
+
+    function startAutoRefresh() {
+      refreshCountdown = AUTO_REFRESH_INTERVAL;
+      updateTimerDisplay();
+      if (refreshTimerId) clearInterval(refreshTimerId);
+      refreshTimerId = setInterval(() => {
+        refreshCountdown--;
+        if (refreshCountdown <= 0) {
+          refreshCountdown = AUTO_REFRESH_INTERVAL;
+          loadLiveData();
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    function stopAutoRefresh() {
+      if (refreshTimerId) {
+        clearInterval(refreshTimerId);
+        refreshTimerId = null;
+      }
+    }
+
+    function resetAutoRefresh() {
+      refreshCountdown = AUTO_REFRESH_INTERVAL;
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const el = document.getElementById('auto-refresh-timer');
+      if (!el) return;
+      const m = Math.floor(refreshCountdown / 60);
+      const s = refreshCountdown % 60;
+      el.textContent = `Auto-refresh in ${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       LOAD STATIC DATA (admin/data.json)
+    ═══════════════════════════════════════════════ */
     async function loadData() {
       try {
         const res = await fetch('admin/data.json?t=' + Date.now());
@@ -523,7 +913,416 @@
       }
     }
 
-    /* ── Render Finances ── */
+    /* ═══════════════════════════════════════════════
+       LOAD LIVE DATA (APIs)
+    ═══════════════════════════════════════════════ */
+    let formsData = null;
+    let ordersData = null;
+
+    async function loadLiveData() {
+      await Promise.allSettled([loadFormsData(), loadOrdersData()]);
+    }
+
+    async function loadFormsData(forceRefresh = false) {
+      if (!forceRefresh) {
+        const cached = sessionStorage.getItem('rttl-forms-cache');
+        if (cached) {
+          try {
+            formsData = JSON.parse(cached);
+            renderPulse(formsData);
+            renderInbox(formsData);
+            return;
+          } catch(e) { /* ignore bad cache */ }
+        }
+      }
+      renderSkeleton('pulse-content', 6);
+      renderSkeleton('inbox-content', 0);
+      try {
+        const res = await fetch('/api/admin-forms?t=' + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        formsData = await res.json();
+        sessionStorage.setItem('rttl-forms-cache', JSON.stringify(formsData));
+        renderPulse(formsData);
+        renderInbox(formsData);
+        resetAutoRefresh();
+      } catch (e) {
+        console.error('Forms API error:', e);
+        if (!formsData) {
+          renderError('pulse-content', 'Could not reach the forms API.', 'loadFormsData(true)');
+          renderError('inbox-content', 'Could not reach the forms API.', 'loadFormsData(true)');
+        }
+      }
+    }
+
+    async function loadOrdersData(forceRefresh = false) {
+      if (!forceRefresh) {
+        const cached = sessionStorage.getItem('rttl-orders-cache');
+        if (cached) {
+          try {
+            ordersData = JSON.parse(cached);
+            renderOrders(ordersData);
+            return;
+          } catch(e) { /* ignore */ }
+        }
+      }
+      renderSkeleton('orders-content', 4);
+      try {
+        const res = await fetch('/api/admin-orders?t=' + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        ordersData = await res.json();
+        sessionStorage.setItem('rttl-orders-cache', JSON.stringify(ordersData));
+        renderOrders(ordersData);
+        resetAutoRefresh();
+      } catch (e) {
+        console.error('Orders API error:', e);
+        if (!ordersData) {
+          renderError('orders-content', 'Could not reach the orders API.', 'loadOrdersData(true)');
+        }
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: SITE PULSE
+    ═══════════════════════════════════════════════ */
+    function renderPulse(data) {
+      const f = data.forms || {};
+      const deploys = data.deploys || [];
+
+      const newsletter = f.newsletter || { count: 0, submissions: [] };
+      const contact = f.contact || { count: 0, submissions: [] };
+      const eventBooking = f['event-booking'] || { count: 0, submissions: [] };
+      const partner = f['partner-application'] || { count: 0, submissions: [] };
+      const membership = f.membership || { count: 0, submissions: [] };
+
+      const lastDeploy = deploys[0];
+      const deployText = lastDeploy ? fmtTimeAgo(lastDeploy.created_at) : 'None';
+      const deployState = lastDeploy ? lastDeploy.state : 'none';
+
+      let html = `
+        <div class="refresh-bar">
+          <span class="refresh-bar__time">Last refreshed: ${data.timestamp ? fmtDateTime(data.timestamp) : 'Unknown'}</span>
+          <button class="refresh-bar__btn" onclick="loadFormsData(true)">↻ Refresh</button>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-card__icon">📧</div>
+            <div class="summary-card__label">Newsletter Subs</div>
+            <div class="summary-card__value green">${newsletter.count}</div>
+            <div class="summary-card__note">Email list signups</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">💬</div>
+            <div class="summary-card__label">Contact Inquiries</div>
+            <div class="summary-card__value blue">${contact.count}</div>
+            <div class="summary-card__note">Messages received</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">🎪</div>
+            <div class="summary-card__label">Event Bookings</div>
+            <div class="summary-card__value gold">${eventBooking.count}</div>
+            <div class="summary-card__note">Reservations</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">🤝</div>
+            <div class="summary-card__label">Partner Apps</div>
+            <div class="summary-card__value purple">${partner.count}</div>
+            <div class="summary-card__note">Applications received</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">🏷️</div>
+            <div class="summary-card__label">Memberships</div>
+            <div class="summary-card__value lavender">${membership.count}</div>
+            <div class="summary-card__note">Member signups</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">🚀</div>
+            <div class="summary-card__label">Last Deploy</div>
+            <div class="summary-card__value ${deployState === 'ready' ? 'green' : deployState === 'error' ? 'red' : 'gold'}">${deployText}</div>
+            <div class="summary-card__note">${lastDeploy ? lastDeploy.title || lastDeploy.branch || '' : 'No deploys yet'}</div>
+          </div>
+        </div>
+      `;
+
+      // Contact submissions table
+      if (contact.submissions && contact.submissions.length > 0) {
+        html += `
+          <div class="section-header">
+            <h2>Recent Contact Submissions</h2>
+            <span>${contact.count} total</span>
+          </div>
+          <div class="table-wrap"><div class="table-scroll">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Interest</th><th>Date</th></tr></thead>
+              <tbody>
+                ${contact.submissions.slice(0, 20).map(s => {
+                  const d = s.data || {};
+                  return `<tr>
+                    <td><strong>${escHtml(d.name) || '—'}</strong></td>
+                    <td><a class="mailto-link" href="mailto:${escHtml(d.email)}">${escHtml(d.email) || '—'}</a></td>
+                    <td>${escHtml(d.interest) || '—'}</td>
+                    <td style="color:var(--text-muted);white-space:nowrap">${fmtDate(s.created_at)}</td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div></div>
+        `;
+      }
+
+      // Newsletter signups table
+      if (newsletter.submissions && newsletter.submissions.length > 0) {
+        html += `
+          <div class="section-header">
+            <h2>Newsletter Signups</h2>
+            <span>${newsletter.count} subscribers</span>
+          </div>
+          <div class="table-wrap"><div class="table-scroll">
+            <table>
+              <thead><tr><th>Email</th><th>Date</th></tr></thead>
+              <tbody>
+                ${newsletter.submissions.slice(0, 20).map(s => {
+                  const d = s.data || {};
+                  return `<tr>
+                    <td><a class="mailto-link" href="mailto:${escHtml(d.email)}">${escHtml(d.email) || '—'}</a></td>
+                    <td style="color:var(--text-muted);white-space:nowrap">${fmtDate(s.created_at)}</td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div></div>
+        `;
+      }
+
+      // Recent deploys
+      if (deploys.length > 0) {
+        html += `
+          <div class="section-header">
+            <h2>Recent Deploys</h2>
+            <span>Last ${Math.min(deploys.length, 5)}</span>
+          </div>
+          <div class="table-wrap"><div class="table-scroll">
+            <table>
+              <thead><tr><th>Title</th><th>Branch</th><th>Status</th><th>Deploy Time</th><th>Date</th></tr></thead>
+              <tbody>
+                ${deploys.slice(0, 5).map(d => `<tr>
+                  <td>${escHtml(d.title) || '—'}</td>
+                  <td><code style="background:var(--bg-card-alt);padding:0.15rem 0.5rem;border-radius:4px;font-size:0.75rem">${escHtml(d.branch) || '—'}</code></td>
+                  <td><span class="badge badge--${d.state || 'draft'}">${d.state || 'unknown'}</span></td>
+                  <td style="color:var(--text-muted)">${d.deploy_time ? d.deploy_time + 's' : '—'}</td>
+                  <td style="color:var(--text-muted);white-space:nowrap">${fmtDateTime(d.created_at)}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div></div>
+        `;
+      }
+
+      document.getElementById('pulse-content').innerHTML = html;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: MERCH ORDERS
+    ═══════════════════════════════════════════════ */
+    function renderOrders(data) {
+      const orders = data.orders || [];
+      const products = data.products || [];
+      const summary = data.summary || {};
+      const statusCounts = summary.status_counts || {};
+
+      let html = `
+        <div class="refresh-bar">
+          <span class="refresh-bar__time">Last refreshed: ${data.timestamp ? fmtDateTime(data.timestamp) : 'Unknown'}</span>
+          <button class="refresh-bar__btn" onclick="loadOrdersData(true)">↻ Refresh</button>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-card__icon">📦</div>
+            <div class="summary-card__label">Total Orders</div>
+            <div class="summary-card__value blue">${summary.total_orders || 0}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">💰</div>
+            <div class="summary-card__label">Total Revenue</div>
+            <div class="summary-card__value green">${fmtDec(summary.total_revenue || 0)}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">✅</div>
+            <div class="summary-card__label">Fulfilled</div>
+            <div class="summary-card__value green">${statusCounts.fulfilled || 0}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__icon">⏳</div>
+            <div class="summary-card__label">Pending</div>
+            <div class="summary-card__value gold">${statusCounts.pending || 0}</div>
+          </div>
+        </div>
+      `;
+
+      // Orders table
+      if (orders.length > 0) {
+        html += `
+          <div class="section-header">
+            <h2>Orders</h2>
+            <span>${orders.length} total</span>
+          </div>
+          <div class="table-wrap"><div class="table-scroll">
+            <table>
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Profit</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody>
+                ${orders.map(o => {
+                  const recipient = o.recipient || {};
+                  const items = o.items || [];
+                  const retailTotal = parseFloat((o.retail_costs || {}).total || 0);
+                  const costsTotal = parseFloat((o.costs || {}).total || 0);
+                  const profit = retailTotal - costsTotal;
+                  const custName = recipient.name || '—';
+                  const custLoc = [recipient.city, recipient.state_code].filter(Boolean).join(', ');
+                  const itemNames = items.map(i => `${i.name}${i.quantity > 1 ? ' ×' + i.quantity : ''}`).join(', ');
+                  const orderDate = o.created ? new Date(o.created * 1000) : null;
+                  return `<tr>
+                    <td><code style="font-size:0.75rem">${escHtml(String(o.id).slice(-8))}</code></td>
+                    <td><strong>${escHtml(custName)}</strong>${custLoc ? '<br><span style="color:var(--text-muted);font-size:0.75rem">' + escHtml(custLoc) + '</span>' : ''}</td>
+                    <td style="max-width:200px;white-space:normal;font-size:0.8rem">${escHtml(itemNames) || '—'}</td>
+                    <td class="amount positive">${fmtDec(retailTotal)}</td>
+                    <td class="amount ${profit >= 0 ? 'positive' : 'negative'}">${fmtDec(profit)}</td>
+                    <td><span class="badge badge--${o.status || 'draft'}">${o.status || 'unknown'}</span></td>
+                    <td style="color:var(--text-muted);white-space:nowrap">${orderDate ? fmtDate(orderDate) : '—'}</td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div></div>
+        `;
+      } else {
+        html += `
+          <div class="empty-state">
+            <div class="empty-state__icon">📦</div>
+            <p>No orders yet. Once merch starts selling, they'll show up here.</p>
+          </div>
+        `;
+      }
+
+      // Products synced
+      if (products.length > 0) {
+        html += `
+          <div class="section-header">
+            <h2>Products Synced</h2>
+            <span>${products.length} products in store</span>
+          </div>
+          <div class="product-grid">
+            ${products.map(p => `
+              <div class="product-card">
+                ${p.thumbnail ? `<img src="${escHtml(p.thumbnail)}" alt="${escHtml(p.name)}" loading="lazy">` : '<div style="width:140px;height:140px;background:var(--bg-card-alt);border-radius:var(--radius-sm);margin:0 auto 0.75rem;display:flex;align-items:center;justify-content:center;font-size:2rem">👕</div>'}
+                <div class="product-card__name">${escHtml(p.name)}</div>
+                <div class="product-card__meta">${p.variants || 0} variants · ${(p.synced || 0) === (p.variants || 0) ? '<span style="color:var(--accent-green)">All synced</span>' : '<span style="color:var(--accent-gold)">' + (p.synced || 0) + ' synced</span>'}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      document.getElementById('orders-content').innerHTML = html;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: INBOX (Unified timeline)
+    ═══════════════════════════════════════════════ */
+    function renderInbox(data) {
+      const f = data.forms || {};
+      const allSubmissions = [];
+
+      const formTypeMap = {
+        'contact': { label: 'Contact', badge: 'contact' },
+        'newsletter': { label: 'Newsletter', badge: 'newsletter' },
+        'event-booking': { label: 'Event Booking', badge: 'event-booking' },
+        'partner-application': { label: 'Partner App', badge: 'partner-application' },
+        'membership': { label: 'Membership', badge: 'membership' },
+        'email-list': { label: 'Email List', badge: 'email-list' },
+      };
+
+      for (const [formType, formData] of Object.entries(f)) {
+        if (!formData.submissions) continue;
+        for (const sub of formData.submissions) {
+          allSubmissions.push({ ...sub, formType });
+        }
+      }
+
+      // Sort newest first
+      allSubmissions.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      // Update tab badge
+      const inboxTab = document.querySelector('[data-panel="inbox"]');
+      if (inboxTab && allSubmissions.length > 0) {
+        const existingBadge = inboxTab.querySelector('.tab-badge');
+        if (existingBadge) existingBadge.remove();
+        const badge = document.createElement('span');
+        badge.className = 'tab-badge green';
+        badge.textContent = allSubmissions.length;
+        inboxTab.appendChild(badge);
+      }
+
+      if (allSubmissions.length === 0) {
+        document.getElementById('inbox-content').innerHTML = `
+          <div class="refresh-bar">
+            <span class="refresh-bar__time">Last refreshed: ${data.timestamp ? fmtDateTime(data.timestamp) : 'Unknown'}</span>
+            <button class="refresh-bar__btn" onclick="loadFormsData(true)">↻ Refresh</button>
+          </div>
+          <div class="empty-state">
+            <div class="empty-state__icon">📬</div>
+            <p>No submissions yet. Form responses will appear here as they come in.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <div class="refresh-bar">
+          <span class="refresh-bar__time">Last refreshed: ${data.timestamp ? fmtDateTime(data.timestamp) : 'Unknown'}</span>
+          <button class="refresh-bar__btn" onclick="loadFormsData(true)">↻ Refresh</button>
+        </div>
+        <div class="section-header">
+          <h2>All Submissions</h2>
+          <span>${allSubmissions.length} total</span>
+        </div>
+        <div class="table-wrap"><div class="table-scroll">
+          <table>
+            <thead><tr><th>Type</th><th>Name / Email</th><th>Details</th><th>Date</th><th>Reply</th></tr></thead>
+            <tbody>
+              ${allSubmissions.map(s => {
+                const d = s.data || {};
+                const ft = formTypeMap[s.formType] || { label: s.formType, badge: 'planning' };
+                const name = d.name || '—';
+                const email = d.email || '';
+                // Build details
+                let details = '';
+                if (d.message) details = escHtml(String(d.message).substring(0, 100)) + (String(d.message).length > 100 ? '…' : '');
+                else if (d.interest) details = escHtml(d.interest);
+                else if (d.organization) details = escHtml(d.organization);
+                else details = '—';
+
+                const replyLink = email
+                  ? `<a class="quick-reply" href="mailto:${escHtml(email)}?subject=Re: ${encodeURIComponent(ft.label + ' Submission')}" title="Reply to ${escHtml(email)}">↩ Reply</a>`
+                  : '<span style="color:var(--text-muted);font-size:0.75rem">—</span>';
+
+                return `<tr>
+                  <td><span class="badge badge--${ft.badge}">${ft.label}</span></td>
+                  <td><strong>${escHtml(name)}</strong>${email ? '<br><a class="mailto-link" href="mailto:' + escHtml(email) + '" style="font-size:0.75rem">' + escHtml(email) + '</a>' : ''}</td>
+                  <td style="max-width:250px;white-space:normal;color:var(--text-secondary);font-size:0.8rem">${details}</td>
+                  <td style="color:var(--text-muted);white-space:nowrap">${fmtDate(s.created_at)}</td>
+                  <td>${replyLink}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div></div>
+      `;
+
+      document.getElementById('inbox-content').innerHTML = html;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: FINANCES (original)
+    ═══════════════════════════════════════════════ */
     function renderFinances(fin) {
       const totalRev = fin.revenue.reduce((s, r) => s + r.amount, 0);
       const totalExp = fin.expenses.reduce((s, e) => s + e.amount, 0);
@@ -546,7 +1345,9 @@
       `).join('');
     }
 
-    /* ── Render Tasks ── */
+    /* ═══════════════════════════════════════════════
+       RENDER: TASKS (original)
+    ═══════════════════════════════════════════════ */
     function renderTasks(tasks) {
       const done = tasks.filter(t => t.status === 'done').length;
       const inProg = tasks.filter(t => t.status === 'in-progress').length;
@@ -571,7 +1372,9 @@
       `).join('');
     }
 
-    /* ── Render Capital Projects ── */
+    /* ═══════════════════════════════════════════════
+       RENDER: CAPITAL PROJECTS (original)
+    ═══════════════════════════════════════════════ */
     function renderProjects(projects) {
       const totalCost = projects.reduce((s, p) => s + p.estimatedCost, 0);
       const totalFunded = projects.reduce((s, p) => s + p.funded, 0);
@@ -598,7 +1401,9 @@
       }).join('');
     }
 
-    /* ── Render Team ── */
+    /* ═══════════════════════════════════════════════
+       RENDER: TEAM (original)
+    ═══════════════════════════════════════════════ */
     function renderTeam(team) {
       document.getElementById('team-count').textContent = team.length + ' members';
       document.getElementById('team-grid').innerHTML = team.map(m => `
@@ -617,4 +1422,3 @@
 
 </body>
 </html>
-
