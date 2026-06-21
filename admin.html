@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RTTL Admin — Team Dashboard</title>
+  <title>RTTL Admin — Live Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="images/rttlc-logo-original.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
   <style>
     :root {
       --bg-primary: #0b0f1a;
@@ -53,7 +59,7 @@
     #login-gate img { width: 80px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(139,92,246,0.3)); }
     #login-gate h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
     #login-gate p { color: var(--text-secondary); margin-bottom: 2rem; }
-    #login-gate .login-form { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 320px; }
+    #login-gate .login-form { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 360px; }
     #login-gate input {
       background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary);
       padding: 0.85rem 1.25rem; border-radius: var(--radius); font-size: 1rem; text-align: center;
@@ -61,7 +67,7 @@
     }
     #login-gate input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(139,92,246,0.15); }
     #login-gate input::placeholder { color: var(--text-muted); }
-    #login-gate button {
+    .login-btn {
       background: var(--accent-purple);
       color: white;
       border: none;
@@ -72,9 +78,37 @@
       cursor: pointer;
       transition: all 0.2s;
       font-family: 'Inter', sans-serif;
+      width: 100%;
     }
-    #login-gate button:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
-    #login-gate .error { color: var(--accent-red); font-size: 0.8rem; min-height: 1.2em; }
+    .login-btn:hover { background: #7c3aed; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .login-btn--google {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .login-btn--google:hover { background: var(--bg-hover); border-color: var(--border-focus); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .login-divider { display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.8rem; }
+    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .login-form .error { color: var(--accent-red); font-size: 0.8rem; min-height: 1.2em; }
+    .login-form .info { color: var(--accent-green); font-size: 0.8rem; min-height: 1.2em; }
+    .login-mode-toggle { color: var(--accent-lavender); font-size: 0.8rem; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; margin-top: 0.5rem; }
+    .login-mode-toggle:hover { text-decoration: underline; }
+
+    /* ── Access Denied ── */
+    #access-denied {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    #access-denied .icon { font-size: 4rem; margin-bottom: 1rem; }
+    #access-denied h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    #access-denied p { color: var(--text-secondary); margin-bottom: 1.5rem; max-width: 400px; }
 
     /* ── Dashboard (hidden until login) ── */
     #dashboard { display: none; }
@@ -111,7 +145,12 @@
     .topbar__left span { color: var(--accent-lavender); font-size: 0.75rem; background: rgba(139,92,246,0.15); padding: 0.15rem 0.6rem; border-radius: 50px; }
     .topbar__right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
     .topbar__timer { color: var(--text-muted); font-size: 0.7rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .topbar__user { color: var(--text-secondary); font-size: 0.85rem; }
+    .topbar__avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--accent-purple);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .topbar__user { color: var(--text-secondary); font-size: 0.8rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .topbar__logout {
       background: none; border: 1px solid var(--border); color: var(--text-secondary);
       padding: 0.4rem 1rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; transition: all 0.2s; font-family: 'Inter', sans-serif;
@@ -297,7 +336,6 @@
     .badge--high { background: rgba(239,68,68,0.15); color: var(--accent-red); }
     .badge--medium { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
     .badge--low { background: rgba(16,185,129,0.1); color: var(--accent-green); }
-    /* Deploy / Order badges */
     .badge--ready { background: rgba(16,185,129,0.15); color: var(--accent-green); }
     .badge--building { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
     .badge--error { background: rgba(239,68,68,0.15); color: var(--accent-red); }
@@ -305,13 +343,14 @@
     .badge--pending { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
     .badge--canceled, .badge--cancelled { background: rgba(239,68,68,0.1); color: var(--accent-red); }
     .badge--draft { background: rgba(90,99,128,0.2); color: var(--text-muted); }
-    /* Form type badges */
     .badge--contact { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
     .badge--newsletter { background: rgba(16,185,129,0.15); color: var(--accent-green); }
     .badge--event-booking { background: rgba(245,158,11,0.15); color: var(--accent-gold); }
     .badge--partner-application { background: rgba(139,92,246,0.15); color: var(--accent-purple); }
     .badge--membership { background: rgba(167,139,250,0.15); color: var(--accent-lavender); }
     .badge--email-list { background: rgba(16,185,129,0.1); color: var(--accent-green); }
+    .badge.clickable { cursor: pointer; transition: all 0.2s; }
+    .badge.clickable:hover { transform: scale(1.05); filter: brightness(1.2); }
 
     /* ── Progress Bars ── */
     .progress-bar {
@@ -340,6 +379,7 @@
       border-radius: var(--radius);
       padding: 1.25rem;
       transition: all 0.25s ease;
+      position: relative;
     }
     .team-card:hover { border-color: var(--border-focus); box-shadow: var(--shadow); }
     .team-card__name { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
@@ -347,6 +387,11 @@
     .team-card__info { color: var(--text-secondary); font-size: 0.8rem; line-height: 1.5; }
     .team-card__info a { color: var(--accent-purple); text-decoration: none; }
     .team-card__info a:hover { text-decoration: underline; }
+    .team-card__actions {
+      position: absolute; top: 1rem; right: 1rem;
+      display: flex; gap: 0.5rem; opacity: 0; transition: opacity 0.2s;
+    }
+    .team-card:hover .team-card__actions { opacity: 1; }
 
     /* ── Product Grid ── */
     .product-grid {
@@ -502,6 +547,209 @@
     }
     a.quick-reply:hover { background: rgba(139,92,246,0.2); }
 
+    /* ── Action Buttons ── */
+    .btn-add {
+      background: var(--accent-purple);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .btn-add:hover { background: #7c3aed; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .btn-icon:hover { background: var(--bg-hover); }
+    .btn-icon--delete:hover { background: rgba(239,68,68,0.15); }
+    .btn-icon--edit:hover { background: rgba(139,92,246,0.15); }
+
+    /* ── Inline Edit ── */
+    .editable { cursor: pointer; position: relative; }
+    .editable:hover { background: rgba(139,92,246,0.05); border-radius: 4px; }
+    .editable input, .editable select {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--accent-purple);
+      color: var(--text-primary);
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      width: 100%;
+    }
+    @keyframes greenFlash {
+      0% { background: rgba(16,185,129,0.25); }
+      100% { background: transparent; }
+    }
+    .cell-saved { animation: greenFlash 0.8s ease; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      animation: modalFadeIn 0.2s ease;
+    }
+    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+      animation: modalSlideIn 0.25s ease;
+    }
+    @keyframes modalSlideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .modal__header h3 { font-size: 1.15rem; font-weight: 700; }
+    .modal__close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 1.5rem; line-height: 1; padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .modal__close:hover { color: var(--text-primary); }
+    .modal__form { display: flex; flex-direction: column; gap: 1rem; }
+    .modal__field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .modal__field input, .modal__field select, .modal__field textarea {
+      width: 100%;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal__field input:focus, .modal__field select:focus, .modal__field textarea:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.1);
+    }
+    .modal__field textarea { resize: vertical; min-height: 80px; }
+    .modal__field select { cursor: pointer; }
+    .modal__field select option { background: var(--bg-card); color: var(--text-primary); }
+    .modal__actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+    .modal__btn-submit {
+      background: var(--accent-purple);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .modal__btn-submit:hover { background: #7c3aed; }
+    .modal__btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .modal__btn-cancel {
+      background: none;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .modal__btn-cancel:hover { border-color: var(--text-muted); color: var(--text-primary); }
+
+    /* ── Seed Banner ── */
+    .seed-banner {
+      background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.15));
+      border: 1px solid var(--border-focus);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+    .seed-banner .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent-purple);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Toast ── */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .toast {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.85rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      animation: toastIn 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .toast--success { border-color: rgba(16,185,129,0.3); }
+    .toast--error { border-color: rgba(239,68,68,0.3); }
+    @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .topbar { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
@@ -517,6 +765,8 @@
       table { font-size: 0.8rem; }
       thead th, tbody td { padding: 0.6rem 0.5rem; }
       .refresh-bar { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .modal { padding: 1.5rem; max-width: 100%; }
+      .team-card__actions { opacity: 1; }
     }
     @media (max-width: 480px) {
       .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
@@ -531,29 +781,46 @@
   <div id="login-gate">
     <img src="images/rttlc-logo-original.png" alt="RTTL">
     <h1>RTTL Team Dashboard</h1>
-    <p>Enter the team password to access financials, tasks, and operations.</p>
+    <p id="login-subtitle">Sign in with your team account to access the dashboard.</p>
     <div class="login-form">
-      <input type="password" id="password-input" placeholder="Team Password" autocomplete="off">
-      <button onclick="attemptLogin()">Sign In →</button>
+      <input type="email" id="login-email" placeholder="Email Address" autocomplete="email">
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+      <input type="text" id="login-name" placeholder="Display Name" autocomplete="name" style="display:none">
+      <button class="login-btn" id="login-btn" onclick="handleEmailAuth()">Sign In →</button>
+      <div class="login-divider">or</div>
+      <button class="login-btn login-btn--google" onclick="handleGoogleAuth()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign in with Google
+      </button>
       <div class="error" id="login-error"></div>
+      <div class="info" id="login-info"></div>
+      <button class="login-mode-toggle" id="login-mode-toggle" onclick="toggleLoginMode()" style="display:none">Need an account? Create Admin</button>
     </div>
+  </div>
+
+  <!-- ── Access Denied ── -->
+  <div id="access-denied">
+    <div class="icon">🔒</div>
+    <h2>Access Denied</h2>
+    <p>Your account doesn't have access to this dashboard. Contact an admin to get your role assigned.</p>
+    <button class="login-btn" style="max-width:200px" onclick="doSignOut()">Sign Out</button>
   </div>
 
   <!-- ── Dashboard ── -->
   <div id="dashboard">
-
     <!-- Top Bar -->
     <div class="topbar">
       <div class="topbar__left">
         <img src="images/rttlc-logo-original.png" alt="RTTL">
         <h1>RTTL Admin</h1>
-        <span>Team Dashboard</span>
+        <span>Live Dashboard</span>
       </div>
       <div class="topbar__right">
         <span class="topbar__timer" id="auto-refresh-timer"></span>
-        <span class="topbar__user">🔒 Team Access</span>
+        <div class="topbar__avatar" id="user-avatar">?</div>
+        <span class="topbar__user" id="user-display"></span>
         <a href="index.html" class="topbar__back">← Back to Site</a>
-        <button class="topbar__logout" onclick="signOut()">Sign Out</button>
+        <button class="topbar__logout" onclick="doSignOut()">Sign Out</button>
       </div>
     </div>
 
@@ -604,29 +871,28 @@
 
       <!-- ═══ FINANCES PANEL ═══ -->
       <div class="panel" id="panel-finances">
+        <div id="finances-seed-banner"></div>
         <div class="summary-grid" id="finance-summary"></div>
-
         <div class="section-header">
           <h2>Revenue Streams</h2>
-          <span>Monthly recurring unless noted</span>
+          <button class="btn-add admin-only" onclick="openModal('revenue')">+ Add Revenue</button>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
           <table>
-            <thead><tr><th>Source</th><th>Amount</th><th>Period</th><th>Notes</th></tr></thead>
+            <thead><tr><th>Source</th><th>Amount</th><th>Period</th><th>Notes</th><th class="admin-only" style="width:60px">Actions</th></tr></thead>
             <tbody id="revenue-table"></tbody>
           </table>
           </div>
         </div>
-
         <div class="section-header">
           <h2>Expenses</h2>
-          <span>Operating costs</span>
+          <button class="btn-add admin-only" onclick="openModal('expense')">+ Add Expense</button>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
           <table>
-            <thead><tr><th>Item</th><th>Amount</th><th>Period</th><th>Category</th><th>Notes</th></tr></thead>
+            <thead><tr><th>Item</th><th>Amount</th><th>Period</th><th>Category</th><th>Notes</th><th class="admin-only" style="width:60px">Actions</th></tr></thead>
             <tbody id="expenses-table"></tbody>
           </table>
           </div>
@@ -638,12 +904,12 @@
         <div class="summary-grid" id="tasks-summary"></div>
         <div class="section-header">
           <h2>Action Items</h2>
-          <span>What needs to get done</span>
+          <button class="btn-add admin-only" onclick="openModal('task')">+ Add Task</button>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
           <table>
-            <thead><tr><th>Task</th><th>Assigned To</th><th>Priority</th><th>Category</th><th>Status</th></tr></thead>
+            <thead><tr><th>Task</th><th>Assigned To</th><th>Priority</th><th>Category</th><th>Status</th><th class="admin-only" style="width:60px">Actions</th></tr></thead>
             <tbody id="tasks-table"></tbody>
           </table>
           </div>
@@ -655,12 +921,12 @@
         <div class="summary-grid" id="projects-summary"></div>
         <div class="section-header">
           <h2>Capital Improvement Projects</h2>
-          <span>Infrastructure & buildout phases</span>
+          <button class="btn-add admin-only" onclick="openModal('project')">+ Add Project</button>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
           <table>
-            <thead><tr><th>Project</th><th>Estimated Cost</th><th>Funded</th><th>Progress</th><th>Priority</th><th>Status</th></tr></thead>
+            <thead><tr><th>Project</th><th>Estimated Cost</th><th>Funded</th><th>Progress</th><th>Priority</th><th>Status</th><th class="admin-only" style="width:60px">Actions</th></tr></thead>
             <tbody id="projects-table"></tbody>
           </table>
           </div>
@@ -671,7 +937,10 @@
       <div class="panel" id="panel-team">
         <div class="section-header">
           <h2>Team Directory</h2>
-          <span id="team-count"></span>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <span id="team-count"></span>
+            <button class="btn-add admin-only" onclick="openModal('team')">+ Add Member</button>
+          </div>
         </div>
         <div class="team-grid" id="team-grid"></div>
       </div>
@@ -708,12 +977,12 @@
 
         <div class="rec-card" style="border-color: var(--border); background: var(--bg-card);">
           <h3>📱 Alternative: This Dashboard (Custom — Free)</h3>
-          <p>What you're looking at right now! A built-in lightweight tracker. Good for visibility across the team, but not a replacement for proper accounting software. Use this for team coordination and Wave/QB for actual bookkeeping.</p>
+          <p>What you're looking at right now! A built-in lightweight tracker powered by Firebase. Good for visibility across the team, but not a replacement for proper accounting software. Use this for team coordination and Wave/QB for actual bookkeeping.</p>
           <ul>
-            <li><strong>Cost:</strong> $0 — built into your website</li>
-            <li><strong>Limitations:</strong> Manual data entry (edit data.json), no bank sync</li>
+            <li><strong>Cost:</strong> $0 — built into your website with Firebase</li>
+            <li><strong>Features:</strong> Real-time sync, inline editing, role-based access</li>
             <li><strong>Best for:</strong> Team visibility, task tracking, project planning</li>
-            <li><strong>Future:</strong> Can evolve into a full app with database if needed</li>
+            <li><strong>Future:</strong> Can evolve into a full farm management app</li>
           </ul>
         </div>
 
@@ -731,57 +1000,262 @@
     </div><!-- /content -->
   </div><!-- /dashboard -->
 
+  <!-- ── Modal Container ── -->
+  <div id="modal-root"></div>
+
+  <!-- ── Toast Container ── -->
+  <div class="toast-container" id="toast-container"></div>
+
   <script>
     /* ═══════════════════════════════════════════════
-       PASSWORD GATE — SHA-256 Hash Comparison
+       FIREBASE INIT
     ═══════════════════════════════════════════════ */
-    const PASS_HASH = 'e22690b7086b3b21deb0761c66b5335bbbbbd5926b67a4494cb167b71b614963';
+    const firebaseConfig = {
+      apiKey: "AIzaSyCRyApudx5cz6-2FjNc8iGkjruWGuJJjA8",
+      authDomain: "rttl-6b7ea.firebaseapp.com",
+      projectId: "rttl-6b7ea",
+      storageBucket: "rttl-6b7ea.firebasestorage.app",
+      messagingSenderId: "1027932994740",
+      appId: "1:1027932994740:web:d74a1f4651e8107c9cabe1",
+      measurementId: "G-1LBKZMCCCT"
+    };
 
-    if (sessionStorage.getItem('rttl-admin') === 'true') {
-      showDashboard();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    /* ═══════════════════════════════════════════════
+       STATE
+    ═══════════════════════════════════════════════ */
+    let currentUser = null;
+    let userRole = null;      // 'admin' | 'viewer' | null
+    let isCreateMode = false;
+    let firestoreUnsubs = [];  // track onSnapshot unsubs
+    let formsData = null;
+    let ordersData = null;
+
+    // Firestore live data caches
+    let fsRevenue = [];
+    let fsExpenses = [];
+    let fsTasks = [];
+    let fsProjects = [];
+    let fsTeam = [];
+    let seedCheckDone = false;
+
+    /* ═══════════════════════════════════════════════
+       AUTH — Login Mode Toggle
+    ═══════════════════════════════════════════════ */
+    async function checkIfFirstUser() {
+      try {
+        const usersSnap = await db.collection('users').limit(1).get();
+        if (usersSnap.empty) {
+          // No users exist, show create mode
+          document.getElementById('login-mode-toggle').style.display = 'block';
+          document.getElementById('login-mode-toggle').textContent = 'First time? Create Admin Account';
+        }
+      } catch (e) {
+        // Firestore rules might block unauthenticated reads, that's fine
+      }
     }
+    checkIfFirstUser();
 
-    document.getElementById('password-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') attemptLogin();
-    });
+    function toggleLoginMode() {
+      isCreateMode = !isCreateMode;
+      const btn = document.getElementById('login-btn');
+      const toggle = document.getElementById('login-mode-toggle');
+      const nameField = document.getElementById('login-name');
+      const subtitle = document.getElementById('login-subtitle');
 
-    async function hashPassword(pw) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(pw);
-      const hash = await crypto.subtle.digest('SHA-256', data);
-      return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function attemptLogin() {
-      const pw = document.getElementById('password-input').value;
-      const hash = await hashPassword(pw);
-      if (hash === PASS_HASH) {
-        sessionStorage.setItem('rttl-admin', 'true');
-        showDashboard();
+      if (isCreateMode) {
+        btn.textContent = 'Create Admin Account →';
+        toggle.textContent = 'Already have an account? Sign In';
+        nameField.style.display = 'block';
+        subtitle.textContent = 'Create the first admin account for your team.';
       } else {
-        document.getElementById('login-error').textContent = 'Incorrect password. Ask your team lead for access.';
-        document.getElementById('password-input').value = '';
-        document.getElementById('password-input').focus();
+        btn.textContent = 'Sign In →';
+        toggle.textContent = 'Need an account? Create Admin';
+        nameField.style.display = 'none';
+        subtitle.textContent = 'Sign in with your team account to access the dashboard.';
+      }
+      clearLoginErrors();
+    }
+
+    function clearLoginErrors() {
+      document.getElementById('login-error').textContent = '';
+      document.getElementById('login-info').textContent = '';
+    }
+
+    /* ═══════════════════════════════════════════════
+       AUTH — Email/Password
+    ═══════════════════════════════════════════════ */
+    async function handleEmailAuth() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const name = document.getElementById('login-name').value.trim();
+
+      clearLoginErrors();
+
+      if (!email || !password) {
+        document.getElementById('login-error').textContent = 'Please enter email and password.';
+        return;
+      }
+
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+
+      try {
+        if (isCreateMode) {
+          if (!name) {
+            document.getElementById('login-error').textContent = 'Please enter your display name.';
+            btn.disabled = false;
+            return;
+          }
+          // Create user
+          const cred = await auth.createUserWithEmailAndPassword(email, password);
+          await cred.user.updateProfile({ displayName: name });
+          // Write admin doc to Firestore
+          await db.collection('users').doc(cred.user.uid).set({
+            role: 'admin',
+            email: email,
+            name: name,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          document.getElementById('login-info').textContent = 'Admin account created! Signing in...';
+        } else {
+          await auth.signInWithEmailAndPassword(email, password);
+        }
+      } catch (e) {
+        let msg = 'Authentication failed.';
+        if (e.code === 'auth/user-not-found') msg = 'No account found with that email.';
+        else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
+        else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
+        else if (e.code === 'auth/weak-password') msg = 'Password must be at least 6 characters.';
+        else if (e.code === 'auth/email-already-in-use') msg = 'Email already in use.';
+        else if (e.code === 'auth/invalid-credential') msg = 'Invalid email or password.';
+        else if (e.message) msg = e.message;
+        document.getElementById('login-error').textContent = msg;
+        btn.disabled = false;
       }
     }
 
-    function showDashboard() {
-      document.getElementById('login-gate').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      loadData();
-      loadLiveData();
-      startAutoRefresh();
+    // Enter key on password
+    document.getElementById('login-password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleEmailAuth();
+    });
+    document.getElementById('login-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('login-password').focus();
+    });
+
+    /* ═══════════════════════════════════════════════
+       AUTH — Google Sign-In
+    ═══════════════════════════════════════════════ */
+    async function handleGoogleAuth() {
+      clearLoginErrors();
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        await auth.signInWithPopup(provider);
+      } catch (e) {
+        if (e.code !== 'auth/popup-closed-by-user') {
+          document.getElementById('login-error').textContent = e.message || 'Google sign-in failed.';
+        }
+      }
     }
 
-    function signOut() {
-      sessionStorage.removeItem('rttl-admin');
+    /* ═══════════════════════════════════════════════
+       AUTH — State Listener
+    ═══════════════════════════════════════════════ */
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        currentUser = user;
+        await checkUserRole(user);
+      } else {
+        currentUser = null;
+        userRole = null;
+        showLoginScreen();
+      }
+    });
+
+    async function checkUserRole(user) {
+      try {
+        const doc = await db.collection('users').doc(user.uid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          userRole = data.role || 'viewer';
+          showDashboard(user);
+        } else {
+          // No user doc — check if this is the only user (first signup via Google)
+          const allUsers = await db.collection('users').limit(1).get();
+          if (allUsers.empty) {
+            // First user via Google — auto-create admin
+            await db.collection('users').doc(user.uid).set({
+              role: 'admin',
+              email: user.email,
+              name: user.displayName || user.email,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            userRole = 'admin';
+            showDashboard(user);
+          } else {
+            // Not first user and no doc — access denied
+            userRole = null;
+            showAccessDenied();
+          }
+        }
+      } catch (e) {
+        console.error('Role check failed:', e);
+        // If Firestore rules block, treat as access denied
+        showAccessDenied();
+      }
+    }
+
+    function showLoginScreen() {
+      document.getElementById('login-gate').style.display = 'flex';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('access-denied').style.display = 'none';
+      document.getElementById('login-btn').disabled = false;
+      stopAutoRefresh();
+      cleanupFirestoreListeners();
+    }
+
+    function showAccessDenied() {
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('access-denied').style.display = 'flex';
+    }
+
+    function showDashboard(user) {
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('access-denied').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+
+      // Set user display
+      const displayName = user.displayName || user.email;
+      const avatar = (user.email || '?')[0].toUpperCase();
+      document.getElementById('user-avatar').textContent = avatar;
+      document.getElementById('user-display').textContent = displayName;
+
+      // Apply role-based visibility
+      applyRoleVisibility();
+
+      // Load data
+      loadLiveData();
+      startAutoRefresh();
+      initFirestoreListeners();
+    }
+
+    function applyRoleVisibility() {
+      const adminEls = document.querySelectorAll('.admin-only');
+      adminEls.forEach(el => {
+        el.style.display = userRole === 'admin' ? '' : 'none';
+      });
+    }
+
+    async function doSignOut() {
+      stopAutoRefresh();
+      cleanupFirestoreListeners();
       sessionStorage.removeItem('rttl-forms-cache');
       sessionStorage.removeItem('rttl-orders-cache');
-      stopAutoRefresh();
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('login-gate').style.display = 'flex';
-      document.getElementById('password-input').value = '';
-      document.getElementById('login-error').textContent = '';
+      await auth.signOut();
     }
 
     /* ═══════════════════════════════════════════════
@@ -856,8 +1330,17 @@
       return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.innerHTML = `${type === 'success' ? '✅' : '❌'} ${escHtml(message)}`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3000);
+    }
+
     /* ═══════════════════════════════════════════════
-       AUTO-REFRESH (5 min = 300s)
+       AUTO-REFRESH (5 min = 300s) for live tabs
     ═══════════════════════════════════════════════ */
     const AUTO_REFRESH_INTERVAL = 300;
     let refreshCountdown = AUTO_REFRESH_INTERVAL;
@@ -898,27 +1381,8 @@
     }
 
     /* ═══════════════════════════════════════════════
-       LOAD STATIC DATA (admin/data.json)
+       LOAD LIVE DATA (APIs — Pulse, Orders, Inbox)
     ═══════════════════════════════════════════════ */
-    async function loadData() {
-      try {
-        const res = await fetch('admin/data.json?t=' + Date.now());
-        const data = await res.json();
-        renderFinances(data.finances);
-        renderTasks(data.tasks);
-        renderProjects(data.finances.capitalProjects);
-        renderTeam(data.team);
-      } catch (e) {
-        console.error('Failed to load data:', e);
-      }
-    }
-
-    /* ═══════════════════════════════════════════════
-       LOAD LIVE DATA (APIs)
-    ═══════════════════════════════════════════════ */
-    let formsData = null;
-    let ordersData = null;
-
     async function loadLiveData() {
       await Promise.allSettled([loadFormsData(), loadOrdersData()]);
     }
@@ -948,7 +1412,7 @@
       } catch (e) {
         console.error('Forms API error:', e);
         if (!formsData) {
-          renderError('pulse-content', 'Could not reach the forms API.', 'loadFormsData(true)');
+          renderError('pulse-content', 'Could not reach the forms API. Deploy the Netlify functions first.', 'loadFormsData(true)');
           renderError('inbox-content', 'Could not reach the forms API.', 'loadFormsData(true)');
         }
       }
@@ -978,6 +1442,150 @@
         if (!ordersData) {
           renderError('orders-content', 'Could not reach the orders API.', 'loadOrdersData(true)');
         }
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       FIRESTORE LISTENERS & DATA SEEDING
+    ═══════════════════════════════════════════════ */
+    function cleanupFirestoreListeners() {
+      firestoreUnsubs.forEach(fn => fn());
+      firestoreUnsubs = [];
+      seedCheckDone = false;
+    }
+
+    async function initFirestoreListeners() {
+      cleanupFirestoreListeners();
+
+      // Check if we need to seed
+      if (!seedCheckDone) {
+        await checkAndSeedData();
+        seedCheckDone = true;
+      }
+
+      // Revenue
+      const unsubRev = db.collection('businesses/rttl/revenue').onSnapshot(snap => {
+        fsRevenue = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderFinances();
+      }, err => console.error('Revenue listener error:', err));
+      firestoreUnsubs.push(unsubRev);
+
+      // Expenses
+      const unsubExp = db.collection('businesses/rttl/expenses').onSnapshot(snap => {
+        fsExpenses = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderFinances();
+      }, err => console.error('Expenses listener error:', err));
+      firestoreUnsubs.push(unsubExp);
+
+      // Tasks
+      const unsubTasks = db.collection('businesses/rttl/tasks').onSnapshot(snap => {
+        fsTasks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderTasks();
+      }, err => console.error('Tasks listener error:', err));
+      firestoreUnsubs.push(unsubTasks);
+
+      // Capital Projects
+      const unsubProj = db.collection('businesses/rttl/capitalProjects').onSnapshot(snap => {
+        fsProjects = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderProjects();
+      }, err => console.error('Projects listener error:', err));
+      firestoreUnsubs.push(unsubProj);
+
+      // Team
+      const unsubTeam = db.collection('businesses/rttl/team').onSnapshot(snap => {
+        fsTeam = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderTeam();
+      }, err => console.error('Team listener error:', err));
+      firestoreUnsubs.push(unsubTeam);
+    }
+
+    async function checkAndSeedData() {
+      const banner = document.getElementById('finances-seed-banner');
+      try {
+        // Check if any revenue docs exist as a proxy for "data exists"
+        const revCheck = await db.collection('businesses/rttl/revenue').limit(1).get();
+        if (!revCheck.empty) return; // Data exists, no seed needed
+
+        // Also check tasks
+        const taskCheck = await db.collection('businesses/rttl/tasks').limit(1).get();
+        if (!taskCheck.empty) return;
+
+        // Show seeding banner
+        banner.innerHTML = `
+          <div class="seed-banner">
+            <div class="spinner"></div>
+            <span>Importing initial data to Firebase... This only happens once.</span>
+          </div>
+        `;
+
+        // Fetch data.json
+        const res = await fetch('admin/data.json?t=' + Date.now());
+        if (!res.ok) throw new Error('Could not load admin/data.json');
+        const data = await res.json();
+
+        // Write the business doc
+        await db.doc('businesses/rttl').set({
+          name: 'ReThinking the Leaf',
+          seeded: true,
+          seedDate: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Seed revenue
+        const batch1 = db.batch();
+        if (data.finances && data.finances.revenue) {
+          data.finances.revenue.forEach(r => {
+            const ref = db.collection('businesses/rttl/revenue').doc();
+            batch1.set(ref, { ...r, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+          });
+        }
+        await batch1.commit();
+
+        // Seed expenses
+        const batch2 = db.batch();
+        if (data.finances && data.finances.expenses) {
+          data.finances.expenses.forEach(e => {
+            const ref = db.collection('businesses/rttl/expenses').doc();
+            batch2.set(ref, { ...e, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+          });
+        }
+        await batch2.commit();
+
+        // Seed capital projects
+        const batch3 = db.batch();
+        if (data.finances && data.finances.capitalProjects) {
+          data.finances.capitalProjects.forEach(p => {
+            const ref = db.collection('businesses/rttl/capitalProjects').doc();
+            batch3.set(ref, { ...p, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+          });
+        }
+        await batch3.commit();
+
+        // Seed tasks
+        const batch4 = db.batch();
+        if (data.tasks) {
+          data.tasks.forEach(t => {
+            const ref = db.collection('businesses/rttl/tasks').doc();
+            batch4.set(ref, { ...t, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+          });
+        }
+        await batch4.commit();
+
+        // Seed team
+        const batch5 = db.batch();
+        if (data.team) {
+          data.team.forEach(m => {
+            const ref = db.collection('businesses/rttl/team').doc();
+            batch5.set(ref, { ...m, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+          });
+        }
+        await batch5.commit();
+
+        showToast('Initial data imported successfully!');
+      } catch (e) {
+        console.error('Seeding error:', e);
+        showToast('Data import failed: ' + e.message, 'error');
+      } finally {
+        banner.innerHTML = '';
       }
     }
 
@@ -1038,7 +1646,7 @@
             <div class="summary-card__icon">🚀</div>
             <div class="summary-card__label">Last Deploy</div>
             <div class="summary-card__value ${deployState === 'ready' ? 'green' : deployState === 'error' ? 'red' : 'gold'}">${deployText}</div>
-            <div class="summary-card__note">${lastDeploy ? lastDeploy.title || lastDeploy.branch || '' : 'No deploys yet'}</div>
+            <div class="summary-card__note">${lastDeploy ? escHtml(lastDeploy.title || lastDeploy.branch || '') : 'No deploys yet'}</div>
           </div>
         </div>
       `;
@@ -1247,7 +1855,6 @@
         }
       }
 
-      // Sort newest first
       allSubmissions.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
       // Update tab badge
@@ -1293,7 +1900,6 @@
                 const ft = formTypeMap[s.formType] || { label: s.formType, badge: 'planning' };
                 const name = d.name || '—';
                 const email = d.email || '';
-                // Build details
                 let details = '';
                 if (d.message) details = escHtml(String(d.message).substring(0, 100)) + (String(d.message).length > 100 ? '…' : '');
                 else if (d.interest) details = escHtml(d.interest);
@@ -1321,63 +1927,91 @@
     }
 
     /* ═══════════════════════════════════════════════
-       RENDER: FINANCES (original)
+       RENDER: FINANCES (Firestore)
     ═══════════════════════════════════════════════ */
-    function renderFinances(fin) {
-      const totalRev = fin.revenue.reduce((s, r) => s + r.amount, 0);
-      const totalExp = fin.expenses.reduce((s, e) => s + e.amount, 0);
+    function renderFinances() {
+      const totalRev = fsRevenue.reduce((s, r) => s + (Number(r.amount) || 0), 0);
+      const totalExp = fsExpenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
       const net = totalRev - totalExp;
+      const donations = fsRevenue.filter(r => (r.source || '').toLowerCase().includes('donat')).reduce((s, r) => s + (Number(r.amount) || 0), 0);
+      const merch = fsRevenue.filter(r => (r.source || '').toLowerCase().includes('merch') || (r.source || '').toLowerCase().includes('printful')).reduce((s, r) => s + (Number(r.amount) || 0), 0);
 
       document.getElementById('finance-summary').innerHTML = `
         <div class="summary-card"><div class="summary-card__label">Total Revenue</div><div class="summary-card__value green">${fmt(totalRev)}</div><div class="summary-card__note">All sources combined</div></div>
-        <div class="summary-card"><div class="summary-card__label">Total Expenses</div><div class="summary-card__value red">${fmt(totalExp)}</div><div class="summary-card__note">Monthly operating costs</div></div>
+        <div class="summary-card"><div class="summary-card__label">Total Expenses</div><div class="summary-card__value red">${fmt(totalExp)}</div><div class="summary-card__note">Operating costs</div></div>
         <div class="summary-card"><div class="summary-card__label">Net Balance</div><div class="summary-card__value ${net >= 0 ? 'green' : 'red'}">${fmt(net)}</div><div class="summary-card__note">Revenue − Expenses</div></div>
-        <div class="summary-card"><div class="summary-card__label">Donations</div><div class="summary-card__value purple">${fmt(fin.summary.donationsReceived)}</div><div class="summary-card__note">Via PayPal & CashApp</div></div>
-        <div class="summary-card"><div class="summary-card__label">Merch Sales</div><div class="summary-card__value gold">${fmt(fin.summary.merchSales)}</div><div class="summary-card__note">Printful t-shirts</div></div>
+        <div class="summary-card"><div class="summary-card__label">Donations</div><div class="summary-card__value purple">${fmt(donations)}</div><div class="summary-card__note">Via PayPal & CashApp</div></div>
+        <div class="summary-card"><div class="summary-card__label">Merch Sales</div><div class="summary-card__value gold">${fmt(merch)}</div><div class="summary-card__note">Printful t-shirts</div></div>
       `;
 
-      document.getElementById('revenue-table').innerHTML = fin.revenue.map(r => `
-        <tr><td>${r.source}</td><td class="amount ${fmtClass(r.amount)}">${fmt(r.amount)}</td><td>${r.period}</td><td style="color:var(--text-muted)">${r.notes || '—'}</td></tr>
-      `).join('');
-
-      document.getElementById('expenses-table').innerHTML = fin.expenses.map(e => `
-        <tr><td>${e.item}</td><td class="amount negative">${fmt(e.amount)}</td><td>${e.period}</td><td><span class="badge badge--planning">${e.category}</span></td><td style="color:var(--text-muted)">${e.notes || '—'}</td></tr>
-      `).join('');
-    }
-
-    /* ═══════════════════════════════════════════════
-       RENDER: TASKS (original)
-    ═══════════════════════════════════════════════ */
-    function renderTasks(tasks) {
-      const done = tasks.filter(t => t.status === 'done').length;
-      const inProg = tasks.filter(t => t.status === 'in-progress').length;
-      const notStarted = tasks.filter(t => t.status === 'not-started').length;
-      const high = tasks.filter(t => t.priority === 'high').length;
-
-      document.getElementById('tasks-summary').innerHTML = `
-        <div class="summary-card"><div class="summary-card__label">Total Tasks</div><div class="summary-card__value blue">${tasks.length}</div></div>
-        <div class="summary-card"><div class="summary-card__label">High Priority</div><div class="summary-card__value red">${high}</div></div>
-        <div class="summary-card"><div class="summary-card__label">In Progress</div><div class="summary-card__value gold">${inProg}</div></div>
-        <div class="summary-card"><div class="summary-card__label">Completed</div><div class="summary-card__value green">${done}</div></div>
-      `;
-
-      document.getElementById('tasks-table').innerHTML = tasks.map(t => `
+      const isAdmin = userRole === 'admin';
+      document.getElementById('revenue-table').innerHTML = fsRevenue.map(r => `
         <tr>
-          <td><strong>${t.task}</strong></td>
-          <td>${t.assignee}</td>
-          <td><span class="badge badge--${t.priority}">${t.priority}</span></td>
-          <td><span class="badge badge--planning">${t.category}</span></td>
-          <td><span class="badge badge--${t.status}">${t.status.replace('-', ' ')}</span></td>
+          <td class="${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/revenue', '${r.id}', 'source', '${escHtml(r.source || '')}')"` : ''}>${escHtml(r.source) || '—'}</td>
+          <td class="amount ${fmtClass(Number(r.amount) || 0)} ${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/revenue', '${r.id}', 'amount', ${Number(r.amount) || 0}, 'number')"` : ''}>${fmt(r.amount)}</td>
+          <td>${escHtml(r.period) || '—'}</td>
+          <td style="color:var(--text-muted)" class="${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/revenue', '${r.id}', 'notes', '${escHtml(r.notes || '')}')"` : ''}>${escHtml(r.notes) || '—'}</td>
+          ${isAdmin ? `<td><button class="btn-icon btn-icon--delete" onclick="deleteDoc('businesses/rttl/revenue', '${r.id}', '${escHtml(r.source)}')">🗑️</button></td>` : ''}
+        </tr>
+      `).join('');
+
+      document.getElementById('expenses-table').innerHTML = fsExpenses.map(e => `
+        <tr>
+          <td class="${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/expenses', '${e.id}', 'item', '${escHtml(e.item || '')}')"` : ''}>${escHtml(e.item) || '—'}</td>
+          <td class="amount negative ${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/expenses', '${e.id}', 'amount', ${Number(e.amount) || 0}, 'number')"` : ''}>${fmt(e.amount)}</td>
+          <td>${escHtml(e.period) || '—'}</td>
+          <td><span class="badge badge--planning">${escHtml(e.category) || '—'}</span></td>
+          <td style="color:var(--text-muted)" class="${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/expenses', '${e.id}', 'notes', '${escHtml(e.notes || '')}')"` : ''}>${escHtml(e.notes) || '—'}</td>
+          ${isAdmin ? `<td><button class="btn-icon btn-icon--delete" onclick="deleteDoc('businesses/rttl/expenses', '${e.id}', '${escHtml(e.item)}')">🗑️</button></td>` : ''}
         </tr>
       `).join('');
     }
 
     /* ═══════════════════════════════════════════════
-       RENDER: CAPITAL PROJECTS (original)
+       RENDER: TASKS (Firestore)
     ═══════════════════════════════════════════════ */
-    function renderProjects(projects) {
-      const totalCost = projects.reduce((s, p) => s + p.estimatedCost, 0);
-      const totalFunded = projects.reduce((s, p) => s + p.funded, 0);
+    function renderTasks() {
+      const done = fsTasks.filter(t => t.status === 'done').length;
+      const inProg = fsTasks.filter(t => t.status === 'in-progress').length;
+      const high = fsTasks.filter(t => t.priority === 'high').length;
+
+      document.getElementById('tasks-summary').innerHTML = `
+        <div class="summary-card"><div class="summary-card__label">Total Tasks</div><div class="summary-card__value blue">${fsTasks.length}</div></div>
+        <div class="summary-card"><div class="summary-card__label">High Priority</div><div class="summary-card__value red">${high}</div></div>
+        <div class="summary-card"><div class="summary-card__label">In Progress</div><div class="summary-card__value gold">${inProg}</div></div>
+        <div class="summary-card"><div class="summary-card__label">Completed</div><div class="summary-card__value green">${done}</div></div>
+      `;
+
+      const isAdmin = userRole === 'admin';
+      document.getElementById('tasks-table').innerHTML = fsTasks.map(t => `
+        <tr>
+          <td><strong>${escHtml(t.task)}</strong></td>
+          <td>${escHtml(t.assignee)}</td>
+          <td><span class="badge badge--${t.priority}">${escHtml(t.priority)}</span></td>
+          <td><span class="badge badge--planning">${escHtml(t.category)}</span></td>
+          <td><span class="badge badge--${t.status} ${isAdmin ? 'clickable' : ''}" ${isAdmin ? `onclick="cycleTaskStatus('${t.id}', '${t.status}')" title="Click to change status"` : ''}>${(t.status || '').replace(/-/g, ' ')}</span></td>
+          ${isAdmin ? `<td><button class="btn-icon btn-icon--delete" onclick="deleteDoc('businesses/rttl/tasks', '${t.id}', '${escHtml(t.task)}')">🗑️</button></td>` : ''}
+        </tr>
+      `).join('');
+    }
+
+    async function cycleTaskStatus(docId, currentStatus) {
+      const cycle = { 'not-started': 'in-progress', 'in-progress': 'done', 'done': 'not-started' };
+      const next = cycle[currentStatus] || 'not-started';
+      try {
+        await db.doc(`businesses/rttl/tasks/${docId}`).update({ status: next });
+        showToast(`Task status → ${next.replace(/-/g, ' ')}`);
+      } catch (e) {
+        showToast('Failed to update status', 'error');
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: CAPITAL PROJECTS (Firestore)
+    ═══════════════════════════════════════════════ */
+    function renderProjects() {
+      const totalCost = fsProjects.reduce((s, p) => s + (Number(p.estimatedCost) || 0), 0);
+      const totalFunded = fsProjects.reduce((s, p) => s + (Number(p.funded) || 0), 0);
       const pct = totalCost > 0 ? Math.round((totalFunded / totalCost) * 100) : 0;
 
       document.getElementById('projects-summary').innerHTML = `
@@ -1387,36 +2021,320 @@
         <div class="summary-card"><div class="summary-card__label">Overall Progress</div><div class="summary-card__value gold">${pct}%</div><div class="progress-bar" style="margin-top:0.5rem"><div class="progress-bar__fill" style="width:${pct}%"></div></div></div>
       `;
 
-      document.getElementById('projects-table').innerHTML = projects.map(p => {
-        const ppct = p.estimatedCost > 0 ? Math.round((p.funded / p.estimatedCost) * 100) : 0;
+      const isAdmin = userRole === 'admin';
+      document.getElementById('projects-table').innerHTML = fsProjects.map(p => {
+        const ppct = (Number(p.estimatedCost) || 0) > 0 ? Math.round(((Number(p.funded) || 0) / (Number(p.estimatedCost) || 1)) * 100) : 0;
         return `
         <tr>
-          <td><strong>${p.project}</strong></td>
+          <td><strong>${escHtml(p.project)}</strong></td>
           <td class="amount">${fmt(p.estimatedCost)}</td>
-          <td class="amount ${fmtClass(p.funded)}">${fmt(p.funded)}</td>
+          <td class="amount ${fmtClass(Number(p.funded) || 0)} ${isAdmin ? 'editable' : ''}" ${isAdmin ? `ondblclick="inlineEdit(this, 'businesses/rttl/capitalProjects', '${p.id}', 'funded', ${Number(p.funded) || 0}, 'number')"` : ''}>${fmt(p.funded)}</td>
           <td style="min-width:120px"><div class="progress-bar"><div class="progress-bar__fill" style="width:${ppct}%"></div></div><span style="font-size:0.7rem;color:var(--text-muted)">${ppct}%</span></td>
-          <td><span class="badge badge--${p.priority}">${p.priority}</span></td>
-          <td><span class="badge badge--${p.status}">${p.status}</span></td>
+          <td><span class="badge badge--${p.priority}">${escHtml(p.priority)}</span></td>
+          <td><span class="badge badge--${p.status}">${escHtml(p.status)}</span></td>
+          ${isAdmin ? `<td><button class="btn-icon btn-icon--delete" onclick="deleteDoc('businesses/rttl/capitalProjects', '${p.id}', '${escHtml(p.project)}')">🗑️</button></td>` : ''}
         </tr>`;
       }).join('');
     }
 
     /* ═══════════════════════════════════════════════
-       RENDER: TEAM (original)
+       RENDER: TEAM (Firestore)
     ═══════════════════════════════════════════════ */
-    function renderTeam(team) {
-      document.getElementById('team-count').textContent = team.length + ' members';
-      document.getElementById('team-grid').innerHTML = team.map(m => `
+    function renderTeam() {
+      document.getElementById('team-count').textContent = fsTeam.length + ' members';
+      const isAdmin = userRole === 'admin';
+
+      document.getElementById('team-grid').innerHTML = fsTeam.map(m => `
         <div class="team-card">
-          <div class="team-card__name">${m.name}</div>
-          <div class="team-card__role">${m.role}</div>
+          ${isAdmin ? `
+          <div class="team-card__actions">
+            <button class="btn-icon btn-icon--edit" onclick="openModal('team-edit', '${m.id}')" title="Edit">✏️</button>
+            <button class="btn-icon btn-icon--delete" onclick="deleteDoc('businesses/rttl/team', '${m.id}', '${escHtml(m.name)}')" title="Delete">🗑️</button>
+          </div>` : ''}
+          <div class="team-card__name">${escHtml(m.name)}</div>
+          <div class="team-card__role">${escHtml(m.role)}</div>
           <div class="team-card__info">
-            ${m.email ? '✉️ <a href="mailto:' + m.email + '">' + m.email + '</a><br>' : ''}
-            ${m.phone ? '📞 ' + m.phone + '<br>' : ''}
-            ${m.notes ? '📝 ' + m.notes : '<span style="color:var(--text-muted)">No notes</span>'}
+            ${m.email ? '✉️ <a href="mailto:' + escHtml(m.email) + '">' + escHtml(m.email) + '</a><br>' : ''}
+            ${m.phone ? '📞 ' + escHtml(m.phone) + '<br>' : ''}
+            ${m.notes ? '📝 ' + escHtml(m.notes) : '<span style="color:var(--text-muted)">No notes</span>'}
           </div>
         </div>
       `).join('');
+    }
+
+    /* ═══════════════════════════════════════════════
+       INLINE EDITING
+    ═══════════════════════════════════════════════ */
+    function inlineEdit(cell, collection, docId, field, currentValue, type = 'text') {
+      if (cell.querySelector('input')) return; // already editing
+      const original = cell.innerHTML;
+
+      const input = document.createElement('input');
+      input.type = type === 'number' ? 'number' : 'text';
+      input.value = currentValue;
+      if (type === 'number') { input.step = 'any'; input.min = '0'; }
+      cell.innerHTML = '';
+      cell.appendChild(input);
+      input.focus();
+      input.select();
+
+      const save = async () => {
+        const val = type === 'number' ? parseFloat(input.value) || 0 : input.value.trim();
+        try {
+          await db.doc(`${collection}/${docId}`).update({ [field]: val });
+          cell.classList.add('cell-saved');
+          setTimeout(() => cell.classList.remove('cell-saved'), 800);
+          showToast('Saved');
+        } catch (e) {
+          cell.innerHTML = original;
+          showToast('Save failed', 'error');
+        }
+      };
+
+      const cancel = () => {
+        cell.innerHTML = original;
+      };
+
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); save(); }
+        if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+      });
+
+      input.addEventListener('blur', () => {
+        // Small delay to allow click events to fire first
+        setTimeout(() => {
+          if (cell.contains(input)) save();
+        }, 100);
+      });
+    }
+
+    /* ═══════════════════════════════════════════════
+       DELETE DOCUMENT
+    ═══════════════════════════════════════════════ */
+    async function deleteDoc(collection, docId, label) {
+      if (!confirm(`Delete "${label}"? This cannot be undone.`)) return;
+      try {
+        await db.doc(`${collection}/${docId}`).delete();
+        showToast(`"${label}" deleted`);
+      } catch (e) {
+        showToast('Delete failed: ' + e.message, 'error');
+      }
+    }
+
+    /* ═══════════════════════════════════════════════
+       MODAL SYSTEM
+    ═══════════════════════════════════════════════ */
+    function openModal(type, editId = null) {
+      const root = document.getElementById('modal-root');
+      let title = '';
+      let fields = '';
+      let onSubmit = '';
+
+      switch (type) {
+        case 'revenue':
+          title = '+ Add Revenue';
+          fields = `
+            <div class="modal__field"><label>Source</label><input type="text" id="m-source" placeholder="e.g. PayPal Donations" required></div>
+            <div class="modal__field"><label>Amount ($)</label><input type="number" id="m-amount" step="any" min="0" placeholder="0" required></div>
+            <div class="modal__field"><label>Period</label>
+              <select id="m-period"><option value="monthly">Monthly</option><option value="yearly">Yearly</option><option value="one-time">One-time</option><option value="weekly">Weekly</option></select>
+            </div>
+            <div class="modal__field"><label>Notes</label><textarea id="m-notes" placeholder="Optional notes"></textarea></div>
+          `;
+          onSubmit = 'submitRevenue';
+          break;
+
+        case 'expense':
+          title = '+ Add Expense';
+          fields = `
+            <div class="modal__field"><label>Item</label><input type="text" id="m-item" placeholder="e.g. Domain Renewal" required></div>
+            <div class="modal__field"><label>Amount ($)</label><input type="number" id="m-amount" step="any" min="0" placeholder="0" required></div>
+            <div class="modal__field"><label>Period</label>
+              <select id="m-period"><option value="monthly">Monthly</option><option value="yearly">Yearly</option><option value="one-time">One-time</option><option value="weekly">Weekly</option></select>
+            </div>
+            <div class="modal__field"><label>Category</label>
+              <select id="m-category"><option value="operations">Operations</option><option value="property">Property</option><option value="farming">Farming</option><option value="marketing">Marketing</option><option value="legal">Legal</option><option value="other">Other</option></select>
+            </div>
+            <div class="modal__field"><label>Notes</label><textarea id="m-notes" placeholder="Optional notes"></textarea></div>
+          `;
+          onSubmit = 'submitExpense';
+          break;
+
+        case 'task':
+          title = '+ Add Task';
+          fields = `
+            <div class="modal__field"><label>Task Name</label><input type="text" id="m-task" placeholder="What needs to be done?" required></div>
+            <div class="modal__field"><label>Assigned To</label><input type="text" id="m-assignee" placeholder="e.g. Chris Hopper"></div>
+            <div class="modal__field"><label>Priority</label>
+              <select id="m-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select>
+            </div>
+            <div class="modal__field"><label>Category</label>
+              <select id="m-category"><option value="operations">Operations</option><option value="finance">Finance</option><option value="legal">Legal</option><option value="farming">Farming</option><option value="marketing">Marketing</option><option value="construction">Construction</option><option value="other">Other</option></select>
+            </div>
+            <div class="modal__field"><label>Status</label>
+              <select id="m-status"><option value="not-started" selected>Not Started</option><option value="in-progress">In Progress</option><option value="done">Done</option></select>
+            </div>
+          `;
+          onSubmit = 'submitTask';
+          break;
+
+        case 'project':
+          title = '+ Add Capital Project';
+          fields = `
+            <div class="modal__field"><label>Project Name</label><input type="text" id="m-project" placeholder="e.g. Solar Installation" required></div>
+            <div class="modal__field"><label>Estimated Cost ($)</label><input type="number" id="m-cost" step="any" min="0" placeholder="0" required></div>
+            <div class="modal__field"><label>Funded ($)</label><input type="number" id="m-funded" step="any" min="0" value="0"></div>
+            <div class="modal__field"><label>Priority</label>
+              <select id="m-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select>
+            </div>
+            <div class="modal__field"><label>Status</label>
+              <select id="m-status"><option value="planning" selected>Planning</option><option value="research">Research</option><option value="in-progress">In Progress</option><option value="done">Done</option></select>
+            </div>
+          `;
+          onSubmit = 'submitProject';
+          break;
+
+        case 'team':
+          title = '+ Add Team Member';
+          fields = `
+            <div class="modal__field"><label>Full Name</label><input type="text" id="m-name" placeholder="e.g. Jane Smith" required></div>
+            <div class="modal__field"><label>Role</label><input type="text" id="m-role" placeholder="e.g. Community Outreach"></div>
+            <div class="modal__field"><label>Email</label><input type="email" id="m-email" placeholder="Optional email"></div>
+            <div class="modal__field"><label>Phone</label><input type="tel" id="m-phone" placeholder="Optional phone"></div>
+            <div class="modal__field"><label>Notes</label><textarea id="m-notes" placeholder="Optional notes"></textarea></div>
+          `;
+          onSubmit = 'submitTeamMember';
+          break;
+
+        case 'team-edit':
+          const member = fsTeam.find(m => m.id === editId);
+          if (!member) return;
+          title = 'Edit Team Member';
+          fields = `
+            <div class="modal__field"><label>Full Name</label><input type="text" id="m-name" value="${escHtml(member.name)}" required></div>
+            <div class="modal__field"><label>Role</label><input type="text" id="m-role" value="${escHtml(member.role || '')}"></div>
+            <div class="modal__field"><label>Email</label><input type="email" id="m-email" value="${escHtml(member.email || '')}"></div>
+            <div class="modal__field"><label>Phone</label><input type="tel" id="m-phone" value="${escHtml(member.phone || '')}"></div>
+            <div class="modal__field"><label>Notes</label><textarea id="m-notes">${escHtml(member.notes || '')}</textarea></div>
+          `;
+          onSubmit = `submitTeamEdit__${editId}`;
+          break;
+      }
+
+      root.innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+          <div class="modal">
+            <div class="modal__header">
+              <h3>${title}</h3>
+              <button class="modal__close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal__form">
+              ${fields}
+              <div class="modal__actions">
+                <button class="modal__btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal__btn-submit" id="modal-submit" onclick="handleModalSubmit('${onSubmit}')">${type.includes('edit') ? 'Save Changes' : 'Add'}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Focus first input
+      setTimeout(() => {
+        const first = root.querySelector('input, textarea');
+        if (first) first.focus();
+      }, 100);
+
+      // Escape to close
+      document.addEventListener('keydown', escModalHandler);
+    }
+
+    function escModalHandler(e) {
+      if (e.key === 'Escape') closeModal();
+    }
+
+    function closeModal() {
+      document.getElementById('modal-root').innerHTML = '';
+      document.removeEventListener('keydown', escModalHandler);
+    }
+
+    async function handleModalSubmit(action) {
+      const btn = document.getElementById('modal-submit');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      try {
+        if (action === 'submitRevenue') {
+          await db.collection('businesses/rttl/revenue').add({
+            source: document.getElementById('m-source').value.trim(),
+            amount: parseFloat(document.getElementById('m-amount').value) || 0,
+            period: document.getElementById('m-period').value,
+            notes: document.getElementById('m-notes').value.trim(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('Revenue added');
+        }
+        else if (action === 'submitExpense') {
+          await db.collection('businesses/rttl/expenses').add({
+            item: document.getElementById('m-item').value.trim(),
+            amount: parseFloat(document.getElementById('m-amount').value) || 0,
+            period: document.getElementById('m-period').value,
+            category: document.getElementById('m-category').value,
+            notes: document.getElementById('m-notes').value.trim(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('Expense added');
+        }
+        else if (action === 'submitTask') {
+          await db.collection('businesses/rttl/tasks').add({
+            task: document.getElementById('m-task').value.trim(),
+            assignee: document.getElementById('m-assignee').value.trim() || 'TBD',
+            priority: document.getElementById('m-priority').value,
+            category: document.getElementById('m-category').value,
+            status: document.getElementById('m-status').value,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('Task added');
+        }
+        else if (action === 'submitProject') {
+          await db.collection('businesses/rttl/capitalProjects').add({
+            project: document.getElementById('m-project').value.trim(),
+            estimatedCost: parseFloat(document.getElementById('m-cost').value) || 0,
+            funded: parseFloat(document.getElementById('m-funded').value) || 0,
+            priority: document.getElementById('m-priority').value,
+            status: document.getElementById('m-status').value,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('Project added');
+        }
+        else if (action === 'submitTeamMember') {
+          await db.collection('businesses/rttl/team').add({
+            name: document.getElementById('m-name').value.trim(),
+            role: document.getElementById('m-role').value.trim(),
+            email: document.getElementById('m-email').value.trim(),
+            phone: document.getElementById('m-phone').value.trim(),
+            notes: document.getElementById('m-notes').value.trim(),
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('Team member added');
+        }
+        else if (action.startsWith('submitTeamEdit__')) {
+          const docId = action.replace('submitTeamEdit__', '');
+          await db.doc(`businesses/rttl/team/${docId}`).update({
+            name: document.getElementById('m-name').value.trim(),
+            role: document.getElementById('m-role').value.trim(),
+            email: document.getElementById('m-email').value.trim(),
+            phone: document.getElementById('m-phone').value.trim(),
+            notes: document.getElementById('m-notes').value.trim()
+          });
+          showToast('Team member updated');
+        }
+        closeModal();
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Retry';
+        showToast('Error: ' + e.message, 'error');
+      }
     }
   </script>
 
