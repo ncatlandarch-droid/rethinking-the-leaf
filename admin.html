@@ -1175,36 +1175,52 @@
       }
     });
 
+    // Authorized admin emails — these always get admin access
+    const ADMIN_EMAILS = [
+      'chris@thinkdesignplanning.com',
+      'rethinkingtheleaf@gmail.com',
+      'ncatlandarch@gmail.com'
+    ];
+
     async function checkUserRole(user) {
+      const email = (user.email || '').toLowerCase();
+      const isAuthorizedAdmin = ADMIN_EMAILS.includes(email);
+
       try {
         const doc = await db.collection('users').doc(user.uid).get();
         if (doc.exists) {
           const data = doc.data();
+          // If they're an authorized admin, ensure role is admin
+          if (isAuthorizedAdmin && data.role !== 'admin') {
+            await db.collection('users').doc(user.uid).update({ role: 'admin' });
+            data.role = 'admin';
+          }
           userRole = data.role || 'viewer';
           showDashboard(user);
+        } else if (isAuthorizedAdmin) {
+          // Authorized admin with no doc — auto-create admin doc
+          await db.collection('users').doc(user.uid).set({
+            role: 'admin',
+            email: user.email,
+            name: user.displayName || user.email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          userRole = 'admin';
+          showDashboard(user);
         } else {
-          // No user doc — check if this is the only user (first signup via Google)
-          const allUsers = await db.collection('users').limit(1).get();
-          if (allUsers.empty) {
-            // First user via Google — auto-create admin
-            await db.collection('users').doc(user.uid).set({
-              role: 'admin',
-              email: user.email,
-              name: user.displayName || user.email,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            userRole = 'admin';
-            showDashboard(user);
-          } else {
-            // Not first user and no doc — access denied
-            userRole = null;
-            showAccessDenied();
-          }
+          // Unknown email — access denied
+          userRole = null;
+          showAccessDenied();
         }
       } catch (e) {
         console.error('Role check failed:', e);
-        // If Firestore rules block, treat as access denied
-        showAccessDenied();
+        // Firestore might not be accessible yet — fallback to email check
+        if (isAuthorizedAdmin) {
+          userRole = 'admin';
+          showDashboard(user);
+        } else {
+          showAccessDenied();
+        }
       }
     }
 
