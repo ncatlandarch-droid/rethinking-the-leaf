@@ -995,6 +995,17 @@
           </ul>
           <p style="margin-top: 0.5rem;">As RTTL grows, upgrade Wave → QuickBooks and this dashboard → a custom farm management app.</p>
         </div>
+
+        <div class="section-header" style="margin-top:2rem">
+          <h2>🔧 Data Management</h2>
+          <span>Admin tools for Firestore data</span>
+        </div>
+        <div class="rec-card" style="border-color: var(--accent-red, #ef4444); background: rgba(239,68,68,0.05);">
+          <h3>🔄 Re-import Business Data</h3>
+          <p>Clears all Firestore data (Finances, Tasks, Team, Capital Projects) and re-imports from <code>admin/data.json</code>. Use this when the source data file has been updated.</p>
+          <button onclick="reseedAllData()" style="margin-top:0.75rem;padding:0.6rem 1.25rem;background:var(--accent-red, #ef4444);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-size:0.85rem">⚠️ Clear & Re-import All Data</button>
+          <p style="margin-top:0.5rem;color:var(--text-muted);font-size:0.8rem">This will replace all editable data. Form submissions and analytics are not affected.</p>
+        </div>
       </div>
 
     </div><!-- /content -->
@@ -1513,6 +1524,29 @@
         renderTeam();
       }, err => console.error('Team listener error:', err));
       firestoreUnsubs.push(unsubTeam);
+    }
+
+    async function reseedAllData() {
+      if (!confirm('This will DELETE all Finances, Tasks, Team, and Capital Projects data from Firestore and re-import from data.json. Continue?')) return;
+      showToast('Clearing Firestore data...', 'info');
+      try {
+        // Delete all docs in each collection
+        const collections = ['revenue', 'expenses', 'tasks', 'capitalProjects', 'team'];
+        for (const col of collections) {
+          const snap = await db.collection(`businesses/rttl/${col}`).get();
+          const batch = db.batch();
+          snap.docs.forEach(doc => batch.delete(doc.ref));
+          await batch.commit();
+        }
+        // Reset seed flag
+        seedCheckDone = false;
+        // Re-seed
+        await checkAndSeedData();
+        showToast('Data re-imported successfully!', 'success');
+      } catch (e) {
+        console.error('Reseed error:', e);
+        showToast('Re-import failed: ' + e.message, 'error');
+      }
     }
 
     async function checkAndSeedData() {
