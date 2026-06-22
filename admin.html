@@ -948,63 +948,26 @@
       <!-- ═══ TOOLS PANEL ═══ -->
       <div class="panel" id="panel-tools">
         <div class="section-header">
-          <h2>Financial Management Recommendations</h2>
-          <span>Options for tracking money in & out</span>
-        </div>
-
-        <div class="rec-card">
-          <h3>🏆 Recommended: Wave (Free)</h3>
-          <p><strong>Best fit for RTTL right now.</strong> Wave is completely free accounting software for small businesses — no credit card needed. It handles invoicing, receipt scanning, financial reports, and connects to your PayPal & bank accounts.</p>
-          <ul>
-            <li><strong>Cost:</strong> $0/month (free forever for accounting & invoicing)</li>
-            <li><strong>PayPal integration:</strong> Auto-imports PayPal donations</li>
-            <li><strong>Reports:</strong> Profit & loss, balance sheet, sales tax</li>
-            <li><strong>Receipt scanning:</strong> Phone app scans receipts → auto-categorizes</li>
-            <li><strong>Best for:</strong> Pre-revenue / early-stage businesses exactly like RTTL</li>
-            <li><strong>Website:</strong> waveapps.com</li>
-          </ul>
-        </div>
-
-        <div class="rec-card" style="border-color: var(--border); background: var(--bg-card);">
-          <h3>💼 Alternative: QuickBooks Simple Start ($20/mo)</h3>
-          <p>Industry standard, but costs money. Better when you have regular revenue flowing and need payroll, inventory tracking, or tax prep exports for an accountant.</p>
-          <ul>
-            <li><strong>Cost:</strong> $20/month (Simple Start plan)</li>
-            <li><strong>Best for:</strong> When RTTL starts generating $1K+/month</li>
-            <li><strong>Payroll add-on:</strong> $45/month extra when you hire staff</li>
-          </ul>
-        </div>
-
-        <div class="rec-card" style="border-color: var(--border); background: var(--bg-card);">
-          <h3>📱 Alternative: This Dashboard (Custom — Free)</h3>
-          <p>What you're looking at right now! A built-in lightweight tracker powered by Firebase. Good for visibility across the team, but not a replacement for proper accounting software. Use this for team coordination and Wave/QB for actual bookkeeping.</p>
-          <ul>
-            <li><strong>Cost:</strong> $0 — built into your website with Firebase</li>
-            <li><strong>Features:</strong> Real-time sync, inline editing, role-based access</li>
-            <li><strong>Best for:</strong> Team visibility, task tracking, project planning</li>
-            <li><strong>Future:</strong> Can evolve into a full farm management app</li>
-          </ul>
-        </div>
-
-        <div class="rec-card" style="border-color: var(--accent-gold); background: rgba(245,158,11,0.05); margin-top: 1rem;">
-          <h3>💡 Recommended Setup</h3>
-          <p>Use <strong>both together</strong>:</p>
-          <ul>
-            <li><strong>Wave</strong> → actual bookkeeping, PayPal sync, financial reports, taxes</li>
-            <li><strong>This Dashboard</strong> → team task board, capital project tracking, team directory, quick financial overview</li>
-          </ul>
-          <p style="margin-top: 0.5rem;">As RTTL grows, upgrade Wave → QuickBooks and this dashboard → a custom farm management app.</p>
-        </div>
-
-        <div class="section-header" style="margin-top:2rem">
           <h2>🔧 Data Management</h2>
           <span>Admin tools for Firestore data</span>
         </div>
+
         <div class="rec-card" style="border-color: var(--accent-red, #ef4444); background: rgba(239,68,68,0.05);">
           <h3>🔄 Re-import Business Data</h3>
           <p>Clears all Firestore data (Finances, Tasks, Team, Capital Projects) and re-imports from <code>admin/data.json</code>. Use this when the source data file has been updated.</p>
           <button onclick="reseedAllData()" style="margin-top:0.75rem;padding:0.6rem 1.25rem;background:var(--accent-red, #ef4444);color:#fff;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;font-size:0.85rem">⚠️ Clear & Re-import All Data</button>
           <p style="margin-top:0.5rem;color:var(--text-muted);font-size:0.8rem">This will replace all editable data. Form submissions and analytics are not affected.</p>
+        </div>
+
+        <div class="rec-card" style="border-color: var(--border); background: var(--bg-card); margin-top:1rem;">
+          <h3>📊 Platform Info</h3>
+          <ul>
+            <li><strong>Database:</strong> Firebase Firestore (Spark plan — free)</li>
+            <li><strong>Hosting:</strong> Netlify (free tier)</li>
+            <li><strong>Analytics:</strong> Custom Firestore tracker + Netlify baseline</li>
+            <li><strong>Merch:</strong> Printful (on-demand, no upfront cost)</li>
+            <li><strong>Auth:</strong> Firebase Authentication</li>
+          </ul>
         </div>
       </div>
 
