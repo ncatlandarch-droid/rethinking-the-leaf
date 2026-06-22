@@ -1656,47 +1656,49 @@
       const deployText = lastDeploy ? fmtTimeAgo(lastDeploy.created_at) : 'None';
       const deployState = lastDeploy ? lastDeploy.state : 'none';
 
+      // Analytics container at the TOP
       let html = `
         <div class="refresh-bar">
           <span class="refresh-bar__time">Last refreshed: ${data.timestamp ? fmtDateTime(data.timestamp) : 'Unknown'}</span>
           <button class="refresh-bar__btn" onclick="loadFormsData(true)">↻ Refresh</button>
         </div>
+
+        <!-- Analytics loads here FIRST -->
+        <div id="analytics-container">
+          <div class="section-header">
+            <h2>📈 Site Analytics</h2>
+            <span style="color:var(--text-muted)">Loading from Firestore...</span>
+          </div>
+        </div>
+
+        <!-- Forms & Deploys below -->
+        <div class="section-header" style="margin-top:1.5rem">
+          <h2>📬 Forms & Submissions</h2>
+        </div>
         <div class="summary-grid">
           <div class="summary-card">
-            <div class="summary-card__icon">📧</div>
-            <div class="summary-card__label">Newsletter Subs</div>
-            <div class="summary-card__value green">${newsletter.count}</div>
-            <div class="summary-card__note">Email list signups</div>
+            <div class="summary-card__label">Newsletter</div>
+            <div class="summary-card__value">${newsletter.count}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__icon">💬</div>
-            <div class="summary-card__label">Contact Inquiries</div>
-            <div class="summary-card__value blue">${contact.count}</div>
-            <div class="summary-card__note">Messages received</div>
+            <div class="summary-card__label">Contact Messages</div>
+            <div class="summary-card__value">${contact.count}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__icon">🎪</div>
             <div class="summary-card__label">Event Bookings</div>
-            <div class="summary-card__value gold">${eventBooking.count}</div>
-            <div class="summary-card__note">Reservations</div>
+            <div class="summary-card__value">${eventBooking.count}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__icon">🤝</div>
             <div class="summary-card__label">Partner Apps</div>
-            <div class="summary-card__value purple">${partner.count}</div>
-            <div class="summary-card__note">Applications received</div>
+            <div class="summary-card__value">${partner.count}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__icon">🏷️</div>
             <div class="summary-card__label">Memberships</div>
-            <div class="summary-card__value lavender">${membership.count}</div>
-            <div class="summary-card__note">Member signups</div>
+            <div class="summary-card__value">${membership.count}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__icon">🚀</div>
             <div class="summary-card__label">Last Deploy</div>
-            <div class="summary-card__value ${deployState === 'ready' ? 'green' : deployState === 'error' ? 'red' : 'gold'}">${deployText}</div>
-            <div class="summary-card__note">${lastDeploy ? escHtml(lastDeploy.title || lastDeploy.branch || '') : 'No deploys yet'}</div>
+            <div class="summary-card__value" style="font-size:0.95rem"><span class="badge badge--${deployState}">${deployState}</span> ${deployText}</div>
           </div>
         </div>
       `;
@@ -1785,15 +1787,8 @@
        ANALYTICS — Read from Firestore
     ═══════════════════════════════════════════════ */
     async function loadAnalytics() {
-      const container = document.getElementById('pulse-content');
+      const container = document.getElementById('analytics-container');
       if (!container) return;
-
-      container.innerHTML += `
-        <div class="section-header" style="margin-top:2rem">
-          <h2>📈 Site Analytics</h2>
-          <span style="color:var(--text-muted)">Loading from Firestore...</span>
-        </div>
-      `;
 
       try {
         // Query last 30 days of pageview events
@@ -1809,14 +1804,12 @@
           .get();
 
         if (snapshot.empty) {
-          // No data yet — show setup message
-          const headers = container.querySelectorAll('.section-header');
-          for (const h of headers) {
-            if (h.querySelector('h2')?.textContent?.includes('Analytics')) {
-              h.querySelector('span').innerHTML = 'Tracking active — data will appear as visitors browse the site.';
-              break;
-            }
-          }
+          container.innerHTML = `
+            <div class="section-header">
+              <h2>📈 Site Analytics</h2>
+              <span style="color:var(--text-muted)">Tracking active — data will appear as visitors browse the site.</span>
+            </div>
+          `;
           renderAnalytics({
             totalPageviews: 0, totalVisitors: 0, dailyData: [],
             topPages: [], topSources: [], topCountries: []
@@ -1879,13 +1872,12 @@
 
       } catch (e) {
         console.warn('Analytics load failed:', e);
-        const headers = container.querySelectorAll('.section-header');
-        for (const h of headers) {
-          if (h.querySelector('h2')?.textContent?.includes('Analytics')) {
-            h.querySelector('span').textContent = 'Could not load analytics';
-            break;
-          }
-        }
+        container.innerHTML = `
+          <div class="section-header">
+            <h2>📈 Site Analytics</h2>
+            <span style="color:var(--text-muted)">Could not load analytics</span>
+          </div>
+        `;
       }
     }
 
@@ -1893,9 +1885,9 @@
       const { totalPageviews, totalVisitors, dailyData, topPages, topSources } = data;
 
       let html = `
-        <div class="section-header" style="margin-top:2rem">
+        <div class="section-header">
           <h2>📈 Site Analytics</h2>
-          <span style="color:var(--text-muted)">Last 30 days (Firestore)</span>
+          <span style="color:var(--text-muted)">Last 30 days</span>
         </div>
 
         <div class="summary-grid">
@@ -1972,16 +1964,9 @@
         html += `</div>`;
       }
 
-      // Replace loading placeholder
-      const container = document.getElementById('pulse-content');
-      const headers = container.querySelectorAll('.section-header');
-      for (const h of headers) {
-        if (h.querySelector('h2')?.textContent?.includes('Analytics')) {
-          h.remove();
-          break;
-        }
-      }
-      container.innerHTML += html;
+      // Render into the analytics container at the top
+      const container = document.getElementById('analytics-container');
+      container.innerHTML = html;
 
       // Render Chart
       if (dailyData.length > 0 && typeof Chart !== 'undefined') {
