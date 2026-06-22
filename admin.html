@@ -1784,90 +1784,127 @@
     }
 
     /* ═══════════════════════════════════════════════
-       ANALYTICS — Read from Firestore
+       ANALYTICS — Read from Firestore + Historical Baseline
     ═══════════════════════════════════════════════ */
+
+    // Historical baseline from Netlify Analytics (May 23 – Jun 22, 2026)
+    // This data predates the Firestore tracker deployment
+    const ANALYTICS_BASELINE = {
+      trackerStartDate: '2026-06-22',
+      totalPageviews: 3697,
+      totalVisitors: 1757,
+      bandwidthGB: 19,
+      topPages: [
+        { path: '/', count: 3035 },
+        { path: '/community', count: 122 },
+        { path: '/the-system', count: 115 },
+        { path: '/shop', count: 108 },
+        { path: '/donate', count: 78 },
+        { path: '/programs', count: 72 },
+        { path: '/events', count: 67 },
+        { path: '/partner-apply', count: 63 },
+        { path: '/admin.html', count: 12 },
+        { path: '/donate.html', count: 10 }
+      ],
+      topSources: [
+        { source: 'Direct', count: 2659 },
+        { source: 'google.com', count: 28 },
+        { source: 'facebook.com', count: 20 },
+        { source: 'm.facebook.com', count: 11 },
+        { source: 'lm.facebook.com', count: 10 },
+        { source: 'thinkventures.app', count: 8 }
+      ],
+      topCountries: [
+        { country: 'United States', count: 2727 },
+        { country: 'China', count: 135 },
+        { country: 'Singapore', count: 92 },
+        { country: 'Germany', count: 86 },
+        { country: 'Canada', count: 51 },
+        { country: 'Belgium', count: 47 },
+        { country: 'France', count: 46 }
+      ]
+    };
+
     async function loadAnalytics() {
       const container = document.getElementById('analytics-container');
       if (!container) return;
 
       try {
-        // Query last 30 days of pageview events
+        // Query live pageview events from Firestore
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         const dateKey30 = thirtyDaysAgo.toISOString().split('T')[0];
 
-        const snapshot = await db.collection('analytics').doc('pageviews')
-          .collection('events')
-          .where('date', '>=', dateKey30)
-          .orderBy('date', 'desc')
-          .limit(5000)
-          .get();
-
-        if (snapshot.empty) {
-          container.innerHTML = `
-            <div class="section-header">
-              <h2>📈 Site Analytics</h2>
-              <span style="color:var(--text-muted)">Tracking active — data will appear as visitors browse the site.</span>
-            </div>
-          `;
-          renderAnalytics({
-            totalPageviews: 0, totalVisitors: 0, dailyData: [],
-            topPages: [], topSources: [], topCountries: []
-          });
-          return;
-        }
-
-        // Aggregate data
+        let livePageviews = 0;
+        let liveVisitors = 0;
         const dailyMap = {};
         const pageMap = {};
         const sourceMap = {};
         const visitorSet = new Set();
 
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          const date = d.date || 'unknown';
-          const page = d.page || '/';
-          const source = d.source || 'Direct';
-          const vid = d.visitorId || 'unknown';
+        try {
+          const snapshot = await db.collection('analytics').doc('pageviews')
+            .collection('events')
+            .where('date', '>=', dateKey30)
+            .orderBy('date', 'desc')
+            .limit(5000)
+            .get();
 
-          // Daily counts
-          if (!dailyMap[date]) dailyMap[date] = { pageviews: 0, visitors: new Set() };
-          dailyMap[date].pageviews++;
-          dailyMap[date].visitors.add(vid);
+          snapshot.forEach(doc => {
+            const d = doc.data();
+            const date = d.date || 'unknown';
+            const page = d.page || '/';
+            const source = d.source || 'Direct';
+            const vid = d.visitorId || 'unknown';
 
-          // Page counts
-          pageMap[page] = (pageMap[page] || 0) + 1;
+            if (!dailyMap[date]) dailyMap[date] = { pageviews: 0, visitors: new Set() };
+            dailyMap[date].pageviews++;
+            dailyMap[date].visitors.add(vid);
+            pageMap[page] = (pageMap[page] || 0) + 1;
+            sourceMap[source] = (sourceMap[source] || 0) + 1;
+            visitorSet.add(vid);
+          });
 
-          // Source counts
-          sourceMap[source] = (sourceMap[source] || 0) + 1;
+          livePageviews = snapshot.size;
+          liveVisitors = visitorSet.size;
+        } catch (e) {
+          console.warn('Live analytics query failed:', e.message);
+        }
 
-          // Unique visitors
-          visitorSet.add(vid);
+        // Merge baseline + live data
+        const mergedPages = {};
+        ANALYTICS_BASELINE.topPages.forEach(p => { mergedPages[p.path] = p.count; });
+        Object.entries(pageMap).forEach(([path, count]) => {
+          mergedPages[path] = (mergedPages[path] || 0) + count;
         });
 
-        // Sort daily data
+        const mergedSources = {};
+        ANALYTICS_BASELINE.topSources.forEach(s => { mergedSources[s.source] = s.count; });
+        Object.entries(sourceMap).forEach(([source, count]) => {
+          mergedSources[source] = (mergedSources[source] || 0) + count;
+        });
+
         const dailyData = Object.entries(dailyMap)
           .map(([date, v]) => ({ date, pageviews: v.pageviews, visitors: v.visitors.size }))
           .sort((a, b) => a.date.localeCompare(b.date));
 
-        // Sort top pages & sources
-        const topPages = Object.entries(pageMap)
+        const topPages = Object.entries(mergedPages)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 10)
           .map(([path, count]) => ({ path, count }));
 
-        const topSources = Object.entries(sourceMap)
+        const topSources = Object.entries(mergedSources)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 10)
           .map(([source, count]) => ({ source, count }));
 
         renderAnalytics({
-          totalPageviews: snapshot.size,
-          totalVisitors: visitorSet.size,
+          totalPageviews: ANALYTICS_BASELINE.totalPageviews + livePageviews,
+          totalVisitors: ANALYTICS_BASELINE.totalVisitors + liveVisitors,
           dailyData,
           topPages,
           topSources,
-          topCountries: []
+          topCountries: ANALYTICS_BASELINE.topCountries
         });
 
       } catch (e) {
@@ -1883,11 +1920,12 @@
 
     function renderAnalytics(data) {
       const { totalPageviews, totalVisitors, dailyData, topPages, topSources } = data;
+      const topCountries = data.topCountries || [];
 
       let html = `
         <div class="section-header">
           <h2>📈 Site Analytics</h2>
-          <span style="color:var(--text-muted)">Last 30 days</span>
+          <span style="color:var(--text-muted)">Since May 23, 2026 (Baseline + Live)</span>
         </div>
 
         <div class="summary-grid">
@@ -1901,11 +1939,11 @@
           </div>
           <div class="summary-card">
             <div class="summary-card__label">Avg Views/Day</div>
-            <div class="summary-card__value" style="color:var(--accent-green)">${dailyData.length > 0 ? Math.round(totalPageviews / dailyData.length) : 0}</div>
+            <div class="summary-card__value" style="color:var(--accent-green)">${Math.round(totalPageviews / 30)}</div>
           </div>
           <div class="summary-card">
-            <div class="summary-card__label">Top Sources</div>
-            <div class="summary-card__value" style="color:var(--accent-gold)">${topSources.length}</div>
+            <div class="summary-card__label">Bandwidth Used</div>
+            <div class="summary-card__value" style="color:var(--accent-gold)">${ANALYTICS_BASELINE.bandwidthGB} GB</div>
           </div>
         </div>
       `;
@@ -1962,6 +2000,21 @@
         }
 
         html += `</div>`;
+      }
+
+      // Top Countries
+      if (topCountries.length > 0) {
+        html += `
+          <div class="section-header"><h2>🌍 Top Countries</h2></div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
+            ${topCountries.map(c => `
+              <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.5rem 1rem;display:flex;align-items:center;gap:0.5rem">
+                <span style="font-weight:600;color:var(--text-primary)">${escHtml(c.country)}</span>
+                <span style="color:var(--accent-gold);font-weight:700">${(c.count || 0).toLocaleString()}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
       }
 
       // Render into the analytics container at the top
