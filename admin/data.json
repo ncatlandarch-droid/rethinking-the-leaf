@@ -1,33 +1,37 @@
 {
   "finances": {
-    "lastUpdated": "2026-06-06",
+    "lastUpdated": "2026-06-22",
     "summary": {
-      "totalRevenue": 0,
-      "totalExpenses": 0,
-      "netBalance": 0,
+      "totalRevenue": 34.98,
+      "totalExpenses": 20,
+      "netBalance": 14.98,
       "donationsReceived": 0,
-      "merchSales": 0
+      "merchSales": 34.98
     },
     "revenue": [
+      { "source": "Printful Merch Sales", "amount": 34.98, "period": "to-date", "notes": "1 order — 3 tees (Shardell Gerald, May 2026)" },
       { "source": "PayPal Donations", "amount": 0, "period": "monthly", "notes": "Via paypal.me/rethinkingtheleaf" },
-      { "source": "Printful Merch", "amount": 0, "period": "monthly", "notes": "3 t-shirt designs" },
       { "source": "CashApp Tips", "amount": 0, "period": "monthly", "notes": "Pending setup" },
-      { "source": "Events & Workshops", "amount": 0, "period": "monthly", "notes": "Future revenue stream" },
-      { "source": "Agritourism Visits", "amount": 0, "period": "monthly", "notes": "Future revenue stream" }
+      { "source": "Events & Workshops", "amount": 0, "period": "monthly", "notes": "Future revenue — first event TBD" },
+      { "source": "Agritourism Visits", "amount": 0, "period": "monthly", "notes": "Future — cabins & sauna not yet built" },
+      { "source": "Hemp Products", "amount": 0, "period": "monthly", "notes": "Hemp license renewed 2026-27. Clones sourced. Planting high tunnel this month." }
     ],
     "expenses": [
-      { "item": "Domain (rethinkingtheleaf.com)", "amount": 20, "period": "yearly", "category": "operations" },
-      { "item": "Netlify Hosting", "amount": 0, "period": "monthly", "category": "operations", "notes": "Free tier" },
-      { "item": "Property Insurance", "amount": 0, "period": "yearly", "category": "property" },
-      { "item": "Property Taxes", "amount": 0, "period": "yearly", "category": "property" },
+      { "item": "Domain (rethinkingtheleaf.com)", "amount": 20, "period": "yearly", "category": "operations", "notes": "Namecheap" },
+      { "item": "Netlify Hosting", "amount": 0, "period": "monthly", "category": "operations", "notes": "Free tier — includes Web Analytics" },
+      { "item": "Firebase (RTTL Admin)", "amount": 0, "period": "monthly", "category": "operations", "notes": "Spark plan (free)" },
+      { "item": "Printful (on-demand)", "amount": 0, "period": "per-order", "category": "operations", "notes": "No upfront cost — deducted from each sale" },
+      { "item": "Property Insurance", "amount": 0, "period": "yearly", "category": "property", "notes": "Needs setup" },
+      { "item": "Property Taxes", "amount": 0, "period": "yearly", "category": "property", "notes": "66-acre estate, Brunswick County VA" },
       { "item": "Utilities (Electric/Water)", "amount": 0, "period": "monthly", "category": "property" },
-      { "item": "Seeds & Supplies", "amount": 0, "period": "monthly", "category": "farming" },
-      { "item": "Equipment Maintenance", "amount": 0, "period": "monthly", "category": "farming" },
-      { "item": "Marketing & Advertising", "amount": 0, "period": "monthly", "category": "marketing" }
+      { "item": "Hemp License Renewal", "amount": 0, "period": "yearly", "category": "farming", "notes": "VDACS → Cannabis Control Authority" },
+      { "item": "Seeds, Clones & Supplies", "amount": 0, "period": "seasonal", "category": "farming" },
+      { "item": "Equipment Maintenance", "amount": 0, "period": "monthly", "category": "farming" }
     ],
     "capitalProjects": [
       { "project": "Cedar Sauna Construction", "estimatedCost": 15000, "funded": 0, "status": "planning", "priority": "high" },
       { "project": "Cabin Renovation (2 units)", "estimatedCost": 25000, "funded": 0, "status": "planning", "priority": "high" },
+      { "project": "High Tunnel Hemp Planting", "estimatedCost": 2000, "funded": 0, "status": "in-progress", "priority": "high", "notes": "Planting before end of June 2026" },
       { "project": "Lavender Field Expansion", "estimatedCost": 5000, "funded": 0, "status": "planning", "priority": "medium" },
       { "project": "Commercial Kitchen Buildout", "estimatedCost": 35000, "funded": 0, "status": "planning", "priority": "medium" },
       { "project": "Hemp Processing Facility", "estimatedCost": 20000, "funded": 0, "status": "planning", "priority": "medium" },
@@ -36,33 +40,34 @@
     ]
   },
   "tasks": [
-    { "id": 1, "task": "Set up PayPal.me link", "assignee": "Shardell Gerald", "status": "in-progress", "category": "finance", "priority": "high", "dueDate": "" },
-    { "id": 2, "task": "Register CashApp for donations", "assignee": "Shardell Gerald", "status": "not-started", "category": "finance", "priority": "high", "dueDate": "" },
-    { "id": 3, "task": "File LLC / Business Entity paperwork", "assignee": "TBD", "status": "not-started", "category": "legal", "priority": "high", "dueDate": "" },
-    { "id": 4, "task": "Obtain property insurance", "assignee": "TBD", "status": "not-started", "category": "legal", "priority": "high", "dueDate": "" },
-    { "id": 5, "task": "Set up Printful store with CashApp payout", "assignee": "Chris Hopper", "status": "not-started", "category": "operations", "priority": "medium", "dueDate": "" },
-    { "id": 6, "task": "Order lavender seedlings for spring planting", "assignee": "TBD", "status": "not-started", "category": "farming", "priority": "medium", "dueDate": "" },
-    { "id": 7, "task": "Source cedar sauna vendor/contractor", "assignee": "TBD", "status": "not-started", "category": "construction", "priority": "medium", "dueDate": "" },
-    { "id": 8, "task": "Plan first community event", "assignee": "TBD", "status": "not-started", "category": "marketing", "priority": "medium", "dueDate": "" },
-    { "id": 9, "task": "Set up social media accounts", "assignee": "TBD", "status": "not-started", "category": "marketing", "priority": "medium", "dueDate": "" },
-    { "id": 10, "task": "Create hemp product line branding", "assignee": "Chris Hopper", "status": "in-progress", "category": "marketing", "priority": "medium", "dueDate": "" },
-    { "id": 11, "task": "Review final website and approve all pages", "assignee": "Shardell Gerald", "status": "in-progress", "category": "operations", "priority": "high", "dueDate": "" },
-    { "id": 12, "task": "Record real photos/video for website", "assignee": "Team", "status": "not-started", "category": "marketing", "priority": "high", "dueDate": "" }
+    { "id": 1, "task": "Plant hemp in high tunnel", "assignee": "Shardell Gerald", "status": "in-progress", "category": "farming", "priority": "high", "dueDate": "2026-06-30" },
+    { "id": 2, "task": "Set up Printful Custom API store (replace QuickStore)", "assignee": "Chris Hopper", "status": "in-progress", "category": "operations", "priority": "high", "dueDate": "" },
+    { "id": 3, "task": "Review final website and approve all pages", "assignee": "Shardell Gerald", "status": "in-progress", "category": "operations", "priority": "high", "dueDate": "" },
+    { "id": 4, "task": "Record real photos/video for website", "assignee": "Team", "status": "not-started", "category": "marketing", "priority": "high", "dueDate": "" },
+    { "id": 5, "task": "Set up PayPal.me donation link", "assignee": "Shardell Gerald", "status": "in-progress", "category": "finance", "priority": "high", "dueDate": "" },
+    { "id": 6, "task": "Register CashApp for donations", "assignee": "Shardell Gerald", "status": "not-started", "category": "finance", "priority": "medium", "dueDate": "" },
+    { "id": 7, "task": "File LLC / Business Entity paperwork", "assignee": "TBD", "status": "not-started", "category": "legal", "priority": "high", "dueDate": "" },
+    { "id": 8, "task": "Obtain property insurance", "assignee": "TBD", "status": "not-started", "category": "legal", "priority": "high", "dueDate": "" },
+    { "id": 9, "task": "Source cedar sauna vendor/contractor", "assignee": "TBD", "status": "not-started", "category": "construction", "priority": "medium", "dueDate": "" },
+    { "id": 10, "task": "Plan first community event", "assignee": "TBD", "status": "not-started", "category": "marketing", "priority": "medium", "dueDate": "" },
+    { "id": 11, "task": "Connect with Brunswick County economic director", "assignee": "Shardell Gerald", "status": "in-progress", "category": "partnerships", "priority": "medium", "notes": "She responded — interested in visiting the property" },
+    { "id": 12, "task": "Share website analytics & email registrations report", "assignee": "Chris Hopper", "status": "done", "category": "operations", "priority": "medium", "dueDate": "" }
   ],
   "team": [
-    { "name": "Shardell Gerald", "role": "Founder & Owner", "email": "rethinkingtheleaf@gmail.com", "phone": "", "notes": "Primary contact. Vision holder." },
-    { "name": "Dr. Lamont Hopper", "role": "Strategy & Operations", "email": "", "phone": "", "notes": "" },
-    { "name": "Chris Hopper", "role": "Technology & Design", "email": "", "phone": "", "notes": "Website, branding, digital strategy" },
-    { "name": "Joann Hopper Fogg", "role": "Farm Heritage & Community Relations", "email": "", "phone": "", "notes": "" },
-    { "name": "Kim Hopper", "role": "Community Outreach", "email": "", "phone": "", "notes": "" },
-    { "name": "Dr. Dwight Mullen", "role": "Academic Advisor", "email": "", "phone": "", "notes": "University liaison" },
-    { "name": "Dr. Osei Yeboah", "role": "Agricultural Economics", "email": "", "phone": "", "notes": "NC A&T SEANR" },
-    { "name": "Wayne Gerald", "role": "Operations & Land Management", "email": "", "phone": "", "notes": "" },
-    { "name": "Aaron Hopper", "role": "Youth Programs", "email": "", "phone": "", "notes": "" },
-    { "name": "Andre Hopper", "role": "Sustainability", "email": "", "phone": "", "notes": "" },
-    { "name": "Darlene Taylor", "role": "Elder Programs", "email": "", "phone": "", "notes": "" },
-    { "name": "Larry Abrams", "role": "Agricultural Operations", "email": "", "phone": "", "notes": "" },
-    { "name": "Renee Hughes", "role": "Wellness Programs", "email": "", "phone": "", "notes": "" },
-    { "name": "Tabitha Fogg", "role": "Youth & Education", "email": "", "phone": "", "notes": "" }
+    { "name": "Shardell Gerald", "role": "Founder & Owner", "email": "rethinkingtheleaf@gmail.com", "phone": "", "notes": "Primary contact. Vision holder. Lawrenceville, VA." },
+    { "name": "Lamont Burgess", "role": "Operations & Land Management", "email": "", "phone": "", "notes": "" },
+    { "name": "Barbara Gerald", "role": "Community Relations", "email": "", "phone": "", "notes": "" },
+    { "name": "Belinda Gerald", "role": "Family Heritage", "email": "", "phone": "", "notes": "" },
+    { "name": "Ponce Gerald", "role": "Farm Operations", "email": "", "phone": "", "notes": "" },
+    { "name": "Dr. Kenya Belcher", "role": "Academic Advisor", "email": "", "phone": "", "notes": "" },
+    { "name": "Dr. Angela Kessler", "role": "Research & Extension", "email": "", "phone": "", "notes": "" },
+    { "name": "Dr. Tonya Goins", "role": "Community Development", "email": "", "phone": "", "notes": "" },
+    { "name": "Dr. Gregory Goins", "role": "Academic Advisor", "email": "", "phone": "", "notes": "" },
+    { "name": "Kim Dowdy", "role": "Community Outreach", "email": "", "phone": "", "notes": "" },
+    { "name": "Michael Moore", "role": "Agriculture", "email": "", "phone": "", "notes": "" },
+    { "name": "Sigrid Moore", "role": "Wellness Programs", "email": "", "phone": "", "notes": "" },
+    { "name": "Tracy Overton", "role": "Community Support", "email": "", "phone": "", "notes": "" },
+    { "name": "Steve Overton", "role": "Community Support", "email": "", "phone": "", "notes": "" },
+    { "name": "Chris Hopper", "role": "Technology & Design", "email": "chris@thinkdesignplanning.com", "phone": "", "notes": "Website, branding, digital strategy, admin dashboard" }
   ]
 }
