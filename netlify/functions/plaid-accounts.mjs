@@ -4,7 +4,7 @@
 
 import { Configuration, PlaidApi, PlaidEnvironments } from 'plaid';
 
-const config = new Configuration({
+const plaidConfig = new Configuration({
   basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
   baseOptions: {
     headers: {
@@ -14,7 +14,7 @@ const config = new Configuration({
   },
 });
 
-const plaidClient = new PlaidApi(config);
+const plaidClient = new PlaidApi(plaidConfig);
 
 async function getAccessToken() {
   const { getStore } = await import("@netlify/blobs");

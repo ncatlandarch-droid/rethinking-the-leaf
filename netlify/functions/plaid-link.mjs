@@ -5,7 +5,7 @@
 
 import { Configuration, PlaidApi, PlaidEnvironments, Products, CountryCode } from 'plaid';
 
-const config = new Configuration({
+const plaidConfig = new Configuration({
   basePath: PlaidEnvironments[process.env.PLAID_ENV || 'sandbox'],
   baseOptions: {
     headers: {
@@ -15,7 +15,7 @@ const config = new Configuration({
   },
 });
 
-const plaidClient = new PlaidApi(config);
+const plaidClient = new PlaidApi(plaidConfig);
 
 // Simple in-memory store for demo; in production use Firestore
 let accessToken = null;
