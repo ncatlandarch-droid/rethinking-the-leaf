@@ -1742,6 +1742,192 @@
       }
 
       document.getElementById('pulse-content').innerHTML = html;
+
+      // Fetch and render analytics below the pulse content
+      loadAnalytics();
+    }
+
+    /* ═══════════════════════════════════════════════
+       ANALYTICS — Fetch & Render
+    ═══════════════════════════════════════════════ */
+    async function loadAnalytics() {
+      const container = document.getElementById('pulse-content');
+      if (!container) return;
+
+      // Add analytics placeholder
+      container.innerHTML += `
+        <div class="section-header" style="margin-top:2rem">
+          <h2>📈 Site Analytics</h2>
+          <span style="color:var(--text-muted)">Loading...</span>
+        </div>
+      `;
+
+      try {
+        const res = await fetch('/api/admin-analytics?t=' + Date.now());
+        if (!res.ok) throw new Error('Analytics API not available');
+        const data = await res.json();
+        renderAnalytics(data);
+      } catch (e) {
+        console.warn('Analytics load failed:', e);
+        // Remove the loading placeholder
+        const headers = container.querySelectorAll('.section-header');
+        const last = headers[headers.length - 1];
+        if (last) last.querySelector('span').textContent = 'Not available';
+      }
+    }
+
+    function renderAnalytics(data) {
+      const s = data.summary || {};
+      const topPages = data.top_pages || [];
+      const topSources = data.top_sources || [];
+      const topCountries = data.top_countries || [];
+      const pvSeries = data.pageviews_timeseries || [];
+      const vSeries = data.visitors_timeseries || [];
+
+      let html = `
+        <div class="section-header" style="margin-top:2rem">
+          <h2>📈 Site Analytics</h2>
+          <span style="color:var(--text-muted)">Last 30 days</span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-card__label">Total Pageviews</div>
+            <div class="summary-card__value" style="color:var(--accent-purple)">${(s.total_pageviews || 0).toLocaleString()}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__label">Unique Visitors</div>
+            <div class="summary-card__value" style="color:var(--accent-blue)">${(s.total_visitors || 0).toLocaleString()}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__label">Bandwidth Used</div>
+            <div class="summary-card__value" style="color:var(--accent-green)">${s.total_bandwidth_gb || '0'} GB</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__label">Countries Reached</div>
+            <div class="summary-card__value" style="color:var(--accent-gold)">${topCountries.length}</div>
+          </div>
+        </div>
+
+        <!-- Pageviews Chart -->
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem">
+          <canvas id="analytics-chart" height="200"></canvas>
+        </div>
+
+        <!-- Top Pages & Sources side-by-side -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem" class="analytics-grid-2col">
+          <div>
+            <div class="section-header"><h2>Top Pages</h2></div>
+            <div class="table-wrap"><div class="table-scroll">
+              <table>
+                <thead><tr><th>Page</th><th style="text-align:right">Views</th></tr></thead>
+                <tbody>
+                  ${topPages.map((p, i) => `<tr>
+                    <td><code style="background:var(--bg-card-alt);padding:0.15rem 0.5rem;border-radius:4px;font-size:0.8rem">${escHtml(p.path)}</code></td>
+                    <td style="text-align:right;color:var(--accent-purple);font-weight:600">${(p.count || 0).toLocaleString()}</td>
+                  </tr>`).join('')}
+                </tbody>
+              </table>
+            </div></div>
+          </div>
+
+          <div>
+            <div class="section-header"><h2>Traffic Sources</h2></div>
+            <div class="table-wrap"><div class="table-scroll">
+              <table>
+                <thead><tr><th>Source</th><th style="text-align:right">Referrals</th></tr></thead>
+                <tbody>
+                  ${topSources.map(s => `<tr>
+                    <td>${escHtml(s.source) || 'Direct'}</td>
+                    <td style="text-align:right;color:var(--accent-blue);font-weight:600">${(s.count || 0).toLocaleString()}</td>
+                  </tr>`).join('')}
+                </tbody>
+              </table>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- Top Countries -->
+        <div class="section-header"><h2>🌍 Top Countries</h2></div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem">
+          ${topCountries.map(c => `
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.6rem 1rem;display:flex;align-items:center;gap:0.5rem">
+              <span style="font-weight:600;color:var(--text-primary)">${escHtml(c.country)}</span>
+              <span style="color:var(--accent-gold);font-weight:700">${(c.count || 0).toLocaleString()}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      // Replace the loading placeholder
+      const container = document.getElementById('pulse-content');
+      // Remove the old loading section header
+      const headers = container.querySelectorAll('.section-header');
+      for (const h of headers) {
+        if (h.querySelector('h2')?.textContent?.includes('Analytics')) {
+          h.remove();
+          break;
+        }
+      }
+      container.innerHTML += html;
+
+      // Render Chart.js chart
+      if (pvSeries.length > 0 && typeof Chart !== 'undefined') {
+        const ctx = document.getElementById('analytics-chart');
+        if (ctx) {
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: pvSeries.map(d => {
+                const dt = new Date(d.date);
+                return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              }),
+              datasets: [
+                {
+                  label: 'Pageviews',
+                  data: pvSeries.map(d => d.count),
+                  borderColor: '#8b5cf6',
+                  backgroundColor: 'rgba(139,92,246,0.1)',
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 2,
+                  borderWidth: 2
+                },
+                {
+                  label: 'Visitors',
+                  data: vSeries.map(d => d.count),
+                  borderColor: '#3b82f6',
+                  backgroundColor: 'rgba(59,130,246,0.08)',
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 2,
+                  borderWidth: 2
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: { color: '#8b95b0', font: { family: 'Inter' } }
+                }
+              },
+              scales: {
+                x: {
+                  grid: { color: 'rgba(255,255,255,0.04)' },
+                  ticks: { color: '#5a6380', font: { size: 10 }, maxTicksLimit: 10 }
+                },
+                y: {
+                  grid: { color: 'rgba(255,255,255,0.04)' },
+                  ticks: { color: '#5a6380', font: { size: 10 } },
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        }
+      }
     }
 
     /* ═══════════════════════════════════════════════
