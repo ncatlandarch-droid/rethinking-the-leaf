@@ -14,6 +14,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 
   <style>
     :root {
@@ -872,6 +874,22 @@
       <!-- ═══ FINANCES PANEL ═══ -->
       <div class="panel" id="panel-finances">
         <div id="finances-seed-banner"></div>
+
+        <!-- Bank Connection -->
+        <div class="section-header">
+          <h2>🏦 Bank Account</h2>
+          <div id="bank-connect-btn-wrap">
+            <button class="btn-add admin-only" id="btn-connect-bank" onclick="connectBank()">Connect Bank</button>
+          </div>
+        </div>
+        <div id="bank-status" style="margin-bottom:1.5rem">
+          <div style="color:var(--text-muted);font-size:0.85rem;padding:0.75rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm)">
+            Checking connection status...
+          </div>
+        </div>
+        <div id="bank-balances" style="display:none"></div>
+        <div id="bank-transactions" style="display:none"></div>
+
         <div class="summary-grid" id="finance-summary"></div>
         <div class="section-header">
           <h2>Revenue Streams</h2>
@@ -2634,6 +2652,187 @@
         showToast('Error: ' + e.message, 'error');
       }
     }
+    /* ═══════════════════════════════════════════════
+       PLAID BANKING INTEGRATION
+    ═══════════════════════════════════════════════ */
+    let plaidConnected = false;
+
+    async function checkBankStatus() {
+      const statusEl = document.getElementById('bank-status');
+      const btnWrap = document.getElementById('bank-connect-btn-wrap');
+      try {
+        const res = await fetch('/api/plaid-link?action=status');
+        const data = await res.json();
+        plaidConnected = data.connected;
+
+        if (plaidConnected) {
+          statusEl.innerHTML = `
+            <div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius-sm)">
+              <span style="color:#22c55e;font-size:1.2rem">✅</span>
+              <span style="color:var(--text-primary);font-weight:600">Bank Connected</span>
+              <button onclick="disconnectBank()" style="margin-left:auto;background:none;border:1px solid var(--border);color:var(--text-muted);padding:0.3rem 0.75rem;border-radius:var(--radius-sm);cursor:pointer;font-size:0.75rem">Disconnect</button>
+            </div>
+          `;
+          btnWrap.innerHTML = `<button class="btn-add" onclick="loadBankData()" style="background:var(--accent-green)">↻ Refresh Bank Data</button>`;
+          loadBankData();
+        } else {
+          statusEl.innerHTML = `
+            <div style="color:var(--text-muted);font-size:0.85rem;padding:0.75rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm)">
+              No bank connected yet. Click <strong>Connect Bank</strong> to link a Novo, Bank of America, or other account.
+            </div>
+          `;
+        }
+      } catch (e) {
+        statusEl.innerHTML = `<div style="color:var(--text-muted);font-size:0.85rem;padding:0.75rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm)">Bank connection unavailable</div>`;
+      }
+    }
+
+    async function connectBank() {
+      const btn = document.getElementById('btn-connect-bank');
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+
+      try {
+        const res = await fetch('/api/plaid-link?action=create_link_token', { method: 'POST' });
+        const data = await res.json();
+
+        if (!data.link_token) throw new Error(data.error || 'Failed to get link token');
+
+        const handler = Plaid.create({
+          token: data.link_token,
+          onSuccess: async (public_token, metadata) => {
+            showToast('Connecting bank account...', 'info');
+            const exRes = await fetch('/api/plaid-link?action=exchange_token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ public_token })
+            });
+            const exData = await exRes.json();
+            if (exData.success) {
+              showToast('Bank connected successfully!', 'success');
+              plaidConnected = true;
+              checkBankStatus();
+            } else {
+              showToast('Connection failed: ' + (exData.error || 'Unknown error'), 'error');
+            }
+          },
+          onExit: (err) => {
+            btn.disabled = false;
+            btn.textContent = 'Connect Bank';
+            if (err) console.warn('Plaid Link exit:', err);
+          },
+        });
+        handler.open();
+      } catch (e) {
+        showToast('Failed to start bank connection: ' + e.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Connect Bank';
+      }
+    }
+
+    async function disconnectBank() {
+      if (!confirm('Disconnect this bank account? You can reconnect anytime.')) return;
+      try {
+        await fetch('/api/plaid-link?action=disconnect', { method: 'POST' });
+        plaidConnected = false;
+        document.getElementById('bank-balances').style.display = 'none';
+        document.getElementById('bank-transactions').style.display = 'none';
+        showToast('Bank disconnected');
+        checkBankStatus();
+      } catch (e) {
+        showToast('Disconnect failed: ' + e.message, 'error');
+      }
+    }
+
+    async function loadBankData() {
+      if (!plaidConnected) return;
+      try {
+        // Load balances
+        const balRes = await fetch('/api/plaid-accounts?action=balances');
+        const balData = await balRes.json();
+        if (balData.accounts) renderBankBalances(balData.accounts);
+
+        // Load transactions
+        const txRes = await fetch('/api/plaid-accounts?action=transactions');
+        const txData = await txRes.json();
+        if (txData.transactions) renderBankTransactions(txData);
+      } catch (e) {
+        console.warn('Bank data load error:', e);
+      }
+    }
+
+    function renderBankBalances(accounts) {
+      const el = document.getElementById('bank-balances');
+      el.style.display = 'block';
+      el.innerHTML = `
+        <div class="summary-grid" style="margin-bottom:1.5rem">
+          ${accounts.map(a => `
+            <div class="summary-card">
+              <div class="summary-card__label">${escHtml(a.name)}${a.mask ? ' ••' + a.mask : ''}</div>
+              <div class="summary-card__value" style="color:var(--accent-green)">$${(a.balances.available || a.balances.current || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+              <div style="font-size:0.7rem;color:var(--text-muted);text-transform:capitalize;margin-top:0.25rem">${a.type} — ${a.subtype || ''}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderBankTransactions(data) {
+      const el = document.getElementById('bank-transactions');
+      el.style.display = 'block';
+      const txs = data.transactions || [];
+      const summary = data.summary || {};
+
+      let html = `
+        <div class="summary-grid" style="margin-bottom:1rem">
+          <div class="summary-card">
+            <div class="summary-card__label">Income (30d)</div>
+            <div class="summary-card__value" style="color:var(--accent-green)">$${(summary.income || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__label">Expenses (30d)</div>
+            <div class="summary-card__value" style="color:var(--accent-red, #ef4444)">$${(summary.expenses || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-card__label">Net Cash Flow</div>
+            <div class="summary-card__value" style="color:${(summary.net || 0) >= 0 ? 'var(--accent-green)' : 'var(--accent-red, #ef4444)'}">$${(summary.net || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <h2>Recent Transactions</h2>
+          <span>Last 30 days</span>
+        </div>
+        <div class="table-wrap"><div class="table-scroll">
+          <table>
+            <thead><tr><th>Date</th><th>Description</th><th>Category</th><th style="text-align:right">Amount</th></tr></thead>
+            <tbody>
+              ${txs.slice(0, 25).map(t => `<tr>
+                <td style="color:var(--text-muted);white-space:nowrap">${t.date}</td>
+                <td>${escHtml(t.name || t.merchant || '—')}</td>
+                <td><span style="background:var(--bg-card-alt);padding:0.15rem 0.5rem;border-radius:4px;font-size:0.75rem">${escHtml(t.category)}</span></td>
+                <td style="text-align:right;font-weight:600;color:${t.amount > 0 ? 'var(--accent-red, #ef4444)' : 'var(--accent-green)'}">
+                  ${t.amount > 0 ? '-' : '+'}$${Math.abs(t.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}
+                </td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div></div>
+      `;
+      el.innerHTML = html;
+    }
+
+    // Check bank status on page load (when Finances tab is shown)
+    const origSwitchTab = switchTab;
+    switchTab = function(tabName) {
+      origSwitchTab(tabName);
+      if (tabName === 'finances' && !plaidConnected) {
+        checkBankStatus();
+      }
+    };
+    // Also check on initial load if finances is the default tab
+    document.addEventListener('DOMContentLoaded', () => setTimeout(checkBankStatus, 2000));
+
   </script>
 
 </body>
