@@ -1420,8 +1420,24 @@
       } catch (e) {
         console.error('Forms API error:', e);
         if (!formsData) {
-          renderError('pulse-content', 'Could not reach the forms API. Deploy the Netlify functions first.', 'loadFormsData(true)');
-          renderError('inbox-content', 'Could not reach the forms API.', 'loadFormsData(true)');
+          // Show a soft warning instead of blocking the whole dashboard
+          const pulseEl = document.getElementById('pulse-content');
+          if (pulseEl) {
+            pulseEl.innerHTML = `
+              <div style="padding:1rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-sm);margin-bottom:1rem">
+                <strong style="color:var(--accent-gold)">⚠ Forms API temporarily unavailable</strong>
+                <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem">The Netlify forms data couldn't load. Analytics and other tabs still work.</p>
+                <button class="refresh-bar__btn" onclick="loadFormsData(true)" style="margin-top:0.5rem">↻ Retry</button>
+              </div>
+              <div id="analytics-container">
+                <div class="section-header">
+                  <h2>📈 Site Analytics</h2>
+                  <span style="color:var(--text-muted)">Loading from Firestore...</span>
+                </div>
+              </div>
+            `;
+            loadAnalytics();
+          }
         }
       }
     }
@@ -2822,16 +2838,18 @@
       el.innerHTML = html;
     }
 
-    // Check bank status on page load (when Finances tab is shown)
-    const origSwitchTab = switchTab;
-    switchTab = function(tabName) {
-      origSwitchTab(tabName);
-      if (tabName === 'finances' && !plaidConnected) {
-        checkBankStatus();
-      }
-    };
-    // Also check on initial load if finances is the default tab
-    document.addEventListener('DOMContentLoaded', () => setTimeout(checkBankStatus, 2000));
+    // Check bank status when Finances tab is clicked
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          if (tab.dataset.panel === 'finances') {
+            setTimeout(checkBankStatus, 500);
+          }
+        });
+      });
+      // Also check on initial load
+      setTimeout(checkBankStatus, 2000);
+    });
 
   </script>
 
