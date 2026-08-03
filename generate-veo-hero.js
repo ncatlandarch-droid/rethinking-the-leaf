@@ -5,7 +5,8 @@ const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
 const path = require('path');
 
-const API_KEY = 'AIzaSyArHzKOWk6878FD7WLAG114TiAyFVkfq5I';
+// Set via environment variable: export GEMINI_API_KEY=your-key
+const API_KEY = process.env.GEMINI_API_KEY || '';
 const OUTPUT_DIR = 'c:\\Users\\Chris\\Desktop\\WEBSITES\\ReThinking the Leaf Farm Website\\images';
 const REF_IMAGE_PATH = path.join(OUTPUT_DIR, 'hero-lavender.png');
 

@@ -198,6 +198,7 @@
 
       <!-- Netlify Forms — data-netlify="true" auto-detects during deploy -->
       <form name="partner-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="partner-form">
+        <input type="hidden" name="form-name" value="partner-application">
         
         <!-- Honeypot for spam -->
         <p class="hidden" style="display:none;">
@@ -397,6 +398,8 @@
       });
     }
   </script>
+  <script src="js/forms-handler.js" defer></script>
+  <script src="js/analytics.js" defer></script>
 </body>
 </html>
 

@@ -1409,24 +1409,87 @@
       }
       renderSkeleton('pulse-content', 6);
       renderSkeleton('inbox-content', 0);
+
+      // Helper to pull direct Firestore submissions
+      async function getFirestoreSubmissions() {
+        const fsSubmissions = {};
+        try {
+          const snap = await db.collection('analytics').doc('forms').collection('submissions')
+            .orderBy('submittedAt', 'desc')
+            .limit(200)
+            .get();
+
+          snap.forEach(doc => {
+            const data = doc.data();
+            const formType = data.formType || 'contact';
+            if (!fsSubmissions[formType]) {
+              fsSubmissions[formType] = { id: formType, count: 0, submissions: [] };
+            }
+            fsSubmissions[formType].submissions.push({
+              id: doc.id,
+              created_at: data.submittedAt || new Date().toISOString(),
+              data: data.data || {}
+            });
+            fsSubmissions[formType].count++;
+          });
+        } catch (e) {
+          console.warn('Firestore submissions query notice:', e.message);
+        }
+        return fsSubmissions;
+      }
+
       try {
         const res = await fetch('/api/admin-forms?t=' + Date.now());
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        formsData = await res.json();
+        let netlifyData = { forms: {}, deploys: [] };
+        if (res.ok) {
+          netlifyData = await res.json();
+        }
+
+        const fsForms = await getFirestoreSubmissions();
+
+        // Merge Netlify & Firestore forms
+        const mergedForms = { ...(netlifyData.forms || {}) };
+        for (const [formType, fsGroup] of Object.entries(fsForms)) {
+          if (!mergedForms[formType]) {
+            mergedForms[formType] = fsGroup;
+          } else {
+            // Append Firestore submissions not already present by email+date
+            const existingEmails = new Set((mergedForms[formType].submissions || []).map(s => (s.data?.email || '') + (s.data?.message || '')));
+            fsGroup.submissions.forEach(s => {
+              const key = (s.data?.email || '') + (s.data?.message || '');
+              if (!existingEmails.has(key)) {
+                mergedForms[formType].submissions.push(s);
+                mergedForms[formType].count++;
+              }
+            });
+          }
+        }
+
+        formsData = {
+          forms: mergedForms,
+          deploys: netlifyData.deploys || [],
+          timestamp: new Date().toISOString()
+        };
+
         sessionStorage.setItem('rttl-forms-cache', JSON.stringify(formsData));
         renderPulse(formsData);
         renderInbox(formsData);
         resetAutoRefresh();
       } catch (e) {
         console.error('Forms API error:', e);
-        if (!formsData) {
-          // Show a soft warning instead of blocking the whole dashboard
+        // Fallback: try loading Firestore submissions only
+        try {
+          const fsForms = await getFirestoreSubmissions();
+          formsData = { forms: fsForms, deploys: [], timestamp: new Date().toISOString() };
+          renderPulse(formsData);
+          renderInbox(formsData);
+        } catch (fsErr) {
           const pulseEl = document.getElementById('pulse-content');
           if (pulseEl) {
             pulseEl.innerHTML = `
               <div style="padding:1rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:var(--radius-sm);margin-bottom:1rem">
                 <strong style="color:var(--accent-gold)">⚠ Forms API temporarily unavailable</strong>
-                <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem">The Netlify forms data couldn't load. Analytics and other tabs still work.</p>
+                <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem">The forms data couldn't load. Analytics and other tabs still work.</p>
                 <button class="refresh-bar__btn" onclick="loadFormsData(true)" style="margin-top:0.5rem">↻ Retry</button>
               </div>
               <div id="analytics-container">
