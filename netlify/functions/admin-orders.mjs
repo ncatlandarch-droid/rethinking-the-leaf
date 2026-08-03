@@ -9,12 +9,15 @@
 
 // RTTL product catalog (QuickStore products aren't in the API)
 const RTTL_PRODUCTS = [
-  { id: 1, name: 'RTTLC Retro White Tee', thumbnail: null, variants: 5, synced: true },
-  { id: 2, name: 'Circulate The Dollar Tee', thumbnail: null, variants: 5, synced: true },
-  { id: 3, name: 'RTTLC Heritage Black Tee', thumbnail: null, variants: 5, synced: true },
-  { id: 4, name: 'RTTLC Logo Socks', thumbnail: null, variants: 3, synced: true },
-  { id: 5, name: 'RTTLC Trucker Hat', thumbnail: null, variants: 2, synced: true },
-  { id: 6, name: 'RTTLC Coffee Mug', thumbnail: null, variants: 1, synced: true }
+  { id: 1, name: 'Dad Hat (Vintage)', thumbnail: 'Real Product Images/hat1 vintage.webp', variants: 3, synced: true, price: '$18.00' },
+  { id: 2, name: 'White Glossy Mug', thumbnail: 'Real Product Images/mug1.webp', variants: 2, synced: true, price: '$8.00' },
+  { id: 3, name: 'Circulate the Dollar Tee', thumbnail: 'Real Product Images/shirt2.webp', variants: 5, synced: true, price: '$15.50' },
+  { id: 4, name: 'Yoga Leggings (Lavender Wreath)', thumbnail: 'Real Product Images/yoga pants green with lavendar wreath.webp', variants: 4, synced: true, price: '$38.50' },
+  { id: 5, name: 'White Glossy Mug (Design II)', thumbnail: 'Real Product Images/mug2.webp', variants: 2, synced: true, price: '$8.00' },
+  { id: 6, name: 'Dad Hat (Dark)', thumbnail: 'Real Product Images/hat2.webp', variants: 2, synced: true, price: '$18.00' },
+  { id: 7, name: 'Unisex T-Shirt', thumbnail: 'Real Product Images/shirt3.webp', variants: 5, synced: true, price: '$15.50' },
+  { id: 8, name: 'Retro Re-Thinking Tee', thumbnail: 'Real Product Images/shirt4.webp', variants: 5, synced: true, price: '$15.50' },
+  { id: 9, name: 'Crew Socks', thumbnail: 'Real Product Images/socks.webp', variants: 3, synced: true, price: '$9.50' }
 ];
 
 export default async function handler(req) {
