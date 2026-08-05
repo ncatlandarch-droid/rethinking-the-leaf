@@ -1499,10 +1499,37 @@
                 </div>
               </div>
             `;
-            loadAnalytics();
-          }
         }
       }
+    }
+
+    function exportSubscribersCSV(type = 'newsletter') {
+      if (!formsData || !formsData.forms) {
+        showToast('Form data not loaded yet', 'error');
+        return;
+      }
+      const group = formsData.forms[type];
+      if (!group || !group.submissions || group.submissions.length === 0) {
+        showToast('No subscribers found to export', 'info');
+        return;
+      }
+      let csv = 'Name,Email,Interest_Message,SubmittedDate\n';
+      group.submissions.forEach(s => {
+        const d = s.data || {};
+        const name = (d.name || '').replace(/"/g, '""');
+        const email = (d.email || '').replace(/"/g, '""');
+        const interest = (d.interest || d.message || '').replace(/"/g, '""');
+        const date = s.created_at || '';
+        csv += `"${name}","${email}","${interest}","${date}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rttl_${type}_subscribers.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${group.submissions.length} ${type} subscribers to CSV!`, 'success');
     }
 
     async function loadOrdersData(forceRefresh = false) {
@@ -1768,18 +1795,21 @@
         html += `
           <div class="section-header">
             <h2>Recent Contact Submissions</h2>
-            <span>${contact.count} total</span>
+            <div style="display:flex;align-items:center;gap:0.75rem">
+              <span>${contact.count} total</span>
+              <button onclick="exportSubscribersCSV('contact')" style="background:rgba(139,92,246,0.15);color:var(--accent-purple);border:1px solid var(--border-focus);padding:0.3rem 0.75rem;border-radius:4px;font-size:0.75rem;font-weight:600;cursor:pointer">📥 Export CSV</button>
+            </div>
           </div>
           <div class="table-wrap"><div class="table-scroll">
             <table>
               <thead><tr><th>Name</th><th>Email</th><th>Interest</th><th>Date</th></tr></thead>
               <tbody>
-                ${contact.submissions.slice(0, 20).map(s => {
+                ${contact.submissions.slice(0, 50).map(s => {
                   const d = s.data || {};
                   return `<tr>
                     <td><strong>${escHtml(d.name) || '—'}</strong></td>
                     <td><a class="mailto-link" href="mailto:${escHtml(d.email)}">${escHtml(d.email) || '—'}</a></td>
-                    <td>${escHtml(d.interest) || '—'}</td>
+                    <td>${escHtml(d.interest || d.message) || '—'}</td>
                     <td style="color:var(--text-muted);white-space:nowrap">${fmtDate(s.created_at)}</td>
                   </tr>`;
                 }).join('')}
@@ -1794,13 +1824,16 @@
         html += `
           <div class="section-header">
             <h2>Newsletter Signups</h2>
-            <span>${newsletter.count} subscribers</span>
+            <div style="display:flex;align-items:center;gap:0.75rem">
+              <span>${newsletter.count} subscribers</span>
+              <button onclick="exportSubscribersCSV('newsletter')" style="background:rgba(76,175,80,0.15);color:var(--accent-green);border:1px solid rgba(76,175,80,0.3);padding:0.3rem 0.75rem;border-radius:4px;font-size:0.75rem;font-weight:600;cursor:pointer">📥 Export CSV</button>
+            </div>
           </div>
           <div class="table-wrap"><div class="table-scroll">
             <table>
               <thead><tr><th>Email</th><th>Date</th></tr></thead>
               <tbody>
-                ${newsletter.submissions.slice(0, 20).map(s => {
+                ${newsletter.submissions.slice(0, 50).map(s => {
                   const d = s.data || {};
                   return `<tr>
                     <td><a class="mailto-link" href="mailto:${escHtml(d.email)}">${escHtml(d.email) || '—'}</a></td>
