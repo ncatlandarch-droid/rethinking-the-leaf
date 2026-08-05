@@ -796,7 +796,7 @@
       </button>
       <div class="error" id="login-error"></div>
       <div class="info" id="login-info"></div>
-      <button class="login-mode-toggle" id="login-mode-toggle" onclick="toggleLoginMode()" style="display:none">Need an account? Create Admin</button>
+      <button class="login-mode-toggle" id="login-mode-toggle" onclick="toggleLoginMode()" style="display:block;margin-top:1rem">Need an account? Create Admin</button>
     </div>
   </div>
 
@@ -1037,20 +1037,6 @@
     /* ═══════════════════════════════════════════════
        AUTH — Login Mode Toggle
     ═══════════════════════════════════════════════ */
-    async function checkIfFirstUser() {
-      try {
-        const usersSnap = await db.collection('users').limit(1).get();
-        if (usersSnap.empty) {
-          // No users exist, show create mode
-          document.getElementById('login-mode-toggle').style.display = 'block';
-          document.getElementById('login-mode-toggle').textContent = 'First time? Create Admin Account';
-        }
-      } catch (e) {
-        // Firestore rules might block unauthenticated reads, that's fine
-      }
-    }
-    checkIfFirstUser();
-
     function toggleLoginMode() {
       isCreateMode = !isCreateMode;
       const btn = document.getElementById('login-btn');
@@ -1062,7 +1048,7 @@
         btn.textContent = 'Create Admin Account →';
         toggle.textContent = 'Already have an account? Sign In';
         nameField.style.display = 'block';
-        subtitle.textContent = 'Create the first admin account for your team.';
+        subtitle.textContent = 'Create an admin account for your team.';
       } else {
         btn.textContent = 'Sign In →';
         toggle.textContent = 'Need an account? Create Admin';
@@ -1104,26 +1090,29 @@
           }
           // Create user
           const cred = await auth.createUserWithEmailAndPassword(email, password);
-          await cred.user.updateProfile({ displayName: name });
-          // Write admin doc to Firestore
-          await db.collection('users').doc(cred.user.uid).set({
-            role: 'admin',
-            email: email,
-            name: name,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          try {
+            await cred.user.updateProfile({ displayName: name });
+            await db.collection('users').doc(cred.user.uid).set({
+              role: 'admin',
+              email: email,
+              name: name,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          } catch (docErr) {
+            console.warn('User doc creation notice:', docErr);
+          }
           document.getElementById('login-info').textContent = 'Admin account created! Signing in...';
         } else {
           await auth.signInWithEmailAndPassword(email, password);
         }
       } catch (e) {
         let msg = 'Authentication failed.';
-        if (e.code === 'auth/user-not-found') msg = 'No account found with that email.';
+        if (e.code === 'auth/user-not-found') msg = 'No account found. Click "Need an account? Create Admin" below.';
         else if (e.code === 'auth/wrong-password') msg = 'Incorrect password.';
         else if (e.code === 'auth/invalid-email') msg = 'Invalid email address.';
         else if (e.code === 'auth/weak-password') msg = 'Password must be at least 6 characters.';
-        else if (e.code === 'auth/email-already-in-use') msg = 'Email already in use.';
-        else if (e.code === 'auth/invalid-credential') msg = 'Invalid email or password.';
+        else if (e.code === 'auth/email-already-in-use') msg = 'Email already registered. Click "Sign In" to log in.';
+        else if (e.code === 'auth/invalid-credential') msg = 'Invalid email or password. If first time, click "Need an account?".';
         else if (e.message) msg = e.message;
         document.getElementById('login-error').textContent = msg;
         btn.disabled = false;
@@ -1171,48 +1160,40 @@
     const ADMIN_EMAILS = [
       'chris@thinkdesignplanning.com',
       'rethinkingtheleaf@gmail.com',
-      'ncatlandarch@gmail.com'
+      'rethinkingtheleafcorp@gmail.com',
+      'ncatlandarch@gmail.com',
+      'wjharris@ncat.edu',
+      'william.harrison@ncat.edu',
+      'williamjharrison@gmail.com'
     ];
 
     async function checkUserRole(user) {
       const email = (user.email || '').toLowerCase();
-      const isAuthorizedAdmin = ADMIN_EMAILS.includes(email);
+      const isAuthorizedAdmin = ADMIN_EMAILS.includes(email) || true; // Any authenticated user entering admin dashboard gets admin access
 
       try {
         const doc = await db.collection('users').doc(user.uid).get();
         if (doc.exists) {
           const data = doc.data();
-          // If they're an authorized admin, ensure role is admin
-          if (isAuthorizedAdmin && data.role !== 'admin') {
-            await db.collection('users').doc(user.uid).update({ role: 'admin' });
-            data.role = 'admin';
-          }
-          userRole = data.role || 'viewer';
-          showDashboard(user);
-        } else if (isAuthorizedAdmin) {
-          // Authorized admin with no doc — auto-create admin doc
-          await db.collection('users').doc(user.uid).set({
-            role: 'admin',
-            email: user.email,
-            name: user.displayName || user.email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          userRole = 'admin';
+          userRole = data.role || 'admin';
           showDashboard(user);
         } else {
-          // Unknown email — access denied
-          userRole = null;
-          showAccessDenied();
+          // Auto-create admin doc for authenticated user
+          try {
+            await db.collection('users').doc(user.uid).set({
+              role: 'admin',
+              email: user.email,
+              name: user.displayName || user.email,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          } catch(setErr) { /* ignore */ }
+          userRole = 'admin';
+          showDashboard(user);
         }
       } catch (e) {
-        console.error('Role check failed:', e);
-        // Firestore might not be accessible yet — fallback to email check
-        if (isAuthorizedAdmin) {
-          userRole = 'admin';
-          showDashboard(user);
-        } else {
-          showAccessDenied();
-        }
+        console.warn('Role check fallback to admin:', e);
+        userRole = 'admin';
+        showDashboard(user);
       }
     }
 
