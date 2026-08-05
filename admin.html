@@ -2300,31 +2300,35 @@
         </div>
         <div class="section-header">
           <h2>All Submissions</h2>
-          <span>${allSubmissions.length} total</span>
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <span>${allSubmissions.length} total</span>
+            <button onclick="exportAllSubmissionsCSV()" style="background:rgba(139,92,246,0.15);color:var(--accent-purple);border:1px solid var(--border-focus);padding:0.3rem 0.75rem;border-radius:4px;font-size:0.75rem;font-weight:600;cursor:pointer">📥 Export All CSV</button>
+          </div>
         </div>
         <div class="table-wrap"><div class="table-scroll">
           <table>
             <thead><tr><th>Type</th><th>Name / Email</th><th>Details</th><th>Date</th><th>Reply</th></tr></thead>
             <tbody>
-              ${allSubmissions.map(s => {
+              ${allSubmissions.map((s, idx) => {
                 const d = s.data || {};
                 const ft = formTypeMap[s.formType] || { label: s.formType, badge: 'planning' };
                 const name = d.name || '—';
                 const email = d.email || '';
-                let details = '';
-                if (d.message) details = escHtml(String(d.message).substring(0, 100)) + (String(d.message).length > 100 ? '…' : '');
-                else if (d.interest) details = escHtml(d.interest);
-                else if (d.organization) details = escHtml(d.organization);
-                else details = '—';
+                const fullMsg = String(d.message || d.interest || d.organization || '—');
+                const isLong = fullMsg.length > 100;
+                const preview = isLong ? escHtml(fullMsg.substring(0, 100)) + '…' : escHtml(fullMsg);
 
                 const replyLink = email
-                  ? `<a class="quick-reply" href="mailto:${escHtml(email)}?subject=Re: ${encodeURIComponent(ft.label + ' Submission')}" title="Reply to ${escHtml(email)}">↩ Reply</a>`
+                  ? `<a class="quick-reply" href="mailto:${escHtml(email)}?subject=Re: ${encodeURIComponent(ft.label + ' Submission')}&body=Hi ${encodeURIComponent(name)},%0A%0AThank you for reaching out to ReThinking The Leaf!%0A%0A" title="Reply to ${escHtml(email)}">↩ Reply</a>`
                   : '<span style="color:var(--text-muted);font-size:0.75rem">—</span>';
 
                 return `<tr>
                   <td><span class="badge badge--${ft.badge}">${ft.label}</span></td>
                   <td><strong>${escHtml(name)}</strong>${email ? '<br><a class="mailto-link" href="mailto:' + escHtml(email) + '" style="font-size:0.75rem">' + escHtml(email) + '</a>' : ''}</td>
-                  <td style="max-width:250px;white-space:normal;color:var(--text-secondary);font-size:0.8rem">${details}</td>
+                  <td style="max-width:350px;white-space:normal;color:var(--text-secondary);font-size:0.8rem">
+                    <span id="inbox-preview-${idx}">${preview}</span>
+                    ${isLong ? `<span id="inbox-full-${idx}" style="display:none">${escHtml(fullMsg)}</span><br><button onclick="toggleInboxMsg(${idx})" id="inbox-toggle-${idx}" style="background:none;border:none;color:var(--accent-purple);cursor:pointer;font-size:0.7rem;padding:0.15rem 0;font-weight:600">▸ Read More</button>` : ''}
+                  </td>
                   <td style="color:var(--text-muted);white-space:nowrap">${fmtDate(s.created_at)}</td>
                   <td>${replyLink}</td>
                 </tr>`;
@@ -2335,6 +2339,50 @@
       `;
 
       document.getElementById('inbox-content').innerHTML = html;
+    }
+
+    function toggleInboxMsg(idx) {
+      const preview = document.getElementById('inbox-preview-' + idx);
+      const full = document.getElementById('inbox-full-' + idx);
+      const btn = document.getElementById('inbox-toggle-' + idx);
+      if (!preview || !full) return;
+      if (full.style.display === 'none') {
+        preview.style.display = 'none';
+        full.style.display = 'inline';
+        btn.textContent = '▾ Show Less';
+      } else {
+        preview.style.display = 'inline';
+        full.style.display = 'none';
+        btn.textContent = '▸ Read More';
+      }
+    }
+
+    function exportAllSubmissionsCSV() {
+      if (!formsData || !formsData.forms) {
+        showToast('Form data not loaded yet', 'error');
+        return;
+      }
+      let csv = 'Type,Name,Email,Message_or_Interest,Organization,SubmittedDate\n';
+      for (const [formType, formData] of Object.entries(formsData.forms)) {
+        if (!formData.submissions) continue;
+        formData.submissions.forEach(s => {
+          const d = s.data || {};
+          const name = (d.name || '').replace(/"/g, '""');
+          const email = (d.email || '').replace(/"/g, '""');
+          const msg = (d.message || d.interest || '').replace(/"/g, '""');
+          const org = (d.organization || '').replace(/"/g, '""');
+          const date = s.created_at || '';
+          csv += `"${formType}","${name}","${email}","${msg}","${org}","${date}"\n`;
+        });
+      }
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `rttl_all_submissions_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Exported all submissions to CSV!', 'success');
     }
 
     /* ═══════════════════════════════════════════════
