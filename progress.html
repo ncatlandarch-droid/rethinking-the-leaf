@@ -97,22 +97,36 @@
   </div>
 
   <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav__container">
-      <a href="index.html" class="nav__brand">
-        <img src="images/RethinkingtheLeaf Brand Logo.png" alt="Re-Thinking The Leaf Logo">
-        <span>Re-Thinking The Leaf</span>
+  <nav class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" id="nav-logo">
+        <img src="images/rttlc-logo-original.png" alt="Re-Thinking The Leaf" class="nav__logo-icon"><span class="nav__logo-divider" style="display:inline-block;width:1px;height:28px;background:rgba(255,255,255,0.3);margin:0 0.6rem;vertical-align:middle;"></span><span class="nav__logo-text">Re-<span>Thinking</span> The Leaf</span>
       </a>
-      <div class="nav__links">
-        <a href="index.html#estate">The Estate</a>
-        <a href="the-system.html">The Science</a>
-        <a href="programs.html">Experiences</a>
-        <a href="events.html">Events</a>
-        <a href="community.html">Community</a>
-        <a href="progress.html" class="active">Progress</a>
-        <a href="shop.html">Shop</a>
-        <a href="donate.html" class="nav__cta">Support Us</a>
+      <div class="nav__links" id="nav-links">
+        <a href="index.html#mission" class="nav__link">Our Mission</a>
+        <a href="index.html#estate" class="nav__link">The Estate</a>
+        <div class="nav__dropdown">
+          <span class="nav__dropdown-trigger">Explore <svg viewBox="0 0 10 6" fill="currentColor"><path d="M1 1l4 4 4-4"/></svg></span>
+          <div class="nav__dropdown-menu">
+            <a href="progress.html" style="color:var(--accent-gold);font-weight:600;">🌱 Estate Progress &amp; Roadmap</a>
+            <a href="the-system.html">The System</a>
+            <a href="programs.html">Programs</a>
+            <a href="programs.html#experiences">Experiences</a>
+            <a href="events.html">Events</a>
+            <a href="the-system.html#science">The Science</a>
+            <a href="the-system.html#legacy">Our Legacy</a>
+            <a href="the-system.html#masterplan">Master Plan</a>
+          </div>
+        </div>
+        <a href="progress.html" class="nav__link" style="color: var(--accent-gold); font-weight: 600;">Progress</a>
+        <a href="community.html" class="nav__link">Community</a>
+        <a href="donate.html" class="nav__link" style="color: var(--accent-gold);">Donate</a>
+        <a href="shop.html" class="nav__link" style="color: var(--accent-gold);">Shop</a>
+        <a href="index.html#contact" class="nav__cta">Get Updates</a>
       </div>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -240,5 +254,6 @@
     </div>
   </footer>
 
+  <script src="js/main.js"></script>
 </body>
 </html>

@@ -820,17 +820,20 @@ ul { list-style: none; }
   line-height: 1.5;
   opacity: 0;
   max-height: 0;
+  overflow: hidden;
   transition: opacity 0.4s ease, max-height 0.4s ease;
 }
-.zone-card:hover .zone-card__desc {
+.zone-card:hover .zone-card__desc,
+.zone-card:focus-within .zone-card__desc {
   opacity: 1;
-  max-height: 100px;
+  max-height: 250px;
 }
 
 /* Featured zone (full width) */
 .zone-card--featured {
   grid-column: span 2;
   aspect-ratio: 16/9;
+  min-height: 320px;
 }
 
 /* ================================================================
@@ -1523,9 +1526,9 @@ ul { list-style: none; }
   .mission__values { grid-template-columns: 1fr; }
 
   .zones__grid { grid-template-columns: 1fr; }
-  .zone-card--featured { grid-column: span 1; }
-  .zone-card { aspect-ratio: 3/4; }
-  .zone-card__desc { opacity: 1; max-height: 100px; }
+  .zone-card--featured { grid-column: span 1; min-height: 320px; }
+  .zone-card { aspect-ratio: auto; min-height: 340px; }
+  .zone-card__desc { opacity: 1; max-height: 250px; }
 
   .experiences__grid { grid-template-columns: 1fr; }
   .experiences__grid--photo { grid-template-columns: 1fr; }
