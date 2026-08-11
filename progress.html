@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estate Progress &amp; Living Timeline — Re-Thinking The Leaf</title>
+  <meta name="description" content="Track real-time progress on our 66-acre agrotherapy estate in Lawrenceville, VA. See completed milestones, active site builds, and master plan phases.">
+  <link rel="icon" type="image/png" href="images/RethinkingtheLeaf Brand Logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .progress-hero {
+      padding: var(--space-3xl) 0 var(--space-xl);
+      text-align: center;
+      background: radial-gradient(circle at top, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+    }
+    .progress-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: var(--space-2xl) auto;
+      padding-left: 2rem;
+      border-left: 2px solid rgba(212, 175, 55, 0.25);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-2xl);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.55rem;
+      top: 0.2rem;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent-gold);
+    }
+    .timeline-item--done::before {
+      background: #4ade80;
+      border-color: #4ade80;
+      box-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+    }
+    .timeline-item--active::before {
+      background: var(--accent-gold);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    .status-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: var(--space-lg);
+    }
+    .status-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .status-list li {
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .status-list li:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sitewide Development Banner -->
+  <div class="dev-banner">
+    <strong>🌱 Estate in Active Development</strong> — Everything on this page reflects our living progress. Land is real, mission is active, and building is underway!
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__container">
+      <a href="index.html" class="nav__brand">
+        <img src="images/RethinkingtheLeaf Brand Logo.png" alt="Re-Thinking The Leaf Logo">
+        <span>Re-Thinking The Leaf</span>
+      </a>
+      <div class="nav__links">
+        <a href="index.html#estate">The Estate</a>
+        <a href="the-system.html">The Science</a>
+        <a href="programs.html">Experiences</a>
+        <a href="events.html">Events</a>
+        <a href="community.html">Community</a>
+        <a href="progress.html" class="active">Progress</a>
+        <a href="shop.html">Shop</a>
+        <a href="donate.html" class="nav__cta">Support Us</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="progress-hero">
+    <div class="container">
+      <div class="section-label" style="justify-content: center;"><span>Living Roadmap</span></div>
+      <h1 style="font-family: var(--font-display); font-size: 2.8rem; margin-top: 0.5rem; color: #fff;">Estate Progress &amp; Timeline</h1>
+      <p style="max-width: 650px; margin: 1rem auto 0; color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
+        We believe in radical transparency. Building a 66-acre agrotherapy estate takes dedicated care, community partnership, and phased execution. Track our live progress below.
+      </p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD GRID -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="status-grid">
+
+        <!-- COMPLETED -->
+        <div class="status-card" style="border-top: 3px solid #4ade80;">
+          <h3 style="color: #4ade80;"><span>✅</span> Completed Milestones</h3>
+          <ul class="status-list">
+            <li><span>✅</span> <strong>Hemp Registration Renewed</strong> — Official VA agricultural registration active.</li>
+            <li><span>✅</span> <strong>High Tunnel Installed</strong> — High tunnel structure built via USDA EQIP program.</li>
+            <li><span>✅</span> <strong>DIY Japanese Rock Garden</strong> — Stone walkway &amp; succulent garden completed.</li>
+            <li><span>✅</span> <strong>Pergola Swings Built</strong> — Custom wooden swings in place for lavender field views.</li>
+            <li><span>✅</span> <strong>Digital Ecosystem Live</strong> — Website, forms, &amp; partner directory deployed.</li>
+            <li><span>✅</span> <strong>Printful Merch Store</strong> — Official apparel line live &amp; shipping nationwide.</li>
+          </ul>
+        </div>
+
+        <!-- IN PROGRESS -->
+        <div class="status-card" style="border-top: 3px solid var(--accent-gold);">
+          <h3 style="color: var(--accent-gold);"><span>🔨</span> Active Site Work (Phase 1)</h3>
+          <ul class="status-list">
+            <li><span>🔨</span> <strong>High Tunnel Fan &amp; Power</strong> — Electrician connection for climate control fan.</li>
+            <li><span>🔨</span> <strong>High Tunnel Irrigation</strong> — Drip irrigation hookup for year-round growing.</li>
+            <li><span>🔨</span> <strong>Drain Field Preparation</strong> — Preparing soil beds for upcoming lavender planting.</li>
+            <li><span>🔨</span> <strong>High Tunnel Hemp Planting</strong> — Seedling propagation starting in high tunnel.</li>
+            <li><span>🔨</span> <strong>USDA NRCS Conservation Plan</strong> — Coordinating with Brunswick County officer.</li>
+            <li><span>🔨</span> <strong>NC A&amp;T Class Studio</strong> — Preparing Spring 2027 freshman design studio project.</li>
+          </ul>
+        </div>
+
+        <!-- PLANNED -->
+        <div class="status-card" style="border-top: 3px solid #a78bfa;">
+          <h3 style="color: #a78bfa;"><span>📋</span> Master Plan Vision (Phases 2 &amp; 3)</h3>
+          <ul class="status-list">
+            <li><span>📋</span> <strong>Lavender Field &amp; Floralpy™</strong> — Pick-and-pay blooms &amp; essential oil production.</li>
+            <li><span>📋</span> <strong>Agrotherapy Cabin Resort</strong> — Modern A-frame cabins tucked in pine forest.</li>
+            <li><span>📋</span> <strong>Wetland Education Boardwalks</strong> — Elevated nature walks &amp; outdoor classroom.</li>
+            <li><span>📋</span> <strong>Cannabis Grow Facility</strong> — Controlled indoor grow (Pending VA retail licensing).</li>
+            <li><span>📋</span> <strong>Agro-Hound Dog Park</strong> — Fenced play area for visitors &amp; support animals.</li>
+            <li><span>📋</span> <strong>Geodesic Butterfly Dome</strong> — Living sanctuary for monarchs &amp; native species.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE SECTION -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="text-center" style="max-width: 600px; margin: 0 auto var(--space-xl);">
+        <div class="section-label" style="justify-content: center;"><span>Phased Roadmap</span></div>
+        <h2 class="section-title">Development Phases</h2>
+        <p class="section-subtitle centered">Our roadmap focuses on foundation, sustainability, and community impact.</p>
+      </div>
+
+      <div class="progress-timeline">
+
+        <!-- Phase 1 -->
+        <div class="timeline-item timeline-item--active">
+          <span class="phase-badge phase-badge--dev">Current Phase</span>
+          <h3 style="color: #fff; font-size: 1.4rem; margin: 0.4rem 0;">Phase 1: Site Infrastructure &amp; Foundation</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Focusing on soil preparation, high tunnel utilities, preliminary lavender bed drainage, initial hemp planting, and developing the official USDA NRCS Conservation Farm Plan.
+          </p>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="timeline-item">
+          <span class="phase-badge phase-badge--planned">Planned</span>
+          <h3 style="color: #fff; font-size: 1.4rem; margin: 0.4rem 0;">Phase 2: Campus Activation &amp; Harvesting</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Maturing lavender fields for essential oil extraction, expanding high tunnels, opening day-visit guided tours, launching local produce sales, and initiating A-frame cabin construction.
+          </p>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="timeline-item">
+          <span class="phase-badge phase-badge--planned">Planned</span>
+          <h3 style="color: #fff; font-size: 1.4rem; margin: 0.4rem 0;">Phase 3: Full Ecosystem Sanctuary</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            Opening the Agrotherapy Cabin Resort, Geodesic Butterfly Pavilion, elevated wetland boardwalks, full wedding/event venue hosting, and hydroponic vertical farm towers.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABCD COMMUNITY HELP SECTION -->
+  <section class="section">
+    <div class="container">
+      <div style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(27, 48, 34, 0.5)); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: var(--space-2xl); text-align: center; max-width: 800px; margin: 0 auto;">
+        <h2 style="font-family: var(--font-display); color: #fff; font-size: 2rem;">Asset-Based Community Development</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-top: 1rem;">
+          Great spaces are built together. If you are an electrician, plumber, horticulturist, educator, or local partner who wants to lend your talents to Re-Thinking The Leaf, we’d love to connect.
+        </p>
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="partner-apply.html" class="nav__cta" style="padding: 0.8rem 1.8rem;">Become a Partner</a>
+          <a href="donate.html" style="padding: 0.8rem 1.8rem; background: rgba(255,255,255,0.05); color: #fff; text-decoration: none; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 600;">Support the Build</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top: 1px solid var(--border-color); padding: 2rem 0; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+    <div class="container">
+      <p>© 2026 Re-Thinking The Leaf • 240 Halifax Road, Lawrenceville, VA 23868</p>
+    </div>
+  </footer>
+
+</body>
+</html>

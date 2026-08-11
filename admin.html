@@ -835,6 +835,7 @@
       <div class="tab" data-panel="tasks">✅ Tasks</div>
       <div class="tab" data-panel="projects">🏗️ Capital Projects</div>
       <div class="tab" data-panel="team">👥 Team</div>
+      <div class="tab" data-panel="newsletter">📰 Newsletter</div>
       <div class="tab" data-panel="tools">🔧 Tools & Integrations</div>
     </div>
 
@@ -961,6 +962,55 @@
           </div>
         </div>
         <div class="team-grid" id="team-grid"></div>
+      </div>
+
+      <!-- ═══ NEWSLETTER PANEL ═══ -->
+      <div class="panel" id="panel-newsletter">
+        <div class="section-header">
+          <h2>📰 Newsletter Studio</h2>
+          <div style="display:flex;gap:0.5rem;align-items:center;">
+            <button onclick="generateAiDraft()" style="background:rgba(212,175,55,0.15);color:var(--accent-gold);border:1px solid var(--accent-gold);padding:0.4rem 0.9rem;border-radius:4px;font-size:0.8rem;font-weight:600;cursor:pointer;">🤖 AI Draft Q3</button>
+            <button onclick="sendTestNewsletter()" style="background:rgba(139,92,246,0.15);color:var(--accent-purple);border:1px solid var(--border-focus);padding:0.4rem 0.9rem;border-radius:4px;font-size:0.8rem;font-weight:600;cursor:pointer;">📧 Send Test</button>
+            <button onclick="sendLiveNewsletter()" style="background:#22c55e;color:#fff;border:none;padding:0.4rem 1.1rem;border-radius:4px;font-size:0.8rem;font-weight:700;cursor:pointer;">🚀 Approve &amp; Send to All</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem;">
+          <!-- Editor Form -->
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.25rem;">
+            <h3 style="margin-top:0;font-size:1rem;color:var(--accent-gold);">✍️ Content Editor</h3>
+            <div style="margin-bottom:1rem;">
+              <label style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">Email Subject</label>
+              <input id="nl-subject" type="text" oninput="updateNlPreview()" style="width:100%;padding:0.5rem;background:var(--bg-card-alt);border:1px solid var(--border);color:#fff;border-radius:4px;" value="Summer at The Leaf: Lavender Harvest & Hemp Progress">
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <label style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">🌱 Farm Update</label>
+              <textarea id="nl-farm-update" oninput="updateNlPreview()" rows="4" style="width:100%;padding:0.5rem;background:var(--bg-card-alt);border:1px solid var(--border);color:#fff;border-radius:4px;">We are excited to share major progress on our 66-acre estate in Lawrenceville! Our high tunnel structure is fully installed, stone walkways and Japanese rock gardens are complete, and we are preparing the soil for upcoming lavender bed plantings.</textarea>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <label style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">🌿 Plant Spotlight (Lavender &amp; Hemp)</label>
+              <textarea id="nl-plant-spotlight" oninput="updateNlPreview()" rows="4" style="width:100%;padding:0.5rem;background:var(--bg-card-alt);border:1px solid var(--border);color:#fff;border-radius:4px;">Lavender (Lavandula angustifolia) has been cultivated for centuries for its calming aromas, anxiety relief, and skin-healing properties. Alongside industrial hemp, our fields use natural phytoremediation to restore soil health while creating wellness products.</textarea>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <label style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">🌍 Soil &amp; Circular Economy</label>
+              <textarea id="nl-soil-tip" oninput="updateNlPreview()" rows="3" style="width:100%;padding:0.5rem;background:var(--bg-card-alt);border:1px solid var(--border);color:#fff;border-radius:4px;">Building living soil is the key to sustainable farming. By using organic cover crops, rotational planting, and natural compost, we sequester carbon and nourish microorganisms beneath the surface.</textarea>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <label style="display:block;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.25rem;">📅 What's Ahead</label>
+              <textarea id="nl-whats-ahead" oninput="updateNlPreview()" rows="3" style="width:100%;padding:0.5rem;background:var(--bg-card-alt);border:1px solid var(--border);color:#fff;border-radius:4px;">Looking ahead into Fall, we are preparing high tunnel seedling propagation and working with our NC A&amp;T landscape architecture design team to finalize our master campus layout.</textarea>
+            </div>
+          </div>
+
+          <!-- Live Email Preview -->
+          <div>
+            <h3 style="margin-top:0;font-size:1rem;color:var(--text-secondary);">📱 Live Email Preview</h3>
+            <iframe id="nl-preview-frame" style="width:100%;height:650px;border:1px solid var(--border);border-radius:8px;background:#ffffff;"></iframe>
+          </div>
+        </div>
       </div>
 
       <!-- ═══ TOOLS PANEL ═══ -->
@@ -2965,17 +3015,165 @@
       el.innerHTML = html;
     }
 
-    // Check bank status when Finances tab is clicked
+    /* ═══════════════════════════════════════════════
+       NEWSLETTER STUDIO JS HANDLERS
+    ═══════════════════════════════════════════════ */
+    function renderNlHtml() {
+      const subject = document.getElementById('nl-subject')?.value || 'Quarterly Update from The Leaf';
+      const farmUpdate = document.getElementById('nl-farm-update')?.value || '';
+      const plantSpotlight = document.getElementById('nl-plant-spotlight')?.value || '';
+      const soilTip = document.getElementById('nl-soil-tip')?.value || '';
+      const whatsAhead = document.getElementById('nl-whats-ahead')?.value || '';
+
+      return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escHtml(subject)}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#0f1a14;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#e2e8f0;">
+  <div style="max-width:600px;margin:20px auto;background:#18281e;border-radius:12px;overflow:hidden;border:1px solid #2d4533;">
+    <div style="background:linear-gradient(135deg, #1b3022, #0d1a12);padding:24px;text-align:center;border-bottom:2px solid #d4af37;">
+      <h1 style="margin:0;color:#d4af37;font-size:24px;letter-spacing:1px;">Re-Thinking The Leaf</h1>
+      <p style="margin:6px 0 0;color:#a78bfa;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Agrotherapy Estate • Lawrenceville, VA</p>
+    </div>
+    <div style="padding:28px;line-height:1.6;font-size:15px;color:#cbd5e1;">
+      <h2 style="color:#d4af37;font-size:18px;margin-top:0;">🌱 Farm Update</h2>
+      <p style="margin-bottom:20px;">${escHtml(farmUpdate).replace(/\n/g, '<br>')}</p>
+      
+      <hr style="border:none;border-top:1px solid #2d4533;margin:24px 0;">
+
+      <h2 style="color:#4ade80;font-size:18px;">🌿 Plant Spotlight</h2>
+      <p style="margin-bottom:20px;">${escHtml(plantSpotlight).replace(/\n/g, '<br>')}</p>
+
+      <hr style="border:none;border-top:1px solid #2d4533;margin:24px 0;">
+
+      <div style="background:rgba(212,175,55,0.08);border-left:3px solid #d4af37;padding:14px;border-radius:4px;">
+        <h3 style="color:#d4af37;font-size:15px;margin:0 0 6px;">🌍 Soil &amp; Circular Economy</h3>
+        <p style="margin:0;font-size:14px;">${escHtml(soilTip).replace(/\n/g, '<br>')}</p>
+      </div>
+
+      <hr style="border:none;border-top:1px solid #2d4533;margin:24px 0;">
+
+      <h2 style="color:#a78bfa;font-size:18px;">📅 What's Ahead</h2>
+      <p style="margin-bottom:20px;">${escHtml(whatsAhead).replace(/\n/g, '<br>')}</p>
+
+      <div style="text-align:center;margin-top:30px;">
+        <a href="https://rethinkingtheleaf.com/shop" style="display:inline-block;padding:12px 24px;background:#d4af37;color:#000000;text-decoration:none;font-weight:bold;border-radius:6px;font-size:14px;">Explore RTTL Apparel &amp; Goods →</a>
+      </div>
+    </div>
+    <div style="background:#0f1a14;padding:16px;text-align:center;color:#64748b;font-size:11px;border-top:1px solid #2d4533;">
+      <p style="margin:0 0 6px;">Re-Thinking The Leaf • 240 Halifax Road, Lawrenceville, VA 23868</p>
+      <p style="margin:0;"><a href="https://rethinkingtheleaf.com/progress" style="color:#d4af37;text-decoration:underline;">View Live Progress</a> • <a href="#" style="color:#64748b;text-decoration:underline;">Unsubscribe</a></p>
+    </div>
+  </div>
+</body>
+</html>`;
+    }
+
+    function updateNlPreview() {
+      const iframe = document.getElementById('nl-preview-frame');
+      if (!iframe) return;
+      const html = renderNlHtml();
+      iframe.srcdoc = html;
+    }
+
+    async function generateAiDraft() {
+      showToast('Generating AI newsletter draft...', 'info');
+      try {
+        const resp = await fetch('/api/newsletter-draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quarter: 'Q3-2026' })
+        });
+        const res = await resp.json();
+        if (res.success && res.draft) {
+          const d = res.draft;
+          if (d.subject) document.getElementById('nl-subject').value = d.subject;
+          if (d.farmUpdate) document.getElementById('nl-farm-update').value = d.farmUpdate;
+          if (d.plantSpotlight) document.getElementById('nl-plant-spotlight').value = d.plantSpotlight;
+          if (d.soilTip) document.getElementById('nl-soil-tip').value = d.soilTip;
+          if (d.whatsAhead) document.getElementById('nl-whats-ahead').value = d.whatsAhead;
+          updateNlPreview();
+          showToast('AI Newsletter draft generated!', 'success');
+        } else {
+          showToast(res.error || 'Failed to generate draft', 'error');
+        }
+      } catch (e) {
+        showToast('Error generating AI draft: ' + e.message, 'error');
+      }
+    }
+
+    async function sendTestNewsletter() {
+      showToast('Sending test preview to rethinkingtheleaf@gmail.com...', 'info');
+      const subject = document.getElementById('nl-subject').value;
+      const htmlBody = renderNlHtml();
+
+      try {
+        const resp = await fetch('/api/send-newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, htmlBody, testMode: true })
+        });
+        const res = await resp.json();
+        if (res.success) {
+          showToast('Test preview sent to rethinkingtheleaf@gmail.com!', 'success');
+        } else {
+          showToast(res.error || 'Failed to send test preview', 'error');
+        }
+      } catch (e) {
+        showToast('Error sending test email: ' + e.message, 'error');
+      }
+    }
+
+    async function sendLiveNewsletter() {
+      const confirmSend = confirm('Are you sure you want to approve and send this newsletter to ALL subscribers via Resend?');
+      if (!confirmSend) return;
+
+      showToast('Broadcasting newsletter to subscribers...', 'info');
+      const subject = document.getElementById('nl-subject').value;
+      const htmlBody = renderNlHtml();
+
+      // Collect subscriber emails from formsData
+      let recipients = [];
+      if (formsData && formsData.forms && formsData.forms.newsletter) {
+        recipients = formsData.forms.newsletter.submissions
+          .map(s => s.data?.email)
+          .filter(e => e && e.includes('@'));
+      }
+
+      try {
+        const resp = await fetch('/api/send-newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subject, htmlBody, recipients, testMode: false })
+        });
+        const res = await resp.json();
+        if (res.success) {
+          showToast(`Broadcast sent to ${res.recipientCount} subscribers!`, 'success');
+        } else {
+          showToast(res.error || 'Failed to send broadcast', 'error');
+        }
+      } catch (e) {
+        showToast('Error broadcasting newsletter: ' + e.message, 'error');
+      }
+    }
+
+    // Check bank status when Finances tab is clicked & init Newsletter preview
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
           if (tab.dataset.panel === 'finances') {
             setTimeout(checkBankStatus, 500);
+          } else if (tab.dataset.panel === 'newsletter') {
+            setTimeout(updateNlPreview, 100);
           }
         });
       });
       // Also check on initial load
       setTimeout(checkBankStatus, 2000);
+      setTimeout(updateNlPreview, 1500);
     });
 
   </script>
